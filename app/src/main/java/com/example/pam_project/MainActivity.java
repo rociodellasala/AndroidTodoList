@@ -11,14 +11,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list);
 
-        final SharedPreferences sharedPref = getSharedPreferences("app-pref",MODE_PRIVATE);
+        /*final SharedPreferences sharedPref = getSharedPreferences("app-pref",MODE_PRIVATE);
 
         if(sharedPref.getBoolean("welcome", true)){
             sharedPref.edit().putBoolean("welcome",false).apply();
             startActivity(new Intent(this, WelcomeActivity.class));
-        }
+        }*/
 
     }
 }
