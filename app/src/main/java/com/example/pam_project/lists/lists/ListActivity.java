@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.WelcomeActivity;
-import com.example.pam_project.utils.Colors;
+import com.example.pam_project.utils.AppColor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import java.util.Random;
@@ -37,7 +38,6 @@ public class ListActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_list);
-        new Colors();
         setup();
     }
 
@@ -53,10 +53,10 @@ public class ListActivity extends AppCompatActivity {
 
     private List<ListInformation> createDataSet() {
         final List<ListInformation> content = new ArrayList<>();
-        final List<String> colors = Colors.getAllColors();
+        final List<AppColor> colors = Arrays.asList(AppColor.values());
         for(int i = 0; i < 20; i++) {
             Random rand = new Random();
-            String color = colors.get(rand.nextInt(colors.size())); // Esto es temporal
+            AppColor color = colors.get(rand.nextInt(colors.size()));
             ListInformation information =
                     new ListInformation("List name " + i, "Tasks: " + 5, color);
             content.add(information);
