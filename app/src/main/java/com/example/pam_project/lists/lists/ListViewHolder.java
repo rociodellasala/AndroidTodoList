@@ -19,7 +19,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         final TextView numberOfTasks = itemView.findViewById(R.id.number_of_tasks);
         title.setText(list.getTitle());
         numberOfTasks.setText(list.getNumberOfTasks());
-        title.setTextColor(Color.parseColor(list.getColor()));
+        title.setTextColor(Color.parseColor(list.getColor().getHexValue()));
         // Por ahora solo cambie el color del texto dinamicamente pq me parece q cambiar el borde
         // de border.xml es medio un quilombo, asique lo miramos dsp
     }
