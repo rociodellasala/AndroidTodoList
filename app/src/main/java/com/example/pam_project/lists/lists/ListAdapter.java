@@ -12,9 +12,9 @@ import com.example.pam_project.R;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
-    private List<String> dataset;
+    private List<ListInformation> dataset;
 
-    public ListAdapter(List<String> dataset) {
+    public ListAdapter(List<ListInformation> dataset) {
         this.dataset = dataset;
     }
 

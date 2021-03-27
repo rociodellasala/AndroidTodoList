@@ -10,11 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.WelcomeActivity;
+import com.example.pam_project.utils.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Random;
+
+
 public class ListActivity extends AppCompatActivity {
+    private static final String FTU_KEY = "is_ftu";
+    private static final String PAM_PREF = "app-pref";
+
     private RecyclerView recyclerView;
     private ListAdapter adapter;
 
@@ -22,14 +29,15 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final SharedPreferences sharedPref = getSharedPreferences("app-pref", MODE_PRIVATE);
+        final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
 
-        if(sharedPref.getBoolean("welcome", true)){
-            sharedPref.edit().putBoolean("welcome", false).apply();
+        if(sharedPref.getBoolean(FTU_KEY, true)){
+            sharedPref.edit().putBoolean(FTU_KEY, false).apply();
             startActivity(new Intent(this, WelcomeActivity.class));
         }
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_list);
+        new Colors();
         setup();
     }
 
@@ -43,11 +51,17 @@ public class ListActivity extends AppCompatActivity {
         );
     }
 
-    private List<String> createDataSet() {
-        final List<String> content = new ArrayList<>();
+    private List<ListInformation> createDataSet() {
+        final List<ListInformation> content = new ArrayList<>();
+        final List<String> colors = Colors.getAllColors();
         for(int i = 0; i < 20; i++) {
-            content.add("Hola mundo");
+            Random rand = new Random();
+            String color = colors.get(rand.nextInt(colors.size())); // Esto es temporal
+            ListInformation information =
+                    new ListInformation("List name " + i, "Tasks: " + 5, color);
+            content.add(information);
         }
+
         return content;
     }
 }
