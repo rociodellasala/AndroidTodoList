@@ -20,7 +20,7 @@
         android:layout_width="190dp"
         android:layout_height="68dp"
         android:layout_marginTop="30dp"
-        android:text="Start Listing!"
+        android:text="@string/start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
