@@ -18,7 +18,6 @@ import java.util.List;
 
 import java.util.Random;
 
-
 public class ListActivity extends AppCompatActivity {
     private static final String FTU_KEY = "is_ftu";
     private static final String PAM_PREF = "app-pref";
@@ -46,19 +45,18 @@ public class ListActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         adapter = new ListAdapter(createDataSet());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        );
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
 
     private List<ListInformation> createDataSet() {
         final List<ListInformation> content = new ArrayList<>();
         final List<AppColor> colors = Arrays.asList(AppColor.values());
+
         for(int i = 0; i < 20; i++) {
             Random rand = new Random();
-            AppColor color = colors.get(rand.nextInt(colors.size()));
-            ListInformation information =
-                    new ListInformation("List name " + i, "Tasks: " + 5, color);
+            int r = rand.nextInt(colors.size());
+            AppColor color = colors.get(r);
+            ListInformation information = new ListInformation("List name " + color.toString(), "Tasks: " + r, color);
             content.add(information);
         }
 

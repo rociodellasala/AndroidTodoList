@@ -1,14 +1,14 @@
 package com.example.pam_project.utils;
 
 public enum AppColor {
-    RED("#DC1316"),
-    BLUE("#00A6FF"),
-    GREEN("#77D353"),
-    YELLOW("#FFBA5C");
+    RED("#22DC1316"),
+    BLUE("#2200A6FF"),
+    GREEN("#2277D353"),
+    YELLOW("#22FFBA5C");
 
     private final String hexValue;
 
-    private AppColor(final String hexValue) {
+    AppColor(final String hexValue) {
         this.hexValue = hexValue;
     }
 
@@ -16,11 +16,4 @@ public enum AppColor {
         return hexValue;
     }
 
-//    public static void setColorAsUsed(String color) {
-//        unusedColors.remove(color);
-//    }
-
-//    public static List<String> getUnusedColors() {
-//        return unusedColors;
-//    }
 }
