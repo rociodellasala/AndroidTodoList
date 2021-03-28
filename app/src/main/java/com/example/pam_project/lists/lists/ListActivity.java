@@ -56,7 +56,7 @@ public class ListActivity extends AppCompatActivity {
             Random rand = new Random();
             int r = rand.nextInt(colors.size());
             AppColor color = colors.get(r);
-            ListInformation information = new ListInformation("List name " + color.toString(), "Tasks: " + r, color);
+            ListInformation information = new ListInformation("List name " + i, "Tasks: " + r, color);
             content.add(information);
         }
 
