@@ -11,10 +11,10 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.welcome_activity);
-//
-//        final Button welcomeButton = findViewById(R.id.welcome_button);
-//        welcomeButton.setOnClickListener(v -> finish());
+        setContentView(R.layout.welcome_activity);
+
+        final Button welcomeButton = findViewById(R.id.welcome_button);
+        welcomeButton.setOnClickListener(v -> finish());
     }
 
 }
