@@ -2,4 +2,5 @@
     <string name="app_name">PAM-Project</string>
     <string name="welcome">Thanks for dowloading our app!</string>
     <string name="start">Start</string>
+    <string name="add_list">New List</string>
 </resources>

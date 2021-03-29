@@ -3,6 +3,8 @@ package com.example.pam_project.lists.lists;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 import com.example.pam_project.WelcomeActivity;
 import com.example.pam_project.utils.AppColor;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +34,12 @@ public class ListActivity extends AppCompatActivity {
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
 
+
         if(sharedPref.getBoolean(FTU_KEY, true)){
             sharedPref.edit().putBoolean(FTU_KEY, false).apply();
             startActivity(new Intent(this, WelcomeActivity.class));
         }
+
 
         setContentView(R.layout.activity_list);
         setup();
@@ -46,6 +51,8 @@ public class ListActivity extends AppCompatActivity {
         adapter = new ListAdapter(createDataSet());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        setExtendedFloatingButtonAction();
     }
 
     private List<ListInformation> createDataSet() {
@@ -61,5 +68,16 @@ public class ListActivity extends AppCompatActivity {
         }
 
         return content;
+    }
+
+    private void setExtendedFloatingButtonAction(){
+        ExtendedFloatingActionButton add_list_fab = findViewById(R.id.extended_add_list_fab);
+        add_list_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast1 = Toast.makeText(getApplicationContext(), "Toast por defecto", Toast.LENGTH_SHORT);
+                toast1.show();
+            }
+        });
     }
 }
