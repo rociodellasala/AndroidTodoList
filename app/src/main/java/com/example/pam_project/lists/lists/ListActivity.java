@@ -1,10 +1,11 @@
 package com.example.pam_project.lists.lists;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import com.example.pam_project.WelcomeActivity;
 import com.example.pam_project.utils.AppColor;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +29,8 @@ public class ListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ListAdapter adapter;
+    private List<ListInformation> contentList;
+    private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,8 @@ public class ListActivity extends AppCompatActivity {
     private void setup() {
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
-        adapter = new ListAdapter(createDataSet());
+        contentList = createDataSet();
+        adapter = new ListAdapter(contentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
@@ -56,7 +61,7 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private List<ListInformation> createDataSet() {
-        final List<ListInformation> content = new ArrayList<>();
+        List<ListInformation> content = new ArrayList<>();
         final List<AppColor> colors = Arrays.asList(AppColor.values());
 
         for(int i = 0; i < 20; i++) {
@@ -71,13 +76,32 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void setExtendedFloatingButtonAction(){
-        ExtendedFloatingActionButton add_list_fab = findViewById(R.id.extended_add_list_fab);
-        add_list_fab.setOnClickListener(new View.OnClickListener() {
+        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
+        addListFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast toast1 = Toast.makeText(getApplicationContext(), "Toast por defecto", Toast.LENGTH_SHORT);
-                toast1.show();
+                Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
+                startActivityForResult(activityIntent, CREATE_LIST_ACTIVITY_REGISTRY);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        final List<AppColor> colors = Arrays.asList(AppColor.values()); // must be removed
+
+        if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
+            if(resultCode == Activity.RESULT_OK){
+                String newListTile = data.getStringExtra("listTile");
+                String newListCategory = data.getStringExtra("listCategory");
+                contentList.add(new ListInformation("List name " + newListTile,
+                        "Tasks: " + "0", colors.get(0)));
+                adapter.notifyDataSetChanged();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }
