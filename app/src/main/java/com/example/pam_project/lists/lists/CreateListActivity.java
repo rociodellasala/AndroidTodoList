@@ -29,8 +29,7 @@ public class CreateListActivity extends AppCompatActivity {
 
     private void setup(){
         // Must be populated with real categories
-        String[] categories = {getResources().getString(R.string.spinner_category_placeholder),
-                "Cocina"};
+        String[] categories = {getResources().getString(R.string.default_category)};
         Spinner spinner = findViewById(R.id.create_list_category_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 categories);
