@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Proyecto de PAM</string>
     <string name="welcome">Gracias por descargar nuestra aplicación</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
     <string name="start">Empezar</string>
     <string name="add_list">Nueva lista</string>
     <!---Create list activity-->
@@ -16,4 +18,9 @@
     <string name="filter">Filtrar</string>
     <string name="sort_by">Ordenar por</string>
     <string name="manage_categories">Administrar categorías</string>
+    <!--Sort by options-->
+    <string name="sort_by_category_alphabetically">Categorías alfabéticamente</string>
+    <string name="sort_by_category_priority">Categorías por prioridad</string>
+    <string name="sort_by_list_alphabetically">Listas alfabéticamente</string>
+    <string name="sort_by_task_number">Cantidad de tareas</string>
 </resources>
