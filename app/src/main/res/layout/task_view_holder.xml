@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -9,6 +10,7 @@
     android:layout_marginTop="15dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
+    android:background="@drawable/border"
     android:orientation="vertical">
 
     <TextView
@@ -17,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:textStyle="bold"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
         android:paddingStart="30dp"
@@ -28,10 +31,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:textSize="15dp"
         android:paddingBottom="10dp"
         android:paddingStart="30dp"
         android:paddingLeft="30dp"
         tools:ignore="RtlSymmetry" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="end"-->
+<!--        app:srcCompat="@drawable/ic_exclamation_mark" />-->
+
 </LinearLayout>
+
 

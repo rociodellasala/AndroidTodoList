@@ -12,10 +12,10 @@ import com.example.pam_project.R;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
-    private List<TaskInformation> dataset;
+    private List<TaskInformation> dataSet;
 
-    public TaskAdapter(List<TaskInformation> dataset) {
-        this.dataset = dataset;
+    public TaskAdapter(List<TaskInformation> dataSet) {
+        this.dataSet = dataSet;
     }
 
     @NonNull
@@ -28,11 +28,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        holder.bind(dataset.get(position));
+        holder.bind(dataSet.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return dataset == null ? 0 : dataset.size();
+        return dataSet == null ? 0 : dataSet.size();
     }
 }

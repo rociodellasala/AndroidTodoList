@@ -16,7 +16,9 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     public void bind(final TaskInformation list) {
         final TextView title = itemView.findViewById(R.id.title);
         final TextView description = itemView.findViewById(R.id.description);
+        //final Item urgency = itemView.findViewsWithText(R.id.urgency);
         title.setText(list.getTitle());
         description.setText(list.getDescription());
+        // list.getUrgency();
     }
 }

@@ -3,10 +3,12 @@ package com.example.pam_project.lists.tasks;
 public class TaskInformation {
     private String title;
     private String description;
+    private boolean isUrgent;
 
-    public TaskInformation(final String title, final String description) {
+    public TaskInformation(final String title, final String description, final boolean isUrgent) {
         this.title = title;
         this.description = description;
+        this.isUrgent = isUrgent;
     }
 
     public String getTitle() {
@@ -16,5 +18,7 @@ public class TaskInformation {
     public String getDescription() {
         return description;
     }
+
+    public boolean getUrgency() { return isUrgent; }
 
 }
