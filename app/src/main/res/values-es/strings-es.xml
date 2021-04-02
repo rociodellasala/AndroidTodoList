@@ -4,4 +4,10 @@
     <string name="welcome">Gracias por descargar nuestra aplicación</string>
     <string name="start">Empezar</string>
     <string name="add_list">Nueva lista</string>
+    <!---Create list activity-->
+    <string name="activity_title_create_list">Crear lista</string>
+    <string name="add_list_check_button">Crear lista</string>
+    <string name="create_list_name_label">Nombre</string>
+    <string name="create_list_category_label">Categoría</string>
+    <string name="default_category">Sin categoría</string>
 </resources>

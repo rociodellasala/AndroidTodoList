@@ -2,7 +2,9 @@ package com.example.pam_project.lists.lists;
 
 import com.example.pam_project.utils.AppColor;
 
-public class ListInformation {
+import java.io.Serializable;
+
+public class ListInformation implements Serializable {
     private String title;
     private String numberOfTasks;
     private AppColor color;
