@@ -10,4 +10,10 @@
     <string name="create_list_name_label">Nombre</string>
     <string name="create_list_category_label">Categoría</string>
     <string name="default_category">Sin categoría</string>
+    <string name="spinner_category_placeholder">Select category</string>
+    <!--List Overflow Menu-->
+    <string name="search">Buscar</string>
+    <string name="filter">Filtrar</string>
+    <string name="sort_by">Ordenar por</string>
+    <string name="manage_categories">Administrar categorías</string>
 </resources>
