@@ -16,4 +16,9 @@
     <string name="filter">Filter</string>
     <string name="sort_by">Sort by</string>
     <string name="manage_categories">Manage categories</string>
+    <!---Create task activity-->
+    <string name="activity_title_create_task">Create task</string>
+    <string name="add_task_check_button">Create task</string>
+    <string name="create_task_name_label">Name</string>
+    <string name="create_task_description_label">Description</string>
 </resources>

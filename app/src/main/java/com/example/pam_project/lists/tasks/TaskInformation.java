@@ -1,5 +1,7 @@
 package com.example.pam_project.lists.tasks;
 
+import android.util.Log;
+
 public class TaskInformation {
     private String title;
     private String description;
