@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.utils.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,18 @@ public class TaskActivity extends AppCompatActivity {
         final List<TaskInformation> content = new ArrayList<>();
 
         for(int i = 0; i < 6; i++) {
-            Random random = new Random();
-            TaskInformation information = new TaskInformation("Task  " + i, "Description", random.nextBoolean());
+            Random randomUrgency = new Random();
+            TaskStatus status = TaskStatus.DONE;
+            TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
+                    status);
+            content.add(information);
+        }
+
+        for(int i = 0; i < 6; i++) {
+            Random randomUrgency = new Random();
+            TaskStatus status = TaskStatus.PENDING;
+            TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
+                    status);
             content.add(information);
         }
 
