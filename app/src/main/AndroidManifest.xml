@@ -13,6 +13,11 @@
             android:parentActivityName=".lists.lists.ListActivity"/>
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".lists.lists.ListActivity"/>
+<<<<<<< HEAD
+=======
+        <activity android:name=".lists.tasks.CreateTaskActivity"
+            android:parentActivityName=".lists.tasks.TaskActivity" />
+>>>>>>> new_task_button
         <activity android:name=".lists.tasks.TaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

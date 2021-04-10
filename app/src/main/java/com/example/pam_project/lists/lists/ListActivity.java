@@ -38,12 +38,10 @@ public class ListActivity extends AppCompatActivity {
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
 
-
         if(sharedPref.getBoolean(FTU_KEY, true)){
             sharedPref.edit().putBoolean(FTU_KEY, false).apply();
             startActivity(new Intent(this, WelcomeActivity.class));
         }
-
 
         setContentView(R.layout.activity_list);
         setup();
@@ -56,7 +54,6 @@ public class ListActivity extends AppCompatActivity {
         adapter = new ListAdapter(contentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         setExtendedFloatingButtonAction();
     }
 
