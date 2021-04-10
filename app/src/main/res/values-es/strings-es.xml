@@ -3,7 +3,8 @@
     <string name="app_name">Proyecto de PAM</string>
     <string name="welcome">Gracias por descargar nuestra aplicación</string>
     <string name="start">Empezar</string>
-    <string name="add_list">Nueva lista</string>
+    <string name="add_list">Nueva Lista</string>
+    <string name="add_task">Nueva Tarea</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Crear lista</string>
     <string name="add_list_check_button">Crear lista</string>

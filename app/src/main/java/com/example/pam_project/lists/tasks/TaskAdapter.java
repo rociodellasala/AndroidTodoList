@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.lists;
+package com.example.pam_project.lists.tasks;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,23 +11,23 @@ import com.example.pam_project.R;
 
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
-    private List<ListInformation> dataSet;
+public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+    private List<TaskInformation> dataSet;
 
-    public ListAdapter(List<ListInformation> dataSet) {
+    public TaskAdapter(List<TaskInformation> dataSet) {
         this.dataSet = dataSet;
     }
 
     @NonNull
     @Override
-    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_view_holder, parent, false);
-        return new ListViewHolder(view);
+                .inflate(R.layout.task_view_holder, parent, false);
+        return new TaskViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         holder.bind(dataSet.get(position));
     }
 

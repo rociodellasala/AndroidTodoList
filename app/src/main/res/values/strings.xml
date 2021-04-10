@@ -3,6 +3,7 @@
     <string name="welcome">Thanks for dowloading our app!</string>
     <string name="start">Start</string>
     <string name="add_list">New List</string>
+    <string name="add_task">New Task</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Create list</string>
     <string name="add_list_check_button">Create list</string>
