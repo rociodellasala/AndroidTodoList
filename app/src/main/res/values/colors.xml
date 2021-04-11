@@ -8,4 +8,31 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_blue">#3B4859</color>
+
+    <!-- demo colors -->
+    <color name="board">#A83432</color>
+    <color name="pink">#8A1567</color>
+    <color name="purple">#A81EA8</color>
+    <color name="blue">#1E55a8</color>
+    <color name="light_blue">#6A98DE</color>
+    <color name="green_blue">#4BC4B8</color>
+    <color name="light_green">#4BC46F</color>
+    <color name="green">#39C221</color>
+    <color name="yellow">#FCF644</color>
+    <color name="light_orange">#FCCB44</color>
+    <color name="orange">#FFA305</color>
+
+    <array name="demo_colors">
+        <item>@color/board</item>
+        <item>@color/pink</item>
+        <item>@color/purple</item>
+        <item>@color/blue</item>
+        <item>@color/light_blue</item>
+        <item>@color/green_blue</item>
+        <item>@color/light_green</item>
+        <item>@color/green</item>
+        <item>@color/yellow</item>
+        <item>@color/light_orange</item>
+        <item>@color/orange</item>
+    </array>
 </resources>
