@@ -3,6 +3,8 @@ package com.example.pam_project.lists.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +37,13 @@ public class TaskActivity extends AppCompatActivity {
         setup();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_action_bar, menu);
+        return true;
+    }
+
     private void setup() {
         recyclerViewPending = findViewById(R.id.pendingTasks);
         recyclerViewPending.setHasFixedSize(true);
@@ -54,7 +63,7 @@ public class TaskActivity extends AppCompatActivity {
     private List<TaskInformation> createDataSetPending() {
         final List<TaskInformation> content = new ArrayList<>();
 
-        for(int i = 0; i < 6; i++) {
+        for(int i = 0; i < 15; i++) {
             Random randomUrgency = new Random();
             TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
                     TaskStatus.PENDING);
@@ -67,7 +76,7 @@ public class TaskActivity extends AppCompatActivity {
     private List<TaskInformation> createDataSetDone() {
         final List<TaskInformation> content = new ArrayList<>();
 
-        for(int i = 0; i < 6; i++) {
+        for(int i = 0; i < 5; i++) {
             Random randomUrgency = new Random();
             TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
                     TaskStatus.DONE);

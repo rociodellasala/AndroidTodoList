@@ -5,63 +5,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="left"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/pendingTasksTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pending_tasks"
-            android:paddingLeft="30dp"
-            android:paddingTop="5dp"
-            android:textSize="22dp"
-            android:gravity="left"
-            android:textStyle="italic|bold"
-            tools:ignore="RtlSymmetry,SpUsage" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pendingTasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".lists.tasks.TaskActivity">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:context=".lists.tasks.TaskActivity"/>
 
         <TextView
-            android:id="@+id/doneTaskTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/doneTasksTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/done_tasks"
+            android:textSize="20dp"
             android:paddingLeft="30dp"
-            android:paddingTop="5dp"
-            android:textSize="22dp"
-            android:gravity="left"
+            android:paddingTop="30dp"
             android:textStyle="italic|bold"
             tools:ignore="RtlSymmetry,SpUsage" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/doneTasks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".lists.tasks.TaskActivity">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
+            android:layout_height="wrap_content"
+            tools:context=".lists.tasks.TaskActivity"/>
 
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/extended_fab_add_task"

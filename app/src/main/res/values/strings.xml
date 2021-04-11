@@ -11,6 +11,7 @@
     <string name="create_list_category_label">Category</string>
     <string name="default_category">Uncategorized</string>
     <string name="spinner_category_placeholder">Select category</string>
+    <string name="edit_list_button">Edit list</string>
     <!--List Overflow Menu-->
     <string name="search">Search</string>
     <string name="filter">Filter</string>
