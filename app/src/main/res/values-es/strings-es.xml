@@ -22,5 +22,6 @@
     <string name="add_task_check_button">Crear tarea</string>
     <string name="create_task_name_label">Nombre</string>
     <string name="create_task_description_label">Descripción</string>
-
+    <string name="pending_tasks">Pendientes</string>
+    <string name="done_tasks">Realizadas</string>
 </resources>

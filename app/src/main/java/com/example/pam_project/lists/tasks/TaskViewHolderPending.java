@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 
-public class TaskViewHolder extends RecyclerView.ViewHolder {
-    public TaskViewHolder(@NonNull View itemView) {
+public class TaskViewHolderPending extends RecyclerView.ViewHolder {
+    public TaskViewHolderPending(@NonNull View itemView) {
         super(itemView);
     }
 

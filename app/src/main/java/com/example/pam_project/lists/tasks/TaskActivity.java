@@ -19,9 +19,12 @@ import java.util.Objects;
 import java.util.Random;
 
 public class TaskActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private TaskAdapter adapter;
-    private List<TaskInformation> contentList;
+    private RecyclerView recyclerViewPending;
+    private RecyclerView recyclerViewDone;
+    private TaskAdapterPending adapterPending;
+    private TaskAdapterDone adapterDone;
+    private List<TaskInformation> contentListPending;
+    private List<TaskInformation> contentListDone;
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
 
     @Override
@@ -33,31 +36,41 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void setup() {
-        recyclerView = findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        contentList = createDataSet();
-        adapter = new TaskAdapter(createDataSet());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewPending = findViewById(R.id.pendingTasks);
+        recyclerViewPending.setHasFixedSize(true);
+        recyclerViewDone = findViewById(R.id.doneTasks);
+        recyclerViewDone.setHasFixedSize(true);
+        contentListPending = createDataSetPending();
+        contentListDone = createDataSetDone();
+        adapterPending = new TaskAdapterPending(contentListPending);
+        adapterDone = new TaskAdapterDone(contentListDone);
+        recyclerViewPending.setAdapter(adapterPending);
+        recyclerViewPending.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewDone.setAdapter(adapterDone);
+        recyclerViewDone.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
     }
 
-    private List<TaskInformation> createDataSet() {
+    private List<TaskInformation> createDataSetPending() {
         final List<TaskInformation> content = new ArrayList<>();
 
         for(int i = 0; i < 6; i++) {
             Random randomUrgency = new Random();
-            TaskStatus status = TaskStatus.DONE;
             TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
-                    status);
+                    TaskStatus.PENDING);
             content.add(information);
         }
 
+        return content;
+    }
+
+    private List<TaskInformation> createDataSetDone() {
+        final List<TaskInformation> content = new ArrayList<>();
+
         for(int i = 0; i < 6; i++) {
             Random randomUrgency = new Random();
-            TaskStatus status = TaskStatus.PENDING;
             TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
-                    status);
+                    TaskStatus.DONE);
             content.add(information);
         }
 
@@ -83,9 +96,8 @@ public class TaskActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
-//                contentList.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false));
-                contentList = null;
-                adapter.notifyDataSetChanged();
+                contentListPending.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false, TaskStatus.PENDING));
+                adapterPending.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result

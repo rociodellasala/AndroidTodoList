@@ -14,34 +14,52 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
+        android:gravity="left"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/pendingTasks"
+            android:id="@+id/pendingTasksTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:paddingStart="30dp"
-            android:text="HOLA"
+            android:text="@string/pending_tasks"
             android:paddingLeft="30dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
-            android:textSize="50dp"
-            android:textStyle="italic"
+            android:paddingTop="5dp"
+            android:textSize="22dp"
+            android:gravity="left"
+            android:textStyle="italic|bold"
             tools:ignore="RtlSymmetry,SpUsage" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
+            android:id="@+id/pendingTasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".lists.tasks.TaskActivity"
-            app:layout_constraintTop_toBottomOf="@+id/pendingTasks">
+            tools:context=".lists.tasks.TaskActivity">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/doneTaskTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done_tasks"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:textSize="22dp"
+            android:gravity="left"
+            android:textStyle="italic|bold"
+            tools:ignore="RtlSymmetry,SpUsage" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/doneTasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".lists.tasks.TaskActivity">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
 
     </LinearLayout>
 
