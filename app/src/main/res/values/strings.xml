@@ -13,6 +13,7 @@
     <string name="create_list_category_label">Category</string>
     <string name="default_category">Uncategorized</string>
     <string name="spinner_category_placeholder">Select category</string>
+    <string name="edit_list_button">Edit list</string>
     <!--List Overflow Menu-->
     <string name="search">Search</string>
     <string name="filter">Filter</string>
@@ -39,4 +40,6 @@
     <string name="add_task_check_button">Create task</string>
     <string name="create_task_name_label">Name</string>
     <string name="create_task_description_label">Description</string>
+    <string name="pending_tasks">Pending</string>
+    <string name="done_tasks">Done</string>
 </resources>

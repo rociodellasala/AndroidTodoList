@@ -11,23 +11,23 @@ import com.example.pam_project.R;
 
 import java.util.List;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
+public class TaskAdapterPending extends RecyclerView.Adapter<TaskViewHolderPending> {
     private List<TaskInformation> dataSet;
 
-    public TaskAdapter(List<TaskInformation> dataSet) {
+    public TaskAdapterPending(List<TaskInformation> dataSet) {
         this.dataSet = dataSet;
     }
 
     @NonNull
     @Override
-    public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TaskViewHolderPending onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.task_view_holder, parent, false);
-        return new TaskViewHolder(view);
+                .inflate(R.layout.task_view_holder_pending, parent, false);
+        return new TaskViewHolderPending(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TaskViewHolderPending holder, int position) {
         holder.bind(dataSet.get(position));
     }
 

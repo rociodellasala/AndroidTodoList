@@ -3,6 +3,8 @@ package com.example.pam_project.lists.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.utils.TaskStatus;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
@@ -18,9 +21,12 @@ import java.util.Objects;
 import java.util.Random;
 
 public class TaskActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private TaskAdapter adapter;
-    private List<TaskInformation> contentList;
+    private RecyclerView recyclerViewPending;
+    private RecyclerView recyclerViewDone;
+    private TaskAdapterPending adapterPending;
+    private TaskAdapterDone adapterDone;
+    private List<TaskInformation> contentListPending;
+    private List<TaskInformation> contentListDone;
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
 
     @Override
@@ -31,22 +37,51 @@ public class TaskActivity extends AppCompatActivity {
         setup();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_action_bar, menu);
+        return true;
+    }
+
     private void setup() {
-        recyclerView = findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        contentList = createDataSet();
-        adapter = new TaskAdapter(contentList);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewPending = findViewById(R.id.pendingTasks);
+        recyclerViewPending.setHasFixedSize(true);
+        contentListPending = createDataSetPending();
+        adapterPending = new TaskAdapterPending(contentListPending);
+        recyclerViewPending.setAdapter(adapterPending);
+        recyclerViewPending.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        recyclerViewDone = findViewById(R.id.doneTasks);
+        recyclerViewDone.setHasFixedSize(true);
+        contentListDone = createDataSetDone();
+        adapterDone = new TaskAdapterDone(contentListDone);
+        recyclerViewDone.setAdapter(adapterDone);
+        recyclerViewDone.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
         setExtendedFloatingButtonAction();
     }
 
-    private List<TaskInformation> createDataSet() {
+    private List<TaskInformation> createDataSetPending() {
         final List<TaskInformation> content = new ArrayList<>();
 
-        for(int i = 0; i < 6; i++) {
-            Random random = new Random();
-            TaskInformation information = new TaskInformation("Task  " + i, "Description", random.nextBoolean());
+        for(int i = 0; i < 15; i++) {
+            Random randomUrgency = new Random();
+            TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
+                    TaskStatus.PENDING);
+            content.add(information);
+        }
+
+        return content;
+    }
+
+    private List<TaskInformation> createDataSetDone() {
+        final List<TaskInformation> content = new ArrayList<>();
+
+        for(int i = 0; i < 5; i++) {
+            Random randomUrgency = new Random();
+            TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
+                    TaskStatus.DONE);
             content.add(information);
         }
 
@@ -72,8 +107,8 @@ public class TaskActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
-                contentList.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false));
-                adapter.notifyDataSetChanged();
+                contentListPending.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false, TaskStatus.PENDING));
+                adapterPending.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
