@@ -51,13 +51,13 @@ public class CreateListActivity extends AppCompatActivity {
         final Spinner spinner = findViewById(R.id.create_list_category_spinner);
         final EditText listTitleInput = findViewById(R.id.create_list_title_input);
 
-        if (id == R.id.check_add_list_button) {
+        if (id == R.id.check_add_button) {
             String listTile = listTitleInput.getText().toString();
             String listCategory = spinner.getSelectedItem().toString();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("listTile", listTile);
             returnIntent.putExtra("listCategory", listCategory);
-            setResult(Activity.RESULT_OK,returnIntent);
+            setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
 

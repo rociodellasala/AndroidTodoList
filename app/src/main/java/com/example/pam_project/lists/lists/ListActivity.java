@@ -6,14 +6,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.WelcomeActivity;
+import com.example.pam_project.lists.dialogs.FilterDialogFragment;
+import com.example.pam_project.lists.dialogs.SelectedDialogItems;
+import com.example.pam_project.lists.dialogs.SortByDialogFragment;
 import com.example.pam_project.utils.AppColor;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -23,9 +30,10 @@ import java.util.List;
 
 import java.util.Random;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements SelectedDialogItems {
     private static final String FTU_KEY = "is_ftu";
     private static final String PAM_PREF = "app-pref";
+    private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
 
     private RecyclerView recyclerView;
     private ListAdapter adapter;
@@ -38,12 +46,10 @@ public class ListActivity extends AppCompatActivity {
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
 
-
         if(sharedPref.getBoolean(FTU_KEY, true)){
             sharedPref.edit().putBoolean(FTU_KEY, false).apply();
             startActivity(new Intent(this, WelcomeActivity.class));
         }
-
 
         setContentView(R.layout.activity_list);
         setup();
@@ -56,7 +62,6 @@ public class ListActivity extends AppCompatActivity {
         adapter = new ListAdapter(contentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         setExtendedFloatingButtonAction();
     }
 
@@ -100,7 +105,7 @@ public class ListActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                // Write your code if there's no result
             }
         }
     }
@@ -110,5 +115,63 @@ public class ListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_action_bar, menu);
         return true;
+    }
+
+    private void showDialog(FragmentManager fm, DialogFragment dialog) {
+        dialog.show(fm, DIALOG_FRAGMENT_SHOW_TAG);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.list_action_bar_search) {
+            // show search bar
+            return true;
+        }
+
+        // cannot create static abstract method, so some code has to be repeated
+        else if (itemId == R.id.list_action_bar_filter) {
+            FragmentManager fm = getSupportFragmentManager();
+            FilterDialogFragment filterDialog = FilterDialogFragment
+                    .newInstance(adapter.getFilterSelections());
+            showDialog(fm, filterDialog);
+            return true;
+        }
+        else if (itemId == R.id.list_action_bar_sort_by) {
+            FragmentManager fm = getSupportFragmentManager();
+            SortByDialogFragment sortByDialog = SortByDialogFragment
+                    .newInstance(adapter.getSortIndex());
+            showDialog(fm, sortByDialog);
+            return true;
+        }
+
+        else if (itemId == R.id.list_action_bar_manage_categories) {
+            // show manage categories activity
+            return true;
+        }
+
+        else {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSelectedItems(Class<?> klass, List<Integer> items) {
+        // do something with the selected items
+
+        CharSequence value = "No selection";
+        if (klass.equals(SortByDialogFragment.class)) {
+            final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
+            value = vals[items.get(0)];
+            adapter.setSortIndex(items.get(0));
+        }
+        else {
+            if (items.size() > 0)
+                value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
+            adapter.setFilterSelections(items);
+        }
+        Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
 }
