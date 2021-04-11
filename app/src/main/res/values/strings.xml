@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">PAM-Project</string>
     <string name="welcome">Thanks for dowloading our app!</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="start">Start</string>
     <string name="add_list">New List</string>
     <string name="add_task">New Task</string>
@@ -17,6 +19,22 @@
     <string name="filter">Filter</string>
     <string name="sort_by">Sort by</string>
     <string name="manage_categories">Manage categories</string>
+    <!--Category activity-->
+    <string name="category_name_label">Name</string>
+    <string name="category_color_label">Color</string>
+    <string name="delete_category">Delete</string>
+    <!--Sort by options-->
+    <string-array name="sort_by_criteria">
+        <item>@string/sort_by_category_alphabetically</item>
+        <item>@string/sort_by_category_priority</item>
+        <item>@string/sort_by_list_alphabetically</item>
+        <item>@string/sort_by_task_number</item>
+    </string-array>
+    <string name="sort_by_category_alphabetically">Category alphabetically</string>
+    <string name="sort_by_category_priority">Category priority</string>
+    <string name="sort_by_list_alphabetically">List alphabetically</string>
+    <string name="sort_by_task_number">Number of tasks</string>
+    <string name="select_all">All</string>
     <!---Create task activity-->
     <string name="activity_title_create_task">Create task</string>
     <string name="add_task_check_button">Create task</string>
