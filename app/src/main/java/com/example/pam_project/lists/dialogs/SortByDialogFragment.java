@@ -23,7 +23,7 @@ public class SortByDialogFragment extends ListActivityDialogFragment {
                .setSingleChoiceItems(R.array.sort_by_criteria, INITIAL_VALUE,
                        (DialogInterface.OnClickListener) (dialog, which) -> {
                    // showToast("Selected: " + which);
-                   final List<Integer> returnList = new ArrayList<>();
+                   final List<Integer> returnList = new ArrayList<>(1);
                    returnList.add(which);
                    callback.onSelectedItems(this.getClass(), returnList);
                    dialog.dismiss();

@@ -16,7 +16,7 @@ import java.util.List;
 public class FilterDialogFragment extends ListActivityDialogFragment {
     public static final CharSequence[] FILTER_ITEMS = {/*"select_all",*/ "Category 1", "Category 2", "Category 3"};
     private static final boolean[] INITIALLY_SELECTED = new boolean[FILTER_ITEMS.length];
-    private final List<Integer> selectedItems = new ArrayList<>();
+    private final List<Integer> selectedItems = new ArrayList<>(FILTER_ITEMS.length);
 
     @NonNull
     @Override
@@ -24,7 +24,7 @@ public class FilterDialogFragment extends ListActivityDialogFragment {
         Arrays.fill(INITIALLY_SELECTED, true);
         selectAll(true);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.sort_by)
+        builder.setTitle(R.string.filter)
                .setMultiChoiceItems(FILTER_ITEMS, INITIALLY_SELECTED,
                         (DialogInterface.OnMultiChoiceClickListener) (dialog, which, isChecked) ->
                         {
@@ -32,11 +32,10 @@ public class FilterDialogFragment extends ListActivityDialogFragment {
                                 selectAll(isChecked);
                             }
                             else*/
-                            if (isChecked) {
+                            if (isChecked)
                                 selectedItems.add(which);
-                            }
                             else
-                                selectedItems.remove(which);
+                                selectedItems.remove((Integer) which);
                         })
                .setPositiveButton(R.string.ok,
                         (DialogInterface.OnClickListener) (dialog, which) -> {
