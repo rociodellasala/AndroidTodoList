@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -125,7 +126,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int itemId = item.getItemId();
         if (itemId == R.id.list_action_bar_search) {
             // show search bar
@@ -135,13 +135,15 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         // cannot create static abstract method, so some code has to be repeated
         else if (itemId == R.id.list_action_bar_filter) {
             FragmentManager fm = getSupportFragmentManager();
-            FilterDialogFragment filterDialog = FilterDialogFragment.newInstance();
+            FilterDialogFragment filterDialog = FilterDialogFragment
+                    .newInstance(adapter.getFilterSelections());
             showDialog(fm, filterDialog);
             return true;
         }
         else if (itemId == R.id.list_action_bar_sort_by) {
             FragmentManager fm = getSupportFragmentManager();
-            SortByDialogFragment sortByDialog = SortByDialogFragment.newInstance();
+            SortByDialogFragment sortByDialog = SortByDialogFragment
+                    .newInstance(adapter.getSortIndex());
             showDialog(fm, sortByDialog);
             return true;
         }
@@ -160,17 +162,19 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
     @Override
     public void onSelectedItems(Class<?> klass, List<Integer> items) {
-        if (items.size() == 0) {
-            Toast.makeText(getApplicationContext(), "No selection", Toast.LENGTH_SHORT).show();
-            return;
-        }
         // do something with the selected items
-        final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
-        CharSequence value = null;
-        if (klass.equals(SortByDialogFragment.class))
+
+        CharSequence value = "No selection";
+        if (klass.equals(SortByDialogFragment.class)) {
+            final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
             value = vals[items.get(0)];
-        else
-            value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
+            adapter.setSortIndex(items.get(0));
+        }
+        else {
+            if (items.size() > 0)
+                value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
+            adapter.setFilterSelections(items);
+        }
         Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
 }

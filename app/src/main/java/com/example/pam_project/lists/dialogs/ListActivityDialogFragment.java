@@ -27,10 +27,4 @@ public abstract class ListActivityDialogFragment extends DialogFragment {
         callback = null;
         super.onDetach();
     }
-
-    protected void showToast(String msg) {
-        if (getContext() == null || getContext().getApplicationContext() == null)
-            return;
-        Toast.makeText(getContext().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
 }

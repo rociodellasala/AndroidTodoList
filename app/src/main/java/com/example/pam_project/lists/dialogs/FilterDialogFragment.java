@@ -14,32 +14,32 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FilterDialogFragment extends ListActivityDialogFragment {
-    public static final CharSequence[] FILTER_ITEMS = {/*"select_all",*/ "Category 1", "Category 2", "Category 3"};
-    private static final boolean[] INITIALLY_SELECTED = new boolean[FILTER_ITEMS.length];
-    private final List<Integer> selectedItems = new ArrayList<>(FILTER_ITEMS.length);
+    private static final String INITIAL_SELECTION_KEY = "selectedItems";
+    public static final CharSequence[] FILTER_ITEMS = {
+        /*"select_all",*/
+        "Category 1",
+        "Category 2",
+        "Category 3"
+    };
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Arrays.fill(INITIALLY_SELECTED, true);
-        selectAll(true);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final List<Integer> selectedItems = getArguments().getIntegerArrayList(INITIAL_SELECTION_KEY);
         builder.setTitle(R.string.filter)
-               .setMultiChoiceItems(FILTER_ITEMS, INITIALLY_SELECTED,
+               .setMultiChoiceItems(FILTER_ITEMS, listToBooleanArray(selectedItems),
                         (DialogInterface.OnMultiChoiceClickListener) (dialog, which, isChecked) ->
                         {
-                            /*if (item.equals("select_all")) {
-                                selectAll(isChecked);
-                            }
-                            else*/
-                            if (isChecked)
+                            if (isChecked) {
                                 selectedItems.add(which);
-                            else
+                            }
+                            else {
                                 selectedItems.remove((Integer) which);
+                            }
                         })
                .setPositiveButton(R.string.ok,
                         (DialogInterface.OnClickListener) (dialog, which) -> {
-                            // showToast("Selected: " + selectedItems.size());
                             callback.onSelectedItems(this.getClass(), selectedItems);
                             dialog.dismiss();
                })
@@ -49,28 +49,28 @@ public class FilterDialogFragment extends ListActivityDialogFragment {
     }
 
     public static FilterDialogFragment newInstance() {
+        return newInstance(null);
+    }
+
+    public static FilterDialogFragment newInstance(List<Integer> initialSelection) {
         final FilterDialogFragment frag = new FilterDialogFragment();
         final Bundle args = new Bundle();
+        if (initialSelection == null) {
+            initialSelection = new ArrayList<>(FILTER_ITEMS.length);
+            // all items are selected initially
+            for (int i = 0; i < FILTER_ITEMS.length; i++) {
+                initialSelection.add(i);
+            }
+        }
+        args.putIntegerArrayList(INITIAL_SELECTION_KEY, (ArrayList<Integer>) initialSelection);
         frag.setArguments(args);
         return frag;
     }
 
-    private void selectAll(boolean doSelectAll) {
-        if (doSelectAll) {
-            for (int i = 0; i < FILTER_ITEMS.length; i++)
-                selectedItems.add(i);
-        }
-        else
-            selectedItems.clear();
-
-        /*AlertDialog dialog = ((AlertDialog)getDialog());
-        if (dialog == null) {
-            // es NULL lamentablemente
-            return;
-        }
-        ListView items = dialog.getListView();
-        for(int i = 0; i < items.getAdapter().getCount(); i++) {
-            items.setItemChecked(i, doSelectAll);
-        }*/
+    private boolean[] listToBooleanArray(final List<Integer> selection) {
+        boolean[] result = new boolean[FILTER_ITEMS.length];
+        for (Integer index : selection)
+            result[index] = true;
+        return result;
     }
 }

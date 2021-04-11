@@ -13,16 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SortByDialogFragment extends ListActivityDialogFragment {
-    private static final int INITIAL_VALUE = 0;
+    private static final String INITIAL_VALUE_KEY = "initialValue";
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.sort_by)
-               .setSingleChoiceItems(R.array.sort_by_criteria, INITIAL_VALUE,
+               .setSingleChoiceItems(R.array.sort_by_criteria, getArguments().getInt(INITIAL_VALUE_KEY),
                        (DialogInterface.OnClickListener) (dialog, which) -> {
-                   // showToast("Selected: " + which);
                    final List<Integer> returnList = new ArrayList<>(1);
                    returnList.add(which);
                    callback.onSelectedItems(this.getClass(), returnList);
@@ -32,8 +31,13 @@ public class SortByDialogFragment extends ListActivityDialogFragment {
     }
 
     public static SortByDialogFragment newInstance() {
+        return newInstance(0);
+    }
+
+    public static SortByDialogFragment newInstance(final int initialValue) {
         SortByDialogFragment frag = new SortByDialogFragment();
         Bundle args = new Bundle();
+        args.putInt(INITIAL_VALUE_KEY, initialValue);
         frag.setArguments(args);
         return frag;
     }
