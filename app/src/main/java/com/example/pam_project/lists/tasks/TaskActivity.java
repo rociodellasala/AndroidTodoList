@@ -47,16 +47,18 @@ public class TaskActivity extends AppCompatActivity {
     private void setup() {
         recyclerViewPending = findViewById(R.id.pendingTasks);
         recyclerViewPending.setHasFixedSize(true);
-        recyclerViewDone = findViewById(R.id.doneTasks);
-        recyclerViewDone.setHasFixedSize(true);
         contentListPending = createDataSetPending();
-        contentListDone = createDataSetDone();
         adapterPending = new TaskAdapterPending(contentListPending);
-        adapterDone = new TaskAdapterDone(contentListDone);
         recyclerViewPending.setAdapter(adapterPending);
         recyclerViewPending.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        recyclerViewDone = findViewById(R.id.doneTasks);
+        recyclerViewDone.setHasFixedSize(true);
+        contentListDone = createDataSetDone();
+        adapterDone = new TaskAdapterDone(contentListDone);
         recyclerViewDone.setAdapter(adapterDone);
         recyclerViewDone.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
         setExtendedFloatingButtonAction();
     }
 
