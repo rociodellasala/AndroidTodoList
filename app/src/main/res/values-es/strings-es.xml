@@ -19,6 +19,10 @@
     <string name="filter">Filtrar</string>
     <string name="sort_by">Ordenar por</string>
     <string name="manage_categories">Administrar categorías</string>
+    <!--Category activity-->
+    <string name="category_name_label">Nombre</string>
+    <string name="category_color_label">Color</string>
+    <string name="delete_category">Borrar</string>
     <!--Sort by options-->
     <string name="sort_by_category_alphabetically">Categorías alfabéticamente</string>
     <string name="sort_by_category_priority">Categorías por prioridad</string>
