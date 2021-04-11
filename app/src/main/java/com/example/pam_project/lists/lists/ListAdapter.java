@@ -12,12 +12,12 @@ import com.example.pam_project.R;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
-    private List<ListInformation> dataset;
+    private List<ListInformation> dataSet;
     private List<Integer> filterSelections;
     private int sortIndex = 0;
 
-    public ListAdapter(List<ListInformation> dataset) {
-        this.dataset = dataset;
+    public ListAdapter(List<ListInformation> dataSet) {
+        this.dataSet = dataSet;
     }
 
     @NonNull
@@ -30,12 +30,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-        holder.bind(dataset.get(position));
+        holder.bind(dataSet.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return dataset == null ? 0 : dataset.size();
+        return dataSet == null ? 0 : dataSet.size();
     }
 
     public int getSortIndex() {

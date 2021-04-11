@@ -5,6 +5,7 @@
     <string name="cancel">Cancel</string>
     <string name="start">Start</string>
     <string name="add_list">New List</string>
+    <string name="add_task">New Task</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Create list</string>
     <string name="add_list_check_button">Create list</string>
@@ -29,4 +30,9 @@
     <string name="sort_by_list_alphabetically">List alphabetically</string>
     <string name="sort_by_task_number">Number of tasks</string>
     <string name="select_all">All</string>
+    <!---Create task activity-->
+    <string name="activity_title_create_task">Create task</string>
+    <string name="add_task_check_button">Create task</string>
+    <string name="create_task_name_label">Name</string>
+    <string name="create_task_description_label">Description</string>
 </resources>

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,7 +51,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
             startActivity(new Intent(this, WelcomeActivity.class));
         }
 
-
         setContentView(R.layout.activity_list);
         setup();
     }
@@ -64,7 +62,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         adapter = new ListAdapter(contentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         setExtendedFloatingButtonAction();
     }
 

@@ -15,10 +15,12 @@
         <activity android:name=".lists.lists.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".lists.tasks.CreateTaskActivity"
+            android:parentActivityName=".lists.tasks.TaskActivity" />
+        <activity android:name=".lists.tasks.TaskActivity"/>
     </application>
 
 </manifest>
