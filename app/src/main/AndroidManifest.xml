@@ -12,7 +12,7 @@
         <activity android:name=".lists.lists.CreateListActivity"
             android:parentActivityName=".lists.lists.ListActivity"/>
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".lists.lists.ListActivity"/>
+        <activity android:name=".lists.lists.ListActivity" />
         <activity android:name=".lists.tasks.CreateTaskActivity"
             android:parentActivityName=".lists.tasks.TaskActivity" />
         <activity android:name=".lists.tasks.TaskActivity">
