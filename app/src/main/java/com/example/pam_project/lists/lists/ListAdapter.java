@@ -13,6 +13,8 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     private List<ListInformation> dataSet;
+    private List<Integer> filterSelections;
+    private int sortIndex = 0;
 
     public ListAdapter(List<ListInformation> dataSet) {
         this.dataSet = dataSet;
@@ -34,5 +36,23 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     @Override
     public int getItemCount() {
         return dataSet == null ? 0 : dataSet.size();
+    }
+
+    public int getSortIndex() {
+        return sortIndex;
+    }
+
+    public void setSortIndex(int sortIndex) {
+        this.sortIndex = sortIndex;
+        // TODO: sort dataset accordingly
+    }
+
+    public List<Integer> getFilterSelections() {
+        return filterSelections;
+    }
+
+    public void setFilterSelections(final List<Integer> filterSelections) {
+        this.filterSelections = filterSelections;
+        // TODO: filter dataset accordingly
     }
 }
