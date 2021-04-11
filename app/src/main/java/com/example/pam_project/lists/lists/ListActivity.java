@@ -4,30 +4,36 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.WelcomeActivity;
+import com.example.pam_project.lists.dialogs.FilterDialogFragment;
+import com.example.pam_project.lists.dialogs.SelectedDialogItems;
+import com.example.pam_project.lists.dialogs.SortByDialogFragment;
 import com.example.pam_project.utils.AppColor;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import java.util.Random;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements SelectedDialogItems {
     private static final String FTU_KEY = "is_ftu";
     private static final String PAM_PREF = "app-pref";
+    private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
 
     private RecyclerView recyclerView;
     private ListAdapter adapter;
@@ -39,7 +45,6 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
-
 
         if(sharedPref.getBoolean(FTU_KEY, true)){
             sharedPref.edit().putBoolean(FTU_KEY, false).apply();
@@ -102,7 +107,7 @@ public class ListActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+                // Write your code if there's no result
             }
         }
     }
@@ -112,5 +117,53 @@ public class ListActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_action_bar, menu);
         return true;
+    }
+
+    private void showDialog(FragmentManager fm, DialogFragment dialog) {
+        dialog.show(fm, DIALOG_FRAGMENT_SHOW_TAG);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == R.id.list_action_bar_search) {
+            // show search bar
+            return true;
+        }
+
+        // cannot create static abstract method, so some code has to be repeated
+        else if (itemId == R.id.list_action_bar_filter) {
+            FragmentManager fm = getSupportFragmentManager();
+            FilterDialogFragment filterDialog = FilterDialogFragment.newInstance();
+            showDialog(fm, filterDialog);
+            return true;
+        }
+        else if (itemId == R.id.list_action_bar_sort_by) {
+            FragmentManager fm = getSupportFragmentManager();
+            SortByDialogFragment sortByDialog = SortByDialogFragment.newInstance();
+            showDialog(fm, sortByDialog);
+            return true;
+        }
+
+        else if (itemId == R.id.list_action_bar_manage_categories) {
+            // show manage categories activity
+            return true;
+        }
+
+        else {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onSelectedItems(Class<?> klass, List<CharSequence> items) {
+        // do something with the selected items
+        if (items.size() > 0)
+            Toast.makeText(getApplicationContext(), items.get(0), Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "No selection", Toast.LENGTH_SHORT).show();
     }
 }

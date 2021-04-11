@@ -19,13 +19,14 @@
     <string name="manage_categories">Manage categories</string>
     <!--Sort by options-->
     <string-array name="sort_by_criteria">
-        <item>sort_by_category_alphabetically</item>
-        <item>sort_by_category_priority</item>
-        <item>sort_by_list_alphabetically</item>
-        <item>sort_by_task_number</item>
+        <item>@string/sort_by_category_alphabetically</item>
+        <item>@string/sort_by_category_priority</item>
+        <item>@string/sort_by_list_alphabetically</item>
+        <item>@string/sort_by_task_number</item>
     </string-array>
     <string name="sort_by_category_alphabetically">Category alphabetically</string>
     <string name="sort_by_category_priority">Category priority</string>
     <string name="sort_by_list_alphabetically">List alphabetically</string>
     <string name="sort_by_task_number">Number of tasks</string>
+    <string name="select_all">All</string>
 </resources>

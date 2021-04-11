@@ -4,31 +4,39 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.NonNull;
 
 import com.example.pam_project.R;
 
-public class SortByDialogFragment extends DialogFragment {
-    private int selectedItem = 0;
+import java.util.ArrayList;
+import java.util.List;
 
+public class SortByDialogFragment extends ListActivityDialogFragment {
+    private static final int INITIAL_VALUE = 0;
+    private CharSequence[] values;
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        values = getResources().getStringArray(R.array.sort_by_criteria);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.sort_by)
-               .setSingleChoiceItems(R.array.sort_by_criteria, selectedItem,
+               .setSingleChoiceItems(R.array.sort_by_criteria, INITIAL_VALUE,
                        (DialogInterface.OnClickListener) (dialog, which) -> {
-                   selectedItem = which;
-                   showToast("Selected: " + selectedItem);
+                   // showToast("Selected: " + which);
+                   final List<CharSequence> returnList = new ArrayList<>();
+                   returnList.add(values[which]);
+                   callback.onSelectedItems(this.getClass(), returnList);
                    dialog.dismiss();
                });
         return builder.create();
     }
 
-    private void showToast(String msg) {
-        if (getContext() == null || getContext().getApplicationContext() == null)
-            return;
-        Toast.makeText(getContext().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+    public static SortByDialogFragment newInstance() {
+        SortByDialogFragment frag = new SortByDialogFragment();
+        Bundle args = new Bundle();
+        frag.setArguments(args);
+        return frag;
     }
 }
