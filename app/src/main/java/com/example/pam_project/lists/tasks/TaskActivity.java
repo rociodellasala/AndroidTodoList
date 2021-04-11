@@ -35,7 +35,7 @@ public class TaskActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         contentList = createDataSet();
-        adapter = new TaskAdapter(createDataSet());
+        adapter = new TaskAdapter(contentList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
@@ -72,8 +72,7 @@ public class TaskActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
-//                contentList.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false));
-                contentList = null;
+                contentList.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false));
                 adapter.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
