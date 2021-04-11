@@ -3,5 +3,5 @@ package com.example.pam_project.lists.dialogs;
 import java.util.List;
 
 public interface SelectedDialogItems {
-    void onSelectedItems(Class<?> klass, List<CharSequence> items);
+    void onSelectedItems(Class<?> klass, List<Integer> items);
 }

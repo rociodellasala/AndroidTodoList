@@ -14,19 +14,17 @@ import java.util.List;
 
 public class SortByDialogFragment extends ListActivityDialogFragment {
     private static final int INITIAL_VALUE = 0;
-    private CharSequence[] values;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        values = getResources().getStringArray(R.array.sort_by_criteria);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.sort_by)
                .setSingleChoiceItems(R.array.sort_by_criteria, INITIAL_VALUE,
                        (DialogInterface.OnClickListener) (dialog, which) -> {
                    // showToast("Selected: " + which);
-                   final List<CharSequence> returnList = new ArrayList<>();
-                   returnList.add(values[which]);
+                   final List<Integer> returnList = new ArrayList<>();
+                   returnList.add(which);
                    callback.onSelectedItems(this.getClass(), returnList);
                    dialog.dismiss();
                });

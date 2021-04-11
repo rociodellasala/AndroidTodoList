@@ -159,11 +159,18 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    public void onSelectedItems(Class<?> klass, List<CharSequence> items) {
-        // do something with the selected items
-        if (items.size() > 0)
-            Toast.makeText(getApplicationContext(), items.get(0), Toast.LENGTH_SHORT).show();
-        else
+    public void onSelectedItems(Class<?> klass, List<Integer> items) {
+        if (items.size() == 0) {
             Toast.makeText(getApplicationContext(), "No selection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // do something with the selected items
+        final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
+        CharSequence value = null;
+        if (klass.equals(SortByDialogFragment.class))
+            value = vals[items.get(0)];
+        else
+            value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
+        Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
 }
