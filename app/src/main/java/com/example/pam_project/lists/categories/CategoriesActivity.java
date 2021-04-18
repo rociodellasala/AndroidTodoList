@@ -2,9 +2,13 @@ package com.example.pam_project.lists.categories;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,10 +19,12 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class CategoriesActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
     private List<CategoryInformation> contentList;
@@ -37,6 +43,8 @@ public class CategoriesActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         contentList = createDataSet();
         adapter = new CategoryAdapter(contentList);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(SetDraggableItems());
+        touchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
@@ -46,7 +54,7 @@ public class CategoriesActivity extends AppCompatActivity {
         List<CategoryInformation> content = new ArrayList<>();
         final List<AppColor> colors = Arrays.asList(AppColor.values());
 
-        for(int i = 0; i < 20; i++) {
+        for(int i = 0; i < 4; i++) {
             Random rand = new Random();
             int r = rand.nextInt(colors.size());
             AppColor color = colors.get(r);
@@ -66,5 +74,45 @@ public class CategoriesActivity extends AppCompatActivity {
                 startActivityForResult(activityIntent, CREATE_CATEGORY_ACTIVITY_REGISTRY);
             }
         });
+    }
+
+    private ItemTouchHelper.SimpleCallback SetDraggableItems(){
+        ItemTouchHelper.SimpleCallback itemTouchHelper = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView1, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
+                int draggedPosition = dragged.getAdapterPosition();
+                int targetPosition = target.getAdapterPosition();
+                Log.d("DALDAW;LDALD", "AWDJAWODJOMAWDJMA");
+                Collections.swap(contentList, draggedPosition, targetPosition);
+                adapter.notifyItemMoved(draggedPosition, targetPosition);
+
+
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Log.d("SWIPE!", "onSwiped: ");
+            }
+
+            @Override
+            public boolean isItemViewSwipeEnabled() {
+                // Disable swipe (dont override this method or return true, if you want to have swipe)
+                return false;
+            }
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                // Set movement flags to specify the movement direction
+                // final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT;  <-- for all directions
+                // In this case only up and down is allowed
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                final int swipeFlags = 0;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        };
+
+        return itemTouchHelper;
     }
 }

@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_blue">#3B4859</color>
-
+    <color name="light_gray">#e8e8e8</color>
     <!-- demo colors -->
     <color name="board">#A83432</color>
     <color name="pink">#8A1567</color>
