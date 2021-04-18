@@ -11,7 +11,6 @@
         android:theme="@style/Theme.PAMProject">
         <activity android:name=".lists.lists.CreateListActivity"
             android:parentActivityName=".lists.lists.ListActivity"/>
-        <activity android:name=".WelcomeActivity" />
         <activity android:name=".lists.lists.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +19,16 @@
         </activity>
         <activity android:name=".lists.tasks.CreateTaskActivity"
             android:parentActivityName=".lists.tasks.TaskActivity" />
-        <activity android:name=".lists.tasks.TaskActivity"/>
+        <activity android:name=".lists.tasks.TaskActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="pam"/>
+                <data android:host="detail" android:pathPrefix="/list" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".landing.WelcomeActivity"/>
     </application>
 
 </manifest>

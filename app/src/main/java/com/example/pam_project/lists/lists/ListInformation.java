@@ -5,13 +5,22 @@ import com.example.pam_project.utils.AppColor;
 import java.io.Serializable;
 
 public class ListInformation implements Serializable {
+    private int id;
     private String title;
-    private String numberOfTasks;
+//    private int numberOfTasks;
     private AppColor color;
 
-    public ListInformation(final String title, final String numberOfTasks, AppColor color) {
+    public ListInformation(final int id, final String title, /* final int numberOfTasks,*/ AppColor color) {
+        this.id = id;
         this.title = title;
-        this.numberOfTasks = numberOfTasks;
+//        this.numberOfTasks = numberOfTasks;
+        this.color = color;
+    }
+
+
+    public ListInformation(final String title, /* final int numberOfTasks,*/ AppColor color) {
+        this.title = title;
+//        this.numberOfTasks = numberOfTasks;
         this.color = color;
     }
 
@@ -19,9 +28,13 @@ public class ListInformation implements Serializable {
         return title;
     }
 
-    public String getNumberOfTasks() {
-        return numberOfTasks;
+    public int getId() {
+        return id;
     }
+
+//    public int getNumberOfTasks() {
+//        return numberOfTasks;
+//    }
 
     public AppColor getColor() {
         return color;

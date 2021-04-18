@@ -12,27 +12,37 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.db.AppDatabase;
+import com.example.pam_project.db.entities.TaskEntity;
+import com.example.pam_project.db.relationships.ListsWithTasks;
 import com.example.pam_project.utils.TaskStatus;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class TaskActivity extends AppCompatActivity {
     private RecyclerView recyclerViewPending;
     private RecyclerView recyclerViewDone;
-    private TaskAdapterPending adapterPending;
-    private TaskAdapterDone adapterDone;
-    private List<TaskInformation> contentListPending;
-    private List<TaskInformation> contentListDone;
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
+    private AppDatabase db;
+    private Disposable disposable;
+    private int listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Lista x"); // CAMBIAR DSPP
+        db = AppDatabase.getInstance(getApplicationContext());
+
+        String id = getIntent().getData().getQueryParameter("id");
+        String query = getIntent().getData().getQuery();
+        this.listId = Integer.parseInt(id);
+
         setContentView(R.layout.activity_task);
         setup();
     }
@@ -44,48 +54,56 @@ public class TaskActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        disposable = db.listDao().getListsWithTasks(listId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    Objects.requireNonNull(getSupportActionBar()).setTitle(model.list.name);
+                    final TaskAdapterPending adapterPending = new TaskAdapterPending(adaptModel(getSeparateModels(model, "pending")));
+                    final TaskAdapterDone adapterDone = new TaskAdapterDone(adaptModel(getSeparateModels(model, "done")));
+                    recyclerViewPending.setAdapter(adapterPending);
+                    recyclerViewDone.setAdapter(adapterDone);
+                });
+    }
+
+    public List<TaskEntity> getSeparateModels(ListsWithTasks model, String status) {
+        List<TaskEntity> listOfTasks = new ArrayList<>();
+
+        for (final TaskEntity taskEntity : model.tasks) {
+            if(taskEntity.status.equals(status)) {
+                listOfTasks.add(taskEntity);
+            }
+        }
+
+        return listOfTasks;
+    }
+
+    private List<TaskInformation> adaptModel(List<TaskEntity> model) {
+        final List<TaskInformation> list = new ArrayList<>();
+
+        for (final TaskEntity taskEntity : model) {
+            TaskStatus status = taskEntity.status.equals("pending") ? TaskStatus.PENDING : TaskStatus.DONE;
+            list.add(new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description, taskEntity.priority, status));
+        }
+
+        return list;
+    }
+
+
     private void setup() {
         recyclerViewPending = findViewById(R.id.pendingTasks);
         recyclerViewPending.setHasFixedSize(true);
-        contentListPending = createDataSetPending();
-        adapterPending = new TaskAdapterPending(contentListPending);
-        recyclerViewPending.setAdapter(adapterPending);
         recyclerViewPending.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         recyclerViewDone = findViewById(R.id.doneTasks);
         recyclerViewDone.setHasFixedSize(true);
-        contentListDone = createDataSetDone();
-        adapterDone = new TaskAdapterDone(contentListDone);
-        recyclerViewDone.setAdapter(adapterDone);
         recyclerViewDone.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         setExtendedFloatingButtonAction();
-    }
-
-    private List<TaskInformation> createDataSetPending() {
-        final List<TaskInformation> content = new ArrayList<>();
-
-        for(int i = 0; i < 15; i++) {
-            Random randomUrgency = new Random();
-            TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
-                    TaskStatus.PENDING);
-            content.add(information);
-        }
-
-        return content;
-    }
-
-    private List<TaskInformation> createDataSetDone() {
-        final List<TaskInformation> content = new ArrayList<>();
-
-        for(int i = 0; i < 5; i++) {
-            Random randomUrgency = new Random();
-            TaskInformation information = new TaskInformation("Task  " + i, "Description", randomUrgency.nextBoolean(),
-                    TaskStatus.DONE);
-            content.add(information);
-        }
-
-        return content;
     }
 
     private void setExtendedFloatingButtonAction(){
@@ -107,8 +125,9 @@ public class TaskActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
-                contentListPending.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false, TaskStatus.PENDING));
-                adapterPending.notifyDataSetChanged();
+                //contentListPending.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false, TaskStatus.PENDING));
+               // adapterPending.notifyDataSetChanged();
+                recyclerViewPending.getAdapter().notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result

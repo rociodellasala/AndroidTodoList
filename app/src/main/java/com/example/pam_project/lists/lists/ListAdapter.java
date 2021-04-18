@@ -14,10 +14,15 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     private List<ListInformation> dataSet;
     private List<Integer> filterSelections;
+    private OnListClickedListener listener;
     private int sortIndex = 0;
 
     public ListAdapter(List<ListInformation> dataSet) {
         this.dataSet = dataSet;
+    }
+
+    public void setOnClickedListener(final OnListClickedListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -31,6 +36,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
         holder.bind(dataSet.get(position));
+        holder.setOnClickListener(listener);
     }
 
     @Override
