@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.WelcomeActivity;
+import com.example.pam_project.lists.categories.CategoriesActivity;
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
@@ -146,7 +147,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         }
 
         else if (itemId == R.id.list_action_bar_manage_categories) {
-            // show manage categories activity
+            Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
+            startActivity(categoriesIntent);
             return true;
         }
 

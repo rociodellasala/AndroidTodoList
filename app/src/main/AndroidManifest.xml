@@ -21,6 +21,9 @@
         <activity android:name=".lists.tasks.CreateTaskActivity"
             android:parentActivityName=".lists.tasks.TaskActivity" />
         <activity android:name=".lists.tasks.TaskActivity"/>
+
+        <activity android:name=".lists.categories.CategoriesActivity">
+        </activity>
     </application>
 
 </manifest>
