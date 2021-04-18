@@ -28,7 +28,7 @@ public class CategoriesActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
     private List<CategoryInformation> contentList;
-    private final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 2;
+    private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +83,8 @@ public class CategoriesActivity extends AppCompatActivity{
             public boolean onMove(@NonNull RecyclerView recyclerView1, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
                 int draggedPosition = dragged.getAdapterPosition();
                 int targetPosition = target.getAdapterPosition();
-                Log.d("DALDAW;LDALD", "AWDJAWODJOMAWDJMA");
                 Collections.swap(contentList, draggedPosition, targetPosition);
                 adapter.notifyItemMoved(draggedPosition, targetPosition);
-
-
                 return true;
             }
 
