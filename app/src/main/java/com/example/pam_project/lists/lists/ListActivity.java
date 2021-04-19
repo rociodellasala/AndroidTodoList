@@ -197,8 +197,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
                     .newInstance(adapter.getSortIndex());
             showDialog(fm, sortByDialog);
             return true;
-
-        else if (itemId == R.id.list_action_bar_manage_categories) {
+        } else if (itemId == R.id.list_action_bar_manage_categories) {
             Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
             startActivity(categoriesIntent);
             return true;
