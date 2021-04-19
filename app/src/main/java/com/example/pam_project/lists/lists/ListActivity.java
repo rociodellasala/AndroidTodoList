@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,10 +59,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
 
-        if (sharedPref.getBoolean(FTU_KEY, true)) {
-            sharedPref.edit().putBoolean(FTU_KEY, false).apply();
-            startActivity(new Intent(this, WelcomeActivity.class));
-        }
+        // TODO: Lo comento por la base por ahora
+//        if (sharedPref.getBoolean(FTU_KEY, true)) {
+//            sharedPref.edit().putBoolean(FTU_KEY, false).apply();
+//            startActivity(new Intent(this, WelcomeActivity.class));
+//        }
 
         setContentView(R.layout.activity_list);
         setup();
@@ -70,12 +72,14 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     private void setUpDatabase() {
         db = AppDatabase.getInstance(getApplicationContext());
 
-        // Descomentar esto al correrlo la primera vez para generar un dataset de prueba, luego comentarlo
-        Completable.fromAction(() ->
-                AppDatabase.nukeDatabase()
-        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
-        DatabaseHelper helper = new DatabaseHelper();
-        helper.createDB(getApplicationContext());
+        // Si quieren borrar toda su base descomentar esto
+//        Completable.fromAction(() ->
+//                AppDatabase.nukeDatabase()
+//        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+
+        // Si quieren llenar su base descomentar esto !!!!!
+//        DatabaseHelper helper = new DatabaseHelper();
+//        helper.createDB(getApplicationContext());
     }
 
     @Override
