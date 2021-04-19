@@ -12,10 +12,14 @@ import com.example.pam_project.R;
 import java.util.List;
 
 public class TaskAdapterPending extends RecyclerView.Adapter<TaskViewHolderPending> {
-    private List<TaskInformation> dataSet;
+    private final List<TaskInformation> dataSet;
 
     public TaskAdapterPending(List<TaskInformation> dataSet) {
         this.dataSet = dataSet;
+    }
+
+    public void addItem(TaskInformation newTask) {
+        this.dataSet.add(newTask);
     }
 
     @NonNull

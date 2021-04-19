@@ -35,7 +35,7 @@ public interface CategoryDao {
     void deleteCategory(final CategoryEntity category);
 
     @Query("DELETE FROM Categories")
-    public void deleteAllCategories();
+    void deleteAllCategories();
 
     @Transaction
     @Query("SELECT * FROM Categories WHERE id =:id")

@@ -33,5 +33,5 @@ public interface TaskDao {
     void deleteTask(final TaskEntity task);
 
     @Query("DELETE FROM Tasks")
-    public void deleteAllTasks();
+    void deleteAllTasks();
 }

@@ -12,7 +12,7 @@ import com.example.pam_project.R;
 import java.util.List;
 
 public class TaskAdapterDone extends RecyclerView.Adapter<TaskViewHolderDone> {
-    private List<TaskInformation> dataSet;
+    private final List<TaskInformation> dataSet;
 
     public TaskAdapterDone(List<TaskInformation> dataSet) {
         this.dataSet = dataSet;
