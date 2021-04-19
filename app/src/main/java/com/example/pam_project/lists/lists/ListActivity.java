@@ -20,10 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.DatabaseHelper;
 import com.example.pam_project.R;
+
 import com.example.pam_project.db.AppDatabase;
 import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.relationships.CategoriesWithLists;
 import com.example.pam_project.landing.WelcomeActivity;
+
+import com.example.pam_project.lists.categories.CategoriesActivity;
+
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
@@ -193,8 +197,10 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
                     .newInstance(adapter.getSortIndex());
             showDialog(fm, sortByDialog);
             return true;
-        } else if (itemId == R.id.list_action_bar_manage_categories) {
-            // show manage categories activity
+
+        else if (itemId == R.id.list_action_bar_manage_categories) {
+            Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
+            startActivity(categoriesIntent);
             return true;
         } else {
             // If we got here, the user's action was not recognized.

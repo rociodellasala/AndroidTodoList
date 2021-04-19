@@ -20,6 +20,8 @@
     <string name="sort_by">Sort by</string>
     <string name="manage_categories">Manage categories</string>
     <!--Category activity-->
+    <string name="add_category">Add category</string>
+    <!--Create or modify Category activity-->
     <string name="category_name_label">Name</string>
     <string name="category_color_label">Color</string>
     <string name="delete_category">Delete</string>

@@ -28,6 +28,7 @@
                 <data android:host="detail" android:pathPrefix="/list" />
             </intent-filter>
         </activity>
+        <activity android:name=".lists.categories.CategoriesActivity"/>
         <activity android:name=".landing.WelcomeActivity"/>
     </application>
 

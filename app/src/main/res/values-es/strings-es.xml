@@ -21,6 +21,8 @@
     <string name="sort_by">Ordenar por</string>
     <string name="manage_categories">Administrar categorías</string>
     <!--Category activity-->
+    <string name="add_category">Crear categoría</string>
+    <!--Create or modify Category activity-->
     <string name="category_name_label">Nombre</string>
     <string name="category_color_label">Color</string>
     <string name="delete_category">Borrar</string>
