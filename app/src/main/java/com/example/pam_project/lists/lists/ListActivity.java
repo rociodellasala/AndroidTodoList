@@ -71,8 +71,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 //        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
 
         // Si quieren llenar su base descomentar esto !!!!!
-        DatabaseHelper helper = new DatabaseHelper();
-        helper.createDB(getApplicationContext());
+//        DatabaseHelper helper = new DatabaseHelper();
+//        helper.createDB(getApplicationContext());
     }
 
     private void setup() {
