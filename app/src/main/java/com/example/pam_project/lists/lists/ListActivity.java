@@ -16,8 +16,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pam_project.DatabaseHelper;
 import com.example.pam_project.R;
-import com.example.pam_project.WelcomeActivity;
+import com.example.pam_project.db.AppDatabase;
+import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.lists.categories.CategoriesActivity;
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
@@ -36,6 +38,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     private static final String PAM_PREF = "app-pref";
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
 
+    private AppDatabase db;
+
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private List<ListInformation> contentList;
@@ -44,16 +48,31 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setUpDatabase();
+        
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
 
-        if(sharedPref.getBoolean(FTU_KEY, true)){
-            sharedPref.edit().putBoolean(FTU_KEY, false).apply();
-            startActivity(new Intent(this, WelcomeActivity.class));
-        }
+        // TODO: Lo comento por la base por ahora
+//        if (sharedPref.getBoolean(FTU_KEY, true)) {
+//            sharedPref.edit().putBoolean(FTU_KEY, false).apply();
+//            startActivity(new Intent(this, WelcomeActivity.class));
+//        }
 
         setContentView(R.layout.activity_list);
         setup();
+    }
+
+    private void setUpDatabase() {
+        db = AppDatabase.getInstance(getApplicationContext());
+
+        // Si quieren borrar toda su base descomentar esto
+//        Completable.fromAction(() ->
+//                AppDatabase.nukeDatabase()
+//        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+
+        // Si quieren llenar su base descomentar esto !!!!!
+        DatabaseHelper helper = new DatabaseHelper();
+        helper.createDB(getApplicationContext());
     }
 
     private void setup() {
