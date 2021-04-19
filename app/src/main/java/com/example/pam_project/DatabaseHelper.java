@@ -19,13 +19,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
+import com.example.pam_project.R;
+
 public class DatabaseHelper {
 
     public void createDB(Context context) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                final long[] categoriesIds = AppDatabase.getInstance(context.getApplicationContext()).categoryDao().insertAllCategories(createCategoriesDataSet());
+                final long[] categoriesIds = AppDatabase.getInstance(context.getApplicationContext()).categoryDao().insertAllCategories(createCategoriesDataSet(context));
                 final long[] listIds = AppDatabase.getInstance(context.getApplicationContext()).listDao().insertAllLists(createListsDataSet(categoriesIds));
                 AppDatabase.getInstance(context.getApplicationContext()).taskDao().insertAllTasks(createTasksDataSet(listIds));
             }
@@ -33,12 +35,13 @@ public class DatabaseHelper {
 
     }
 
-    private List<CategoryEntity> createCategoriesDataSet() {
+    private List<CategoryEntity> createCategoriesDataSet(Context context) {
         List<CategoryEntity> listOfCategories = new ArrayList<>();
-        String[] names = {"Supermercado", "Verduleria", "PAM"};
+        String defaultCategory = context.getResources().getString(R.string.default_category);
+        String[] names = {defaultCategory, "Supermercado", "Verduleria", "PAM"};
         final List<AppColor> colors = Arrays.asList(AppColor.values());
 
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < names.length && i < colors.size(); i++) {
             CategoryEntity category = new CategoryEntity(names[i], colors.get(i).toString());
             listOfCategories.add(category);
         }

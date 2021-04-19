@@ -18,6 +18,10 @@ public class TaskAdapterPending extends RecyclerView.Adapter<TaskViewHolderPendi
         this.dataSet = dataSet;
     }
 
+    public void addItem(TaskInformation newTask) {
+        this.dataSet.add(newTask);
+    }
+
     @NonNull
     @Override
     public TaskViewHolderPending onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

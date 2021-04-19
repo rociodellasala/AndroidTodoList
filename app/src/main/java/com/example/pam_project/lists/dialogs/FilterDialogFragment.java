@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import com.example.pam_project.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FilterDialogFragment extends ListActivityDialogFragment {

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.db.entities.ListEntity;
 
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public void setOnClickedListener(final OnListClickedListener listener) {
         this.listener = listener;
+    }
+
+    public void addItem(ListInformation newList) {
+        this.dataSet.add(newList);
     }
 
     @NonNull

@@ -17,7 +17,7 @@ import com.example.pam_project.db.entities.TaskEntity;
 @Database(entities = {ListEntity.class, CategoryEntity.class, TaskEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "pam_database";
+    private static final String DB_NAME = "db_pam";
     private static AppDatabase instance;
 
     public abstract ListDao listDao();

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.db.AppDatabase;
+import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.entities.TaskEntity;
 import com.example.pam_project.db.relationships.ListsWithTasks;
 import com.example.pam_project.utils.TaskStatus;
@@ -22,8 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class TaskActivity extends AppCompatActivity {
@@ -40,7 +43,6 @@ public class TaskActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(getApplicationContext());
 
         String id = getIntent().getData().getQueryParameter("id");
-        String query = getIntent().getData().getQuery();
         this.listId = Integer.parseInt(id);
 
         setContentView(R.layout.activity_task);
@@ -125,14 +127,27 @@ public class TaskActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
-                //contentListPending.add(new TaskInformation("Task name " + newTaskTitle, newTaskDescription, false, TaskStatus.PENDING));
-               // adapterPending.notifyDataSetChanged();
-                recyclerViewPending.getAdapter().notifyDataSetChanged();
+                TaskAdapterPending adapter = (TaskAdapterPending) recyclerViewPending.getAdapter();
+                /* Urgency harcodeado*/
+                boolean isUrgent = true;
+                this.insertNewList(newTaskTitle, newTaskDescription, isUrgent, this.listId);
+                adapter.addItem(new TaskInformation(newTaskTitle, newTaskDescription, isUrgent, TaskStatus.PENDING));
+                adapter.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
+    }
+
+    private void insertNewList(String name, String description, boolean isUrgent, int listId) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                TaskEntity listEntity = new TaskEntity(name, description, true, "pending", listId);
+                long id = db.taskDao().insertTask(listEntity);
+            }
+        }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
     }
 
 }

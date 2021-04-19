@@ -37,6 +37,7 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener {
@@ -70,11 +71,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         db = AppDatabase.getInstance(getApplicationContext());
 
         // Descomentar esto al correrlo la primera vez para generar un dataset de prueba, luego comentarlo
-//        Completable.fromAction(() ->
-//                AppDatabase.nukeDatabase()
-//        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
-//        DatabaseHelper helper = new DatabaseHelper();
-//        helper.createDB(getApplicationContext());
+        Completable.fromAction(() ->
+                AppDatabase.nukeDatabase()
+        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+        DatabaseHelper helper = new DatabaseHelper();
+        helper.createDB(getApplicationContext());
     }
 
     @Override
@@ -130,15 +131,28 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
             if (resultCode == Activity.RESULT_OK) {
                 String newListTile = data.getStringExtra("listTile");
-                String newListCategory = data.getStringExtra("listCategory");
-                // contentList.add(new ListInformation("List name " + newListTile, colors.get(0)));
-                recyclerView.getAdapter().notifyDataSetChanged();
+                String categoryId = data.getStringExtra("categoryId");
+                ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
+                this.insertNewList(newListTile, Integer.valueOf(categoryId));
+                /* Color harcodeado */
+                adapter.addItem(new ListInformation(newListTile, colors.get(0)));
+                adapter.notifyDataSetChanged();
             }
 
             if (resultCode == Activity.RESULT_CANCELED) {
                 // Write your code if there's no result
             }
         }
+    }
+
+    private void insertNewList(String name, int categoryId) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+               ListEntity listEntity = new ListEntity(name, categoryId);
+               long id = db.listDao().insertList(listEntity);
+            }
+        }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
     }
 
     @Override
@@ -193,13 +207,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         if (klass.equals(SortByDialogFragment.class)) {
             final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
             value = vals[items.get(0)];
-//            adapter.setSortIndex(items.get(0));
             ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
             adapter.setSortIndex(items.get(0));
         } else {
             if (items.size() > 0)
                 value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
-//            adapter.setFilterSelections(items);
             ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
             adapter.setFilterSelections(items);
         }
