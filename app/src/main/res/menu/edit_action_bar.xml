@@ -3,9 +3,9 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
     <item
-        android:id="@+id/edit_button"
+        android:id="@+id/edit_list_button"
         android:orderInCategory="100"
         android:icon="@drawable/ic_edit"
         app:showAsAction="always"
-        android:title="@string/edit_list_button" />
+        android:title="@string/activity_title_edit_list" />
 </menu>

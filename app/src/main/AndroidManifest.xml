@@ -30,6 +30,8 @@
         </activity>
         <activity android:name=".lists.categories.CategoriesActivity"/>
         <activity android:name=".landing.WelcomeActivity"/>
+        <activity android:name=".lists.lists.EditListActivity"
+            android:parentActivityName=".lists.tasks.TaskActivity" />
     </application>
 
 </manifest>
