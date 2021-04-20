@@ -19,7 +19,7 @@
         </activity>
         <activity android:name=".lists.tasks.CreateTaskActivity"
             android:parentActivityName=".lists.tasks.TaskActivity" />
-        <activity android:name=".lists.tasks.TaskActivity">
+        <activity android:name=".lists.tasks.TaskActivity" android:parentActivityName=".lists.lists.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
