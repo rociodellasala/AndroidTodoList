@@ -71,7 +71,7 @@ public class DatabaseHelper {
             for(int j = 0; j < numberOfTasks; j++) {
                 Random random = new Random();
                 boolean randomBoolean = random.nextBoolean();
-                String status = (randomBoolean == true) ? "pending" : "done";
+                String status = randomBoolean ? "pending" : "done";
                 TaskEntity task = new TaskEntity("Tarea " + j, "Descripcion " + j, randomBoolean,
                         status, (int) listIds[i]);
                 listOfTasks.add(task);
