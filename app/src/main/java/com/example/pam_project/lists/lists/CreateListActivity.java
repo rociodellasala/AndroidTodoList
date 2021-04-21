@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 public class CreateListActivity extends AppCompatActivity {
 
     private SpinnerActivity spinnerActivity;
-    private Map<String, Integer> categories;
+    private Map<String, Long> categories;
     private AppDatabase db;
 
     @Override
@@ -76,16 +76,16 @@ public class CreateListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        long id = item.getItemId();
         final Spinner spinner = findViewById(R.id.create_list_category_spinner);
         final EditText listTitleInput = findViewById(R.id.create_list_title_input);
 
         if (id == R.id.check_add_button) {
             String listTile = listTitleInput.getText().toString();
-            Integer categoryId = categories.get(spinner.getSelectedItem().toString());
+            long categoryId = categories.get(spinner.getSelectedItem().toString());
             Intent returnIntent = new Intent();
             returnIntent.putExtra("listTile", listTile);
-            returnIntent.putExtra("categoryId", categoryId.toString());
+            returnIntent.putExtra("categoryId", String.valueOf(categoryId));
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }

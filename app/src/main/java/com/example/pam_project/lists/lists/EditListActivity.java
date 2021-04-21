@@ -26,9 +26,9 @@ public class EditListActivity extends AppCompatActivity {
 
     private SpinnerActivity spinnerActivity;
     private List<String> categoriesByName;
-    private List<Integer> categoriesById;
+    private List<Long> categoriesById;
     private AppDatabase db;
-    private int listId;
+    private long listId;
     private Spinner spinner;
 
     @Override
@@ -41,7 +41,7 @@ public class EditListActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_list);
         setContentView(R.layout.activity_edit_list);
 
-        listId = getIntent().getIntExtra("id", -1);
+        listId = getIntent().getLongExtra("id", -1);
 
         getAllCategories();
         getList();
@@ -98,17 +98,17 @@ public class EditListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        long id = item.getItemId();
         final EditText listTitleInput = findViewById(R.id.edit_list_title_input);
         final Spinner spinner = findViewById(R.id.edit_list_category_spinner);
 
         if (id == R.id.check_add_button) {
             String listTile = listTitleInput.getText().toString();
             Integer index = categoriesByName.indexOf(spinner.getSelectedItem());
-            Integer categoryId = categoriesById.get(index);
+            long categoryId = categoriesById.get(index);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("listTitle", listTile);
-            returnIntent.putExtra("categoryId", categoryId.toString());
+            returnIntent.putExtra("categoryId", String.valueOf(categoryId));
             returnIntent.putExtra("id", listId);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();

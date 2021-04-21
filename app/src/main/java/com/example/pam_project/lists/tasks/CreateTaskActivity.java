@@ -31,7 +31,7 @@ public class CreateTaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        long id = item.getItemId();
         final EditText taskTitleInput = findViewById(R.id.create_task_title_input);
         final EditText taskDescriptionInput = findViewById(R.id.create_task_description_input);
         final CheckBox checkboxUrgencyInput = findViewById(R.id.create_task_priority_checkbox);

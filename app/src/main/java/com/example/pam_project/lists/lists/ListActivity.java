@@ -245,7 +245,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    public void onClick(final int id) {
+    public void onClick(final long id) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
     }
 }

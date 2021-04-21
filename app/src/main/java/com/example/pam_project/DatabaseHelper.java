@@ -26,9 +26,11 @@ public class DatabaseHelper {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                final long[] categoriesIds = AppDatabase.getInstance(context.getApplicationContext()).categoryDao().insertAllCategories(createCategoriesDataSet(context));
-                final long[] listIds = AppDatabase.getInstance(context.getApplicationContext()).listDao().insertAllLists(createListsDataSet(categoriesIds));
-                AppDatabase.getInstance(context.getApplicationContext()).taskDao().insertAllTasks(createTasksDataSet(listIds));
+                Context appContext = context.getApplicationContext();
+                AppDatabase db = AppDatabase.getInstance(appContext);
+                final long[] categoriesIds = db.categoryDao().insertAllCategories(createCategoriesDataSet(appContext));
+                final long[] listIds = db.listDao().insertAllLists(createListsDataSet(categoriesIds));
+                db.taskDao().insertAllTasks(createTasksDataSet(listIds));
             }
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
 
@@ -53,7 +55,7 @@ public class DatabaseHelper {
 
         for (int i = 0; i < 10; i++) {
             double indexId = Math.floor(Math.random() * categoriesIds.length) + 1;
-            int categoryId = getRandomFromArray(categoriesIds);
+            long categoryId = getRandomFromArray(categoriesIds);
             ListEntity list = new ListEntity("Lista " + i, categoryId);
             listofLists.add(list);
         }
@@ -69,7 +71,7 @@ public class DatabaseHelper {
             for(int j = 0; j < numberOfTasks; j++) {
                 Random random = new Random();
                 boolean randomBoolean = random.nextBoolean();
-                String status = (randomBoolean == true) ? "pending" : "done";
+                String status = randomBoolean ? "pending" : "done";
                 TaskEntity task = new TaskEntity("Tarea " + j, "Descripcion " + j, randomBoolean,
                         status, (int) listIds[i]);
                 listOfTasks.add(task);
@@ -79,9 +81,9 @@ public class DatabaseHelper {
         return listOfTasks;
     }
 
-    public static int getRandomFromArray(long[] array) {
+    public static long getRandomFromArray(long[] array) {
         int rnd = new Random().nextInt(array.length);
-        return (int) array[rnd];
+        return (long) array[rnd];
     }
 
     public static int getRandom(int min, int max) {

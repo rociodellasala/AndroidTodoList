@@ -39,7 +39,7 @@ public class TaskActivity extends AppCompatActivity {
     private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private AppDatabase db;
     private Disposable disposable;
-    private int listId;
+    private long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class TaskActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(getApplicationContext());
 
         String id = getIntent().getData().getQueryParameter("id");
-        this.listId = Integer.parseInt(id);
+        this.listId = Long.parseLong(id);
 
         setContentView(R.layout.activity_task);
         setup();
@@ -101,7 +101,7 @@ public class TaskActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        long id = item.getItemId();
 
         if (id == R.id.edit_list_button) {
             Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
@@ -176,7 +176,7 @@ public class TaskActivity extends AppCompatActivity {
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    private void insertNewList(String name, String description, boolean isUrgent, int listId) {
+    private void insertNewList(String name, String description, boolean isUrgent, long listId) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
