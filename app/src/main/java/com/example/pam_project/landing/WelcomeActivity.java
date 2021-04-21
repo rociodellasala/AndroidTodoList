@@ -1,9 +1,11 @@
-package com.example.pam_project;
+package com.example.pam_project.landing;
 
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.pam_project.R;
 
 public class WelcomeActivity extends AppCompatActivity {
 
