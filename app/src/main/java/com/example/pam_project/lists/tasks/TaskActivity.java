@@ -3,6 +3,7 @@ package com.example.pam_project.lists.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -143,11 +144,10 @@ public class TaskActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
+                boolean newTaskUrgency = data.getBooleanExtra("taskUrgency", false);
                 TaskAdapterPending adapter = (TaskAdapterPending) recyclerViewPending.getAdapter();
-                /* Urgency harcodeado*/
-                boolean isUrgent = true;
-                this.insertNewList(newTaskTitle, newTaskDescription, isUrgent, this.listId);
-                adapter.addItem(new TaskInformation(newTaskTitle, newTaskDescription, isUrgent, TaskStatus.PENDING));
+                this.insertNewList(newTaskTitle, newTaskDescription, newTaskUrgency, this.listId);
+                adapter.addItem(new TaskInformation(newTaskTitle, newTaskDescription, newTaskUrgency, TaskStatus.PENDING));
                 adapter.notifyDataSetChanged();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -180,7 +180,7 @@ public class TaskActivity extends AppCompatActivity {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                TaskEntity listEntity = new TaskEntity(name, description, true, "pending", listId);
+                TaskEntity listEntity = new TaskEntity(name, description, isUrgent, "pending", listId);
                 db.taskDao().insertTask(listEntity);
             }
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();

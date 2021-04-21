@@ -109,6 +109,7 @@ public class EditListActivity extends AppCompatActivity {
             Intent returnIntent = new Intent();
             returnIntent.putExtra("listTitle", listTile);
             returnIntent.putExtra("categoryId", categoryId.toString());
+            returnIntent.putExtra("id", listId);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
