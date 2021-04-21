@@ -3,17 +3,20 @@ package com.example.pam_project.lists.tasks;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.db.AppDatabase;
 import com.example.pam_project.db.entities.ListEntity;
+import com.example.pam_project.lists.lists.EditListActivity;
+import com.example.pam_project.db.AppDatabase;
 import com.example.pam_project.db.entities.TaskEntity;
 import com.example.pam_project.db.relationships.ListsWithTasks;
 import com.example.pam_project.utils.TaskStatus;
@@ -33,6 +36,7 @@ public class TaskActivity extends AppCompatActivity {
     private RecyclerView recyclerViewPending;
     private RecyclerView recyclerViewDone;
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
+    private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private AppDatabase db;
     private Disposable disposable;
     private long listId;
@@ -95,6 +99,20 @@ public class TaskActivity extends AppCompatActivity {
         return list;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        long id = item.getItemId();
+
+        if (id == R.id.edit_list_button) {
+            Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
+            activityIntent.putExtra("id", listId);
+            startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void setup() {
         recyclerViewPending = findViewById(R.id.pendingTasks);
@@ -122,17 +140,25 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == CREATE_TASK_ACTIVITY_REGISTRY) {
             if(resultCode == Activity.RESULT_OK){
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
+                boolean newTaskUrgency = data.getBooleanExtra("taskUrgency", false);
                 TaskAdapterPending adapter = (TaskAdapterPending) recyclerViewPending.getAdapter();
-                /* Urgency harcodeado*/
-                boolean isUrgent = true;
-                this.insertNewList(newTaskTitle, newTaskDescription, isUrgent, this.listId);
-                adapter.addItem(new TaskInformation(newTaskTitle, newTaskDescription, isUrgent, TaskStatus.PENDING));
+                this.insertNewList(newTaskTitle, newTaskDescription, newTaskUrgency, this.listId);
+                adapter.addItem(new TaskInformation(newTaskTitle, newTaskDescription, newTaskUrgency, TaskStatus.PENDING));
                 adapter.notifyDataSetChanged();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        } else if(requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
+            if (resultCode == Activity.RESULT_OK) {
+                String listTitle = data.getStringExtra("listTitle");
+                String categoryId = data.getStringExtra("categoryId");
+                this.editList(listTitle, Integer.valueOf(categoryId));
+                Objects.requireNonNull(getSupportActionBar()).setTitle(listTitle);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -140,11 +166,21 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
+    private void editList(String name, Integer categoryId) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                ListEntity listEntity = new ListEntity(listId, name, categoryId);
+                db.listDao().updateList(listEntity);
+            }
+        }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+    }
+
     private void insertNewList(String name, String description, boolean isUrgent, long listId) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                TaskEntity listEntity = new TaskEntity(name, description, true, "pending", listId);
+                TaskEntity listEntity = new TaskEntity(name, description, isUrgent, "pending", listId);
                 db.taskDao().insertTask(listEntity);
             }
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();

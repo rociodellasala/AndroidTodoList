@@ -29,7 +29,7 @@ public interface ListDao {
     long[] insertAllLists(final List<ListEntity> lists);
 
     @Update
-    void updateList(final ListEntity category);
+    void updateList(final ListEntity list);
 
     @Delete
     void deleteList(final ListEntity list);

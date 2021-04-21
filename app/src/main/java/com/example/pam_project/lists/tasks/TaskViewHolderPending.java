@@ -1,5 +1,6 @@
 package com.example.pam_project.lists.tasks;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,12 +15,12 @@ public class TaskViewHolderPending extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public void bind(final TaskInformation list) {
+    public void bind(final TaskInformation task) {
         final TextView title = itemView.findViewById(R.id.title);
         final TextView description = itemView.findViewById(R.id.description);
-        title.setText(list.getTitle());
-        description.setText(list.getDescription());
-        if(list.getUrgency()) {
+        title.setText(task.getTitle());
+        description.setText(task.getDescription());
+        if(task.getUrgency()) {
             final ImageView urgency = itemView.findViewById(R.id.urgency);
             urgency.setVisibility(View.VISIBLE);
         }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
 import com.example.pam_project.db.AppDatabase;
 import com.example.pam_project.db.entities.CategoryEntity;
+import com.example.pam_project.db.entities.ListEntity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,30 +15,36 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class CreateListActivity extends AppCompatActivity {
+public class EditListActivity extends AppCompatActivity {
 
     private SpinnerActivity spinnerActivity;
-    private Map<String, Long> categories;
+    private List<String> categoriesByName;
+    private List<Long> categoriesById;
     private AppDatabase db;
+    private long listId;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         db = AppDatabase.getInstance(getApplicationContext());
-        categories = new HashMap<>();
+        categoriesByName = new ArrayList<>();
+        categoriesById = new ArrayList<>();
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_list);
-        setContentView(R.layout.activity_create_list);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_list);
+        setContentView(R.layout.activity_edit_list);
+
+        listId = getIntent().getLongExtra("id", -1);
 
         getAllCategories();
+        getList();
     }
 
     private void getAllCategories() {
@@ -45,27 +52,42 @@ public class CreateListActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-                    setup(model);
+                    setUpCategory(model);
                 });
     }
 
+    private void getList() {
+        db.listDao().getListById(listId)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    setUpList(model);
+                });
+    }
 
-    private void setup(List<CategoryEntity> model){
+    private void setUpCategory(List<CategoryEntity> model){
         String[] categoriesNames = new String[model.size()];
 
         for(int i = 0; i < model.size(); i++) {
             CategoryEntity category = model.get(i);
             categoriesNames[i] = category.name;
-            categories.put(category.name, category.id);
+            categoriesById.add(category.id);
+            categoriesByName.add(category.name);
         }
 
-        Spinner spinner = findViewById(R.id.create_list_category_spinner);
+        spinner = findViewById(R.id.edit_list_category_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
                 categoriesNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinnerActivity = new SpinnerActivity();
         spinner.setOnItemSelectedListener(spinnerActivity);
+    }
+
+    private void setUpList(ListEntity model){
+        EditText title = findViewById(R.id.edit_list_title_input);
+        title.setText(model.name);
+        spinner.setSelection(categoriesById.indexOf(model.categoryId));
     }
 
     @Override
@@ -77,15 +99,17 @@ public class CreateListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         long id = item.getItemId();
-        final Spinner spinner = findViewById(R.id.create_list_category_spinner);
-        final EditText listTitleInput = findViewById(R.id.create_list_title_input);
+        final EditText listTitleInput = findViewById(R.id.edit_list_title_input);
+        final Spinner spinner = findViewById(R.id.edit_list_category_spinner);
 
         if (id == R.id.check_add_button) {
             String listTile = listTitleInput.getText().toString();
-            long categoryId = categories.get(spinner.getSelectedItem().toString());
+            Integer index = categoriesByName.indexOf(spinner.getSelectedItem());
+            long categoryId = categoriesById.get(index);
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("listTile", listTile);
+            returnIntent.putExtra("listTitle", listTile);
             returnIntent.putExtra("categoryId", String.valueOf(categoryId));
+            returnIntent.putExtra("id", listId);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }

@@ -55,7 +55,7 @@ public class DatabaseHelper {
 
         for (int i = 0; i < 10; i++) {
             double indexId = Math.floor(Math.random() * categoriesIds.length) + 1;
-            int categoryId = getRandomFromArray(categoriesIds);
+            long categoryId = getRandomFromArray(categoriesIds);
             ListEntity list = new ListEntity("Lista " + i, categoryId);
             listofLists.add(list);
         }
@@ -81,9 +81,9 @@ public class DatabaseHelper {
         return listOfTasks;
     }
 
-    public static int getRandomFromArray(long[] array) {
+    public static long getRandomFromArray(long[] array) {
         int rnd = new Random().nextInt(array.length);
-        return (int) array[rnd];
+        return (long) array[rnd];
     }
 
     public static int getRandom(int min, int max) {

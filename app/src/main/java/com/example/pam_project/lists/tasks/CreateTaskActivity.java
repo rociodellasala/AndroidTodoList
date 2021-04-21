@@ -6,8 +6,10 @@ import com.example.pam_project.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.util.Objects;
@@ -32,13 +34,16 @@ public class CreateTaskActivity extends AppCompatActivity {
         long id = item.getItemId();
         final EditText taskTitleInput = findViewById(R.id.create_task_title_input);
         final EditText taskDescriptionInput = findViewById(R.id.create_task_description_input);
+        final CheckBox checkboxUrgencyInput = findViewById(R.id.create_task_priority_checkbox);
 
         if (id == R.id.check_add_button) {
             String taskTile = taskTitleInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
+            boolean taskUrgency = checkboxUrgencyInput.isChecked();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("taskTitle", taskTile);
             returnIntent.putExtra("taskDescription", taskDescription);
+            returnIntent.putExtra("taskUrgency", taskUrgency);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }

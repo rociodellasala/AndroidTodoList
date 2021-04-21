@@ -44,4 +44,10 @@
     <string name="create_task_description_label">Description</string>
     <string name="pending_tasks">Pending</string>
     <string name="done_tasks">Done</string>
+    <string name="create_task_priority_label">Priority</string>
+    <string name="create_task_priority_checkbox">Urgent</string>
+    <!---Edit list activity-->
+    <string name="activity_title_edit_list">Edit list</string>
+    <string name="edit_list_name_label">Name</string>
+    <string name="edit_list_category_label">Category</string>
 </resources>

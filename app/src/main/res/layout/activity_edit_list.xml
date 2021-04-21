@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".lists.tasks.CreateTaskActivity">
+    tools:context=".lists.lists.EditListActivity">
 
     <TextView
-        android:id="@+id/create_task_name_label"
+        android:id="@+id/edit_list_name_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -15,13 +15,13 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:text="@string/create_task_name_label"
+        android:text="@string/edit_list_name_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/create_task_title_input"
+        android:id="@+id/edit_list_title_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -33,24 +33,24 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_task_name_label" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_list_name_label" />
 
     <TextView
-        android:id="@+id/create_task_description_label"
+        android:id="@+id/edit_list_category_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
-        android:text="@string/create_task_description_label"
+        android:text="@string/edit_list_category_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/create_task_title_input" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_list_title_input" />
 
-    <EditText
-        android:id="@+id/create_task_description_input"
+    <Spinner
+        android:id="@+id/edit_list_category_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -59,40 +59,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:ems="16"
-        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_task_description_label" />
-
-    <TextView
-        android:id="@+id/create_task_priority_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:text="@string/create_task_priority_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/create_task_description_input" />
-
-    <CheckBox
-        android:id="@+id/create_task_priority_checkbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:ems="16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/create_task_priority_checkbox"
-        app:layout_constraintTop_toBottomOf="@+id/create_task_priority_label"
-        tools:ignore="MissingConstraints" />
-
+        app:layout_constraintTop_toBottomOf="@+id/edit_list_category_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
