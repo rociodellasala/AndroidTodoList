@@ -18,7 +18,7 @@ public interface TaskDao {
     Flowable<List<TaskEntity>> getAllTasks();
 
     @Query("SELECT * FROM Tasks WHERE id =:id")
-    TaskEntity getTaskById(int id);
+    TaskEntity getTaskById(long id);
 
     @Insert
     long insertTask(final TaskEntity task);

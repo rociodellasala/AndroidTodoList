@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 public class CategoryEntity {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     @ColumnInfo(name = "name")
     public String name;
@@ -17,7 +17,7 @@ public class CategoryEntity {
     @ColumnInfo(name = "color")
     public String color;
 
-    public CategoryEntity(int id, String name, String color) {
+    public CategoryEntity(long id, String name, String color) {
         this.id = id;
         this.name = name;
         this.color = color;

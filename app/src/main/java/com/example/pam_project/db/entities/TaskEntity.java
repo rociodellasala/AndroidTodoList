@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 public class TaskEntity {
 
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public long id;
 
     public String name;
 
@@ -20,7 +20,7 @@ public class TaskEntity {
 
     public int listId;
 
-    public TaskEntity(int id, String name, String description, boolean priority, String status, int listId) {
+    public TaskEntity(long id, String name, String description, boolean priority, String status, int listId) {
         this.id = id;
         this.name = name;
         this.description = description;
