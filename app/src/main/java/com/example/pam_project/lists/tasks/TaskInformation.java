@@ -3,13 +3,13 @@ package com.example.pam_project.lists.tasks;
 import com.example.pam_project.utils.TaskStatus;
 
 public class TaskInformation {
-    private int id;
+    private long id;
     private final String title;
     private final String description;
     private final boolean isUrgent;
     private final TaskStatus status;
 
-    public TaskInformation(final int id, final String title, final String description, final boolean isUrgent, final TaskStatus status) {
+    public TaskInformation(final long id, final String title, final String description, final boolean isUrgent, final TaskStatus status) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -29,7 +29,7 @@ public class TaskInformation {
         return title;
     }
 
-    public int getId() { return id; }
+    public long getId() { return id; }
 
     public String getDescription() {
         return description;

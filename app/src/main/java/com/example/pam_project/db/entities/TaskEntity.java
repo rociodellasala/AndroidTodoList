@@ -18,9 +18,9 @@ public class TaskEntity {
 
     public String status;
 
-    public int listId;
+    public long listId;
 
-    public TaskEntity(long id, String name, String description, boolean priority, String status, int listId) {
+    public TaskEntity(long id, String name, String description, boolean priority, String status, long listId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,7 +30,7 @@ public class TaskEntity {
     }
 
     @Ignore
-    public TaskEntity(String name, String description, boolean priority, String status, int listId) {
+    public TaskEntity(String name, String description, boolean priority, String status, long listId) {
         this.name = name;
         this.description = description;
         this.priority = priority;

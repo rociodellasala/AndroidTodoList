@@ -35,7 +35,7 @@ public class TaskActivity extends AppCompatActivity {
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
     private AppDatabase db;
     private Disposable disposable;
-    private int listId;
+    private long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class TaskActivity extends AppCompatActivity {
         db = AppDatabase.getInstance(getApplicationContext());
 
         String id = getIntent().getData().getQueryParameter("id");
-        this.listId = Integer.parseInt(id);
+        this.listId = Long.parseLong(id);
 
         setContentView(R.layout.activity_task);
         setup();
@@ -140,12 +140,12 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
-    private void insertNewList(String name, String description, boolean isUrgent, int listId) {
+    private void insertNewList(String name, String description, boolean isUrgent, long listId) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 TaskEntity listEntity = new TaskEntity(name, description, true, "pending", listId);
-                long id = db.taskDao().insertTask(listEntity);
+                db.taskDao().insertTask(listEntity);
             }
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
     }
