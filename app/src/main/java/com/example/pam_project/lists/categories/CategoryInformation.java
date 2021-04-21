@@ -5,8 +5,8 @@ import com.example.pam_project.utils.AppColor;
 import java.io.Serializable;
 
 public class CategoryInformation implements Serializable {
-    private String title;
-    private AppColor color;
+    private final String title;
+    private final AppColor color;
 
     public CategoryInformation(final String title, AppColor color) {
         this.title = title;

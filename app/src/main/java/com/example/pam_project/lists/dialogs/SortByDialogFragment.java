@@ -21,7 +21,7 @@ public class SortByDialogFragment extends ListActivityDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.sort_by)
                .setSingleChoiceItems(R.array.sort_by_criteria, getArguments().getInt(INITIAL_VALUE_KEY),
-                       (DialogInterface.OnClickListener) (dialog, which) -> {
+                       (dialog, which) -> {
                    final List<Integer> returnList = new ArrayList<>(1);
                    returnList.add(which);
                    callback.onSelectedItems(this.getClass(), returnList);
