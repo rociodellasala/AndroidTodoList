@@ -26,9 +26,11 @@ public class DatabaseHelper {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                final long[] categoriesIds = AppDatabase.getInstance(context.getApplicationContext()).categoryDao().insertAllCategories(createCategoriesDataSet(context));
-                final long[] listIds = AppDatabase.getInstance(context.getApplicationContext()).listDao().insertAllLists(createListsDataSet(categoriesIds));
-                AppDatabase.getInstance(context.getApplicationContext()).taskDao().insertAllTasks(createTasksDataSet(listIds));
+                Context appContext = context.getApplicationContext();
+                AppDatabase db = AppDatabase.getInstance(appContext);
+                final long[] categoriesIds = db.categoryDao().insertAllCategories(createCategoriesDataSet(appContext));
+                final long[] listIds = db.listDao().insertAllLists(createListsDataSet(categoriesIds));
+                db.taskDao().insertAllTasks(createTasksDataSet(listIds));
             }
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
 
