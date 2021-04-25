@@ -43,12 +43,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener {
-    private static final String FTU_KEY = "is_ftu";
+public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String PAM_PREF = "app-pref";
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
 
     private RecyclerView recyclerView;
+    private ListPresenter listPresenter;
     private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
 
     private Disposable disposable;
@@ -57,15 +57,15 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUpDatabase();
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
+        final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
 
-        // TODO: Lo comento por la base por ahora
-//        if (sharedPref.getBoolean(FTU_KEY, true)) {
-//            sharedPref.edit().putBoolean(FTU_KEY, false).apply();
-//            startActivity(new Intent(this, WelcomeActivity.class));
-//        }
+        listPresenter = new ListPresenter(storage, this);
+
+        setUpDatabase();
+
+
 
         setContentView(R.layout.activity_list);
         setup();
@@ -80,13 +80,14 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 //        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
 
         // Si quieren llenar su base descomentar esto !!!!!
-//        DatabaseHelper helper = new DatabaseHelper();
-//        helper.createDB(getApplicationContext());
+        DatabaseHelper helper = new DatabaseHelper();
+        helper.createDB(getApplicationContext());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        listPresenter.onViewAttached();
 
         disposable = db.categoryDao().getAllCategoriesWithLists()
                 .subscribeOn(Schedulers.computation())
@@ -96,6 +97,17 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
                     adapter.setOnClickedListener(this);
                     recyclerView.setAdapter(adapter);
                 });
+    }
+
+
+    @Override
+    public void launchFtu() {
+        startActivity(new Intent(this, WelcomeActivity.class));
+    }
+
+    @Override
+    public void showLists() {
+
     }
 
     private List<ListInformation> adaptModel(List<CategoriesWithLists> model) {
@@ -241,6 +253,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     protected void onStop() {
         super.onStop();
+        listPresenter.onViewDetached();
         disposable.dispose();
     }
 
@@ -248,4 +261,5 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public void onClick(final long id) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
     }
+
 }
