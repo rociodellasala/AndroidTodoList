@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.lists;
+package com.example.pam_project.landing;
 
 public interface FtuStorage {
 

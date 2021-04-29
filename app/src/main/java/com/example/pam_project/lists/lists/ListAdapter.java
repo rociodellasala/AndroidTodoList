@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 import com.example.pam_project.db.entities.ListEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
@@ -18,8 +19,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     private OnListClickedListener listener;
     private int sortIndex = 0;
 
-    public ListAdapter(List<ListInformation> dataSet) {
-        this.dataSet = dataSet;
+    public ListAdapter() {
+        this.dataSet = new ArrayList<>();
+    }
+
+    public void update(final List<ListInformation> newDataSet){
+        this.dataSet.clear();
+        if(newDataSet != null){
+            dataSet.addAll(newDataSet);
+        }
+
+        notifyDataSetChanged();
     }
 
     public void setOnClickedListener(final OnListClickedListener listener) {

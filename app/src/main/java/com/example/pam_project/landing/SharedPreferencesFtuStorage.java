@@ -1,8 +1,8 @@
-package com.example.pam_project.lists.lists;
+package com.example.pam_project.landing;
 
 import android.content.SharedPreferences;
 
-public class SharedPreferencesFtuStorage implements FtuStorage{
+public class SharedPreferencesFtuStorage implements FtuStorage {
 
     private static final String FTU_KEY = "is_ftu";
     private final SharedPreferences sharedPref;

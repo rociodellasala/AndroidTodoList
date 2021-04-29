@@ -2,7 +2,7 @@ package com.example.pam_project.lists.lists;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
-import com.example.pam_project.db.AppDatabase;
+import com.example.pam_project.db.utils.AppDatabase;
 import com.example.pam_project.db.entities.CategoryEntity;
 
 import android.app.Activity;

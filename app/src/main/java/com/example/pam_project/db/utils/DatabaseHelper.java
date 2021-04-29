@@ -1,8 +1,7 @@
-package com.example.pam_project;
+package com.example.pam_project.db.utils;
 
 import android.content.Context;
 
-import com.example.pam_project.db.AppDatabase;
 import com.example.pam_project.db.entities.CategoryEntity;
 import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.entities.TaskEntity;

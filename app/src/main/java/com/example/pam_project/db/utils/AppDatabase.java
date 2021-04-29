@@ -1,4 +1,4 @@
-package com.example.pam_project.db;
+package com.example.pam_project.db.utils;
 
 import android.content.Context;
 import android.util.Log;

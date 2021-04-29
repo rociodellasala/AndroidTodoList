@@ -17,12 +17,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pam_project.DatabaseHelper;
 import com.example.pam_project.R;
 
-import com.example.pam_project.db.AppDatabase;
 import com.example.pam_project.db.entities.ListEntity;
-import com.example.pam_project.db.relationships.CategoriesWithLists;
+import com.example.pam_project.db.utils.Database;
+import com.example.pam_project.db.utils.Storage;
+import com.example.pam_project.landing.FtuStorage;
+import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 
 import com.example.pam_project.lists.categories.CategoriesActivity;
@@ -33,13 +34,11 @@ import com.example.pam_project.lists.dialogs.SortByDialogFragment;
 import com.example.pam_project.utils.AppColor;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
@@ -48,57 +47,41 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
 
     private RecyclerView recyclerView;
+    private ListAdapter adapter;
     private ListPresenter listPresenter;
     private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
-
-    private Disposable disposable;
-    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final Storage mainStorage = new Database(this.getApplicationContext());
+        mainStorage.setUpStorage();
+        mainStorage.populateStorage();
+
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
         final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
+        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao());
 
-        listPresenter = new ListPresenter(storage, this);
-
-        setUpDatabase();
-
-
+        listPresenter = new ListPresenter(storage, categoriesRepository, this);
 
         setContentView(R.layout.activity_list);
         setup();
     }
 
-    private void setUpDatabase() {
-        db = AppDatabase.getInstance(getApplicationContext());
-
-        // Si quieren borrar toda su base descomentar esto
-//        Completable.fromAction(() ->
-//                AppDatabase.nukeDatabase()
-//        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
-
-        // Si quieren llenar su base descomentar esto !!!!!
-        DatabaseHelper helper = new DatabaseHelper();
-        helper.createDB(getApplicationContext());
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
         listPresenter.onViewAttached();
-
-        disposable = db.categoryDao().getAllCategoriesWithLists()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(model -> {
-                    final ListAdapter adapter = new ListAdapter(adaptModel(model));
-                    adapter.setOnClickedListener(this);
-                    recyclerView.setAdapter(adapter);
-                });
     }
 
+    @Override
+    public void showLists(){
+        adapter = new ListAdapter();
+        adapter.setOnClickedListener(this);
+        recyclerView.setAdapter(adapter);
+    }
 
     @Override
     public void launchFtu() {
@@ -106,35 +89,14 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    public void showLists() {
-
+    public void bindLists(final List<ListInformation> model) {
+        adapter.update(model);
     }
 
-    private List<ListInformation> adaptModel(List<CategoriesWithLists> model) {
-        final List<ListInformation> list = new ArrayList<>();
-
-        for (final CategoriesWithLists entity : model) {
-            for (final ListEntity listEntity : entity.lists) {
-                AppColor color = findColor(entity.category.color);
-                list.add(new ListInformation(listEntity.id, listEntity.name, /*10, */ color));
-            }
-        }
-
-        return list;
+    @Override
+    public void showListContent(final long id){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
     }
-
-    public static AppColor findColor(String color) {
-        final List<AppColor> colors = Arrays.asList(AppColor.values());
-
-        for (int i = 0; i < colors.size(); i++) {
-            if (color.equals(colors.get(i).toString())) {
-                return colors.get(i);
-            }
-        }
-
-        return null;
-    }
-
 
     private void setup() {
         recyclerView = findViewById(R.id.list);
@@ -181,7 +143,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
             @Override
             public void run() throws Exception {
                 ListEntity listEntity = new ListEntity(name, categoryId);
-                long id = db.listDao().insertList(listEntity);
+                //long id = db.listDao().insertList(listEntity);
             }
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
     }
@@ -254,12 +216,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     protected void onStop() {
         super.onStop();
         listPresenter.onViewDetached();
-        disposable.dispose();
     }
 
     @Override
     public void onClick(final long id) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
+        listPresenter.onListClicked(id);
     }
 
 }
