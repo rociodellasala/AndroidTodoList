@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 
-import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.mappers.CategoryMapper;
 import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
@@ -42,11 +41,6 @@ import com.example.pam_project.lists.lists.components.ListInformation;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
-
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.schedulers.Schedulers;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String PAM_PREF = "app-pref";
@@ -157,17 +151,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         startActivity(categoriesIntent);
     }
 
-
-    private void insertNewList(String name, int categoryId) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                ListEntity listEntity = new ListEntity(name, categoryId);
-                //long id = db.listDao().insertList(listEntity);
-            }
-        }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -222,8 +205,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
         if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
             if (resultCode == Activity.RESULT_OK) {
-                String listId = data.getStringExtra("listId");
-                listPresenter.appendList(Long.parseLong(listId));
+                //String listId = data.getStringExtra("listId");
+                //listPresenter.appendList(Long.parseLong(listId));
             }
         }
     }
