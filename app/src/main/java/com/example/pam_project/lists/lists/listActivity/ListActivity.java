@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.lists;
+package com.example.pam_project.lists.lists.listActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 
 import com.example.pam_project.db.entities.ListEntity;
+import com.example.pam_project.db.mappers.CategoryMapper;
+import com.example.pam_project.db.mappers.ListMapper;
+import com.example.pam_project.db.repositories.CategoriesRepository;
+import com.example.pam_project.db.repositories.ListsRepository;
+import com.example.pam_project.db.repositories.RoomCategoriesRepository;
+import com.example.pam_project.db.repositories.RoomListsRepository;
 import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.landing.FtuStorage;
@@ -31,10 +36,11 @@ import com.example.pam_project.lists.categories.CategoriesActivity;
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
-import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.lists.lists.CreateListActivity;
+import com.example.pam_project.lists.lists.components.ListAdapter;
+import com.example.pam_project.lists.lists.components.ListInformation;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -61,12 +67,23 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
         final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
-        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao());
+        final CategoryMapper categoryMapper = new CategoryMapper();
+        final ListMapper listMapper = new ListMapper();
+        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(), categoryMapper);
+        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(), mainStorage.getStorage().categoryDao(),
+                                                                        listMapper, categoryMapper);
 
-        listPresenter = new ListPresenter(storage, categoriesRepository, this);
+        listPresenter = new ListPresenter(storage, categoriesRepository, listsRepository, this);
 
         setContentView(R.layout.activity_list);
         setup();
+    }
+
+    private void setup() {
+        recyclerView = findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        setExtendedFloatingButtonAction();
     }
 
 
@@ -94,49 +111,52 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
+    public void bindList(final ListInformation model){
+        adapter.addItem(model);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void showListContent(final long id){
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
     }
 
-    private void setup() {
-        recyclerView = findViewById(R.id.list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        setExtendedFloatingButtonAction();
-    }
-
-    private void setExtendedFloatingButtonAction() {
-        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
-        addListFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
-                startActivityForResult(activityIntent, CREATE_LIST_ACTIVITY_REGISTRY);
-            }
-        });
+    @Override
+    public void showAddList(){
+        Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
+        startActivityForResult(activityIntent, CREATE_LIST_ACTIVITY_REGISTRY);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        final List<AppColor> colors = Arrays.asList(AppColor.values()); // must be removed
-
-        if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
-            if (resultCode == Activity.RESULT_OK) {
-                String newListTile = data.getStringExtra("listTile");
-                String categoryId = data.getStringExtra("categoryId");
-                ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-                this.insertNewList(newListTile, Integer.valueOf(categoryId));
-                /* Color harcodeado */
-                adapter.addItem(new ListInformation(newListTile, colors.get(0)));
-                adapter.notifyDataSetChanged();
-            }
-
-            if (resultCode == Activity.RESULT_CANCELED) {
-                // Write your code if there's no result
-            }
-        }
+    public void showSearchBar(){
+        // TODO search
     }
+
+
+    @Override
+    public void showFilterDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
+        FilterDialogFragment filterDialog = FilterDialogFragment
+                .newInstance(adapter.getFilterSelections());
+        showDialog(fm, filterDialog);
+    }
+
+    @Override
+    public void showSortByDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
+        SortByDialogFragment sortByDialog = SortByDialogFragment
+                .newInstance(adapter.getSortIndex());
+        showDialog(fm, sortByDialog);
+    }
+
+    @Override
+    public void showManageCategories() {
+        Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
+        startActivity(categoriesIntent);
+    }
+
 
     private void insertNewList(String name, int categoryId) {
         Completable.fromAction(new Action() {
@@ -162,41 +182,25 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.list_action_bar_search) {
-            // show search bar
-            return true;
-        }
 
-        // cannot create static abstract method, so some code has to be repeated
-        else if (itemId == R.id.list_action_bar_filter) {
-            FragmentManager fm = getSupportFragmentManager();
-            ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-            FilterDialogFragment filterDialog = FilterDialogFragment
-                    .newInstance(adapter.getFilterSelections());
-            showDialog(fm, filterDialog);
-            return true;
+        if (itemId == R.id.list_action_bar_search) {
+            listPresenter.onSearchBar();
+        } else if (itemId == R.id.list_action_bar_filter) {
+            listPresenter.onFilterDialog();
         } else if (itemId == R.id.list_action_bar_sort_by) {
-            FragmentManager fm = getSupportFragmentManager();
-            ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-            SortByDialogFragment sortByDialog = SortByDialogFragment
-                    .newInstance(adapter.getSortIndex());
-            showDialog(fm, sortByDialog);
-            return true;
+            listPresenter.onSortByDialog();
         } else if (itemId == R.id.list_action_bar_manage_categories) {
-            Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
-            startActivity(categoriesIntent);
-            return true;
+            listPresenter.onManageCategories();
         } else {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
             return super.onOptionsItemSelected(item);
         }
+
+        return true;
     }
 
+    // Esta funcion falta refactorear porque no se como va a terminar
     @Override
     public void onSelectedItems(Class<?> klass, List<Integer> items) {
-        // do something with the selected items
-
         CharSequence value = "No selection";
         if (klass.equals(SortByDialogFragment.class)) {
             final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
@@ -213,6 +217,18 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
+            if (resultCode == Activity.RESULT_OK) {
+                String listId = data.getStringExtra("listId");
+                listPresenter.appendList(Long.parseLong(listId));
+            }
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         listPresenter.onViewDetached();
@@ -223,4 +239,9 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         listPresenter.onListClicked(id);
     }
 
+
+    private void setExtendedFloatingButtonAction() {
+        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
+        addListFAB.setOnClickListener(view -> listPresenter.onButtonClicked());
+    }
 }

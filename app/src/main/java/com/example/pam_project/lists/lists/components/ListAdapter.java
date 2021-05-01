@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.lists;
+package com.example.pam_project.lists.lists.components;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.db.entities.ListEntity;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public void setOnClickedListener(final OnListClickedListener listener) {
         this.listener = listener;
+    }
+
+    public List<ListInformation> getDataSet(){
+        return dataSet;
     }
 
     public void addItem(ListInformation newList) {
