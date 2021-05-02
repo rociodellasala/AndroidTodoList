@@ -3,29 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/urgency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/leftLayout"
+        android:paddingTop="10dp"
+        android:paddingRight="40dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_exclamation_mark" />
 
     <LinearLayout
         android:id="@+id/leftLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/border"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
-            android:textSize="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:textStyle="bold"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
             android:paddingStart="30dp"
             android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
             tools:ignore="RtlSymmetry,SpUsage" />
 
         <TextView
@@ -33,24 +45,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:textSize="15dp"
-            android:paddingBottom="10dp"
             android:paddingStart="30dp"
             android:paddingLeft="30dp"
+            android:paddingBottom="10dp"
+            android:textSize="15dp"
             tools:ignore="RtlSymmetry" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/urgency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="40dp"
-        android:paddingTop="10dp"
-        android:visibility="invisible"
-        android:layout_toLeftOf="@+id/leftLayout"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        app:srcCompat="@drawable/ic_exclamation_mark"/>
 </RelativeLayout>
 
 

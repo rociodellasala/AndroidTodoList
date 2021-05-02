@@ -83,7 +83,7 @@ public class DatabaseHelper {
 
     public static long getRandomFromArray(long[] array) {
         int rnd = new Random().nextInt(array.length);
-        return (long) array[rnd];
+        return array[rnd];
     }
 
     public static int getRandom(int min, int max) {
