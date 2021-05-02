@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PAMProject">
-        <activity android:name=".lists.lists.CreateListActivity"
+        <activity android:name=".lists.lists.createListActivity.CreateListActivity"
             android:parentActivityName=".lists.lists.listActivity.ListActivity"/>
         <activity android:name=".lists.lists.listActivity.ListActivity">
             <intent-filter>
@@ -31,7 +31,7 @@
         </activity>
         <activity android:name=".lists.categories.CategoriesActivity"/>
         <activity android:name=".landing.WelcomeActivity"/>
-        <activity android:name=".lists.lists.EditListActivity"
+        <activity android:name=".lists.lists.editListActivity.EditListActivity"
             android:parentActivityName=".lists.tasks.TaskActivity" />
     </application>
 

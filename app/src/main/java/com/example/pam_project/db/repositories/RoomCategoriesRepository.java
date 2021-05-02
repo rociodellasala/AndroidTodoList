@@ -14,7 +14,7 @@ public class RoomCategoriesRepository implements CategoriesRepository {
     private final CategoryDao categoryDao;
     private final CategoryMapper mapper;
 
-    public RoomCategoriesRepository(final CategoryDao categoryDao, CategoryMapper mapper){
+    public RoomCategoriesRepository(final CategoryDao categoryDao, final CategoryMapper mapper){
         this.categoryDao = categoryDao;
         this.mapper = mapper;
     }
@@ -26,6 +26,11 @@ public class RoomCategoriesRepository implements CategoriesRepository {
 
     @Override
     public Flowable<List<ListInformation>> getCategoriesWithLists() {
-        return categoryDao.getAllCategoriesWithLists().map(mapper::toModel);
+        return categoryDao.getAllCategoriesWithLists().map(mapper::toListModel);
+    }
+
+    @Override
+    public Flowable<List<CategoryInformation>> getCategories() {
+        return categoryDao.getAllCategories().map(mapper::toCategoryModel);
     }
 }

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.db.entities.ListEntity;
-import com.example.pam_project.lists.lists.EditListActivity;
+import com.example.pam_project.lists.lists.editListActivity.EditListActivity;
 import com.example.pam_project.db.utils.AppDatabase;
 import com.example.pam_project.db.entities.TaskEntity;
 import com.example.pam_project.db.relationships.ListsWithTasks;

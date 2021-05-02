@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 
 import com.example.pam_project.db.mappers.CategoryMapper;
-import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.RoomCategoriesRepository;
@@ -35,7 +34,7 @@ import com.example.pam_project.lists.categories.CategoriesActivity;
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
-import com.example.pam_project.lists.lists.CreateListActivity;
+import com.example.pam_project.lists.lists.createListActivity.CreateListActivity;
 import com.example.pam_project.lists.lists.components.ListAdapter;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -62,10 +61,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
         final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
         final CategoryMapper categoryMapper = new CategoryMapper();
-        final ListMapper listMapper = new ListMapper();
         final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(), categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(), mainStorage.getStorage().categoryDao(),
-                                                                        listMapper, categoryMapper);
+        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(), mainStorage.getStorage().categoryDao());
 
         listPresenter = new ListPresenter(storage, categoriesRepository, listsRepository, this);
 
@@ -205,8 +202,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
         if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
             if (resultCode == Activity.RESULT_OK) {
-                //String listId = data.getStringExtra("listId");
-                //listPresenter.appendList(Long.parseLong(listId));
+                String listId = data.getStringExtra("listId");
+                listPresenter.appendList(Long.parseLong(listId));
             }
         }
     }
