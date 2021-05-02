@@ -1,0 +1,65 @@
+package com.example.pam_project.lists.tasks;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.pam_project.R;
+import com.example.pam_project.utils.TaskStatus;
+
+import java.util.List;
+
+public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TASK_PENDING = 1;
+    private static final int TASK_DONE = 2;
+    private final List<TaskInformation> dataSet;
+
+    public TaskAdapter(List<TaskInformation> dataSet) {
+        this.dataSet = dataSet;
+    }
+
+    public void addItem(TaskInformation newTask) {
+        this.dataSet.add(newTask);
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        final View view;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+
+        if(viewType == TASK_PENDING) {
+            view = layoutInflater.inflate(R.layout.task_view_holder_pending, parent, false);
+            return new TaskViewHolderPending(view);
+        } else {
+            view = layoutInflater.inflate(R.layout.task_view_holder_done, parent, false);
+            return new TaskViewHolderDone(view);
+        }
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Object item = dataSet.get(position);
+
+        if (holder instanceof TaskViewHolderPending) {
+            ((TaskViewHolderPending) holder).bind((TaskInformation) item);
+        } else {
+            ((TaskViewHolderDone) holder).bind((TaskInformation) item);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataSet == null ? 0 : dataSet.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        TaskStatus status = dataSet.get(position).getStatus();
+        return status.equals(TaskStatus.PENDING) ? TASK_PENDING :  TASK_DONE;
+    }
+}
