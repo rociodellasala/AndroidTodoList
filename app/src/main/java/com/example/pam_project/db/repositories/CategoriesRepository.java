@@ -1,11 +1,10 @@
 package com.example.pam_project.db.repositories;
 
-import com.example.pam_project.lists.categories.CategoryInformation;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public interface CategoriesRepository {

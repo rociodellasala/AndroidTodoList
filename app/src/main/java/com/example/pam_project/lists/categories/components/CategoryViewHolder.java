@@ -1,18 +1,13 @@
-package com.example.pam_project.lists.categories;
+package com.example.pam_project.lists.categories.components;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder {
 

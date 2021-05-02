@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories;
+package com.example.pam_project.lists.categories.components;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +8,29 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.components.ListInformation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder>{
     private final List<CategoryInformation> dataSet;
 
-    public CategoryAdapter(List<CategoryInformation> dataSet) {
-        this.dataSet = dataSet;
+    public CategoryAdapter() {
+        this.dataSet = new ArrayList<>();
+    }
+
+    public void update(final List<CategoryInformation> newDataSet){
+        this.dataSet.clear();
+        if(newDataSet != null){
+            dataSet.addAll(newDataSet);
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public List<CategoryInformation> getDataSet() {
+        return dataSet;
     }
 
     @NonNull
