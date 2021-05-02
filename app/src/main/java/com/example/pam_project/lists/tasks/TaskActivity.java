@@ -22,6 +22,7 @@ import com.example.pam_project.utils.TaskStatus;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,8 +33,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class TaskActivity extends AppCompatActivity {
-    private RecyclerView recyclerViewPending;
-    private RecyclerView recyclerViewDone;
+    private RecyclerView recyclerView;
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
     private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private AppDatabase db;
@@ -68,29 +68,17 @@ public class TaskActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
                     Objects.requireNonNull(getSupportActionBar()).setTitle(model.list.name);
-                    final TaskAdapterPending adapterPending = new TaskAdapterPending(adaptModel(getSeparateModels(model, "pending")));
-                    final TaskAdapterDone adapterDone = new TaskAdapterDone(adaptModel(getSeparateModels(model, "done")));
-                    recyclerViewPending.setAdapter(adapterPending);
-                    recyclerViewDone.setAdapter(adapterDone);
+                    List<TaskInformation> listWithTasks = adaptModel(model);
+                    Collections.sort(listWithTasks, Collections.reverseOrder());
+                    final TaskAdapter adapter = new TaskAdapter(listWithTasks);
+                    recyclerView.setAdapter(adapter);
                 });
     }
 
-    public List<TaskEntity> getSeparateModels(ListsWithTasks model, String status) {
-        List<TaskEntity> listOfTasks = new ArrayList<>();
-
-        for (final TaskEntity taskEntity : model.tasks) {
-            if(taskEntity.status.equals(status)) {
-                listOfTasks.add(taskEntity);
-            }
-        }
-
-        return listOfTasks;
-    }
-
-    private List<TaskInformation> adaptModel(List<TaskEntity> model) {
+    private List<TaskInformation> adaptModel(ListsWithTasks model) {
         final List<TaskInformation> list = new ArrayList<>();
 
-        for (final TaskEntity taskEntity : model) {
+        for (final TaskEntity taskEntity : model.tasks) {
             TaskStatus status = taskEntity.status.equals("pending") ? TaskStatus.PENDING : TaskStatus.DONE;
             list.add(new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description, taskEntity.priority, status));
         }
@@ -114,13 +102,12 @@ public class TaskActivity extends AppCompatActivity {
 
 
     private void setup() {
-        recyclerViewPending = findViewById(R.id.pendingTasks);
-        recyclerViewPending.setHasFixedSize(true);
-        recyclerViewPending.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        recyclerViewDone = findViewById(R.id.doneTasks);
-        recyclerViewDone.setHasFixedSize(true);
-        recyclerViewDone.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView = findViewById(R.id.allTasks);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        String[] headers = {getString(R.string.pending_tasks), getString(R.string.done_tasks)};
+        recyclerView.addItemDecoration(new CustomItemDecorator(this,
+                recyclerView,  R.layout.text_header, headers));
 
         setExtendedFloatingButtonAction();
     }
@@ -144,7 +131,7 @@ public class TaskActivity extends AppCompatActivity {
                 String newTaskTitle = data.getStringExtra("taskTitle");
                 String newTaskDescription = data.getStringExtra("taskDescription");
                 boolean newTaskUrgency = data.getBooleanExtra("taskUrgency", false);
-                TaskAdapterPending adapter = (TaskAdapterPending) recyclerViewPending.getAdapter();
+                TaskAdapter adapter = (TaskAdapter) recyclerView.getAdapter();
                 this.insertNewList(newTaskTitle, newTaskDescription, newTaskUrgency, this.listId);
                 adapter.addItem(new TaskInformation(newTaskTitle, newTaskDescription, newTaskUrgency, TaskStatus.PENDING));
                 adapter.notifyDataSetChanged();

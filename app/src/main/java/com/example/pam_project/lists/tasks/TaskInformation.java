@@ -2,7 +2,7 @@ package com.example.pam_project.lists.tasks;
 
 import com.example.pam_project.utils.TaskStatus;
 
-public class TaskInformation {
+public class TaskInformation implements Comparable<TaskInformation> {
     private long id;
     private final String title;
     private final String description;
@@ -24,7 +24,6 @@ public class TaskInformation {
         this.status = status;
     }
 
-
     public String getTitle() {
         return title;
     }
@@ -39,4 +38,8 @@ public class TaskInformation {
 
     public TaskStatus getStatus() { return status; }
 
+    @Override
+    public int compareTo(TaskInformation o) {
+        return this.getStatus().compareTo(o.getStatus());
+    }
 }
