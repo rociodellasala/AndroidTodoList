@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers;
 public class Database implements Storage{
 
     private AppDatabase database;
-    private Context context;
+    private final Context context;
 
     public Database(Context context){
         this.context = context;
