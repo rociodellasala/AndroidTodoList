@@ -20,7 +20,7 @@ public interface CategoryDao {
     Flowable<List<CategoryEntity>> getAllCategories();
 
     @Query("SELECT * FROM Categories WHERE id =:id")
-    CategoryEntity getCategoryById(long id);
+    Flowable<CategoryEntity> getCategoryById(long id);
 
     @Insert
     long insertCategory(final CategoryEntity category);

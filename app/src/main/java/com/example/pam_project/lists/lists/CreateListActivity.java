@@ -2,7 +2,8 @@ package com.example.pam_project.lists.lists;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
-import com.example.pam_project.db.AppDatabase;
+import com.example.pam_project.db.entities.ListEntity;
+import com.example.pam_project.db.utils.AppDatabase;
 import com.example.pam_project.db.entities.CategoryEntity;
 
 import android.app.Activity;
@@ -19,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class CreateListActivity extends AppCompatActivity {
@@ -47,6 +50,17 @@ public class CreateListActivity extends AppCompatActivity {
                 .subscribe(model -> {
                     setup(model);
                 });
+    }
+
+
+    private void insertNewList(String name, long categoryId) {
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                ListEntity listEntity = new ListEntity(name, categoryId);
+                //long id = db.listDao().insertList(listEntity);
+            }
+        }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
     }
 
 
@@ -81,12 +95,11 @@ public class CreateListActivity extends AppCompatActivity {
         final EditText listTitleInput = findViewById(R.id.create_list_title_input);
 
         if (id == R.id.check_add_button) {
-            String listTile = listTitleInput.getText().toString();
-            long categoryId = categories.get(spinner.getSelectedItem().toString());
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("listTile", listTile);
-            returnIntent.putExtra("categoryId", String.valueOf(categoryId));
-            setResult(Activity.RESULT_OK, returnIntent);
+            //String listTile = listTitleInput.getText().toString();
+            //long categoryId = categories.get(spinner.getSelectedItem().toString());
+            //Intent returnIntent = new Intent();
+            //insertNewList(listTile, categoryId);
+            //setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
 

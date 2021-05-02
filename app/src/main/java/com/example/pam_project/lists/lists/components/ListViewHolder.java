@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.lists;
+package com.example.pam_project.lists.lists.components;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 public class ListViewHolder extends RecyclerView.ViewHolder {
 

@@ -10,8 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PAMProject">
         <activity android:name=".lists.lists.CreateListActivity"
-            android:parentActivityName=".lists.lists.ListActivity"/>
-        <activity android:name=".lists.lists.ListActivity">
+            android:parentActivityName=".lists.lists.listActivity.ListActivity"/>
+        <activity android:name=".lists.lists.listActivity.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -20,7 +20,7 @@
         <activity android:name=".lists.tasks.CreateTaskActivity"
             android:parentActivityName=".lists.tasks.TaskActivity" />
         <activity android:name=".lists.tasks.TaskActivity"
-            android:parentActivityName=".lists.lists.ListActivity">
+            android:parentActivityName=".lists.lists.listActivity.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
