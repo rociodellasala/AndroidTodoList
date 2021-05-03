@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories;
+package com.example.pam_project.lists.categories.components;
 
 import com.example.pam_project.utils.AppColor;
 

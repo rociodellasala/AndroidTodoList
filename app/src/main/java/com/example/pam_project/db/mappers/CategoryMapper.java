@@ -3,7 +3,7 @@ package com.example.pam_project.db.mappers;
 import com.example.pam_project.db.entities.CategoryEntity;
 import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.relationships.CategoriesWithLists;
-import com.example.pam_project.lists.categories.CategoryInformation;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.utils.AppColor;
 import com.example.pam_project.utils.ColorFinder;

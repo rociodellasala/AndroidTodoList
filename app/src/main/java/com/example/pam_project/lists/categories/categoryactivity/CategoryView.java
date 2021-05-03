@@ -1,15 +1,12 @@
-package com.example.pam_project.lists.lists.createListActivity;
+package com.example.pam_project.lists.categories.categoryactivity;
 
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 import java.util.List;
 
-public interface CreateListView {
+public interface CategoryView {
 
     void bindCategories(final List<CategoryInformation> model);
 
-    void onSuccessfulInsert(final long id);
-
-    void onFailedInsert();
-
+    void showCategories();
 }

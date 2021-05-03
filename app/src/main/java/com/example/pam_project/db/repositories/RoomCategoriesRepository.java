@@ -2,7 +2,7 @@ package com.example.pam_project.db.repositories;
 
 import com.example.pam_project.db.daos.CategoryDao;
 import com.example.pam_project.db.mappers.CategoryMapper;
-import com.example.pam_project.lists.categories.CategoryInformation;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.util.List;
