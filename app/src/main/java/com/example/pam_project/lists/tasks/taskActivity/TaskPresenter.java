@@ -28,8 +28,10 @@ public class TaskPresenter {
     }
 
     public void onViewAttached() {
-        view.get().showTasks();
-        fetchTasks();
+        if (view.get() != null) {
+            view.get().showTasks();
+            fetchTasks();
+        }
     }
 
     private void fetchTasks(){
