@@ -3,6 +3,7 @@ package com.example.pam_project.lists.lists.editListActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
 import com.example.pam_project.db.mappers.CategoryMapper;
+import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.RoomCategoriesRepository;
@@ -17,7 +18,6 @@ import com.example.pam_project.lists.lists.components.SpinnerCategoryAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -32,6 +32,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView{
     private SpinnerCategoryAdapter adapter;
     private Spinner spinner;
     private long listId;
+
     private final static String  LIST_ID_PARAMETER = "id";
 
     @Override
@@ -41,8 +42,10 @@ public class EditListActivity extends AppCompatActivity implements EditListView{
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
         final CategoryMapper categoryMapper = new CategoryMapper();
+        final ListMapper listMapper = new ListMapper();
         final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(), categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(), mainStorage.getStorage().categoryDao());
+        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
+                mainStorage.getStorage().categoryDao(), listMapper);
 
         editListPresenter = new EditListPresenter(categoriesRepository, listsRepository, this);
 
@@ -106,8 +109,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
-        final Spinner spinner = findViewById(R.id.create_list_category_spinner);
-        final EditText listTitleInput = findViewById(R.id.create_list_title_input);
+        final Spinner spinner = findViewById(R.id.edit_list_category_spinner);
+        final EditText listTitleInput = findViewById(R.id.edit_list_title_input);
 
         if (itemId == R.id.check_add_button) {
             String listTile = listTitleInput.getText().toString();
@@ -115,7 +118,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView{
 
             if(categoryId != null){
                 editListPresenter.editList(listId, listTile, categoryId);
-            }else{
+            } else {
                 this.onFailedUpdate();
             }
             finish();

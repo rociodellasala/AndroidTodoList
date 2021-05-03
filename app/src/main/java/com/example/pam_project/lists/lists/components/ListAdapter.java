@@ -36,10 +36,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         this.listener = listener;
     }
 
-    public List<ListInformation> getDataSet(){
-        return dataSet;
-    }
-
     public void addItem(ListInformation newList) {
         this.dataSet.add(newList);
     }

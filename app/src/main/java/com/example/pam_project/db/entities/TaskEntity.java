@@ -1,5 +1,6 @@
 package com.example.pam_project.db.entities;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -10,17 +11,22 @@ public class TaskEntity {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
+    @ColumnInfo(name = "name")
     public String name;
 
+    @ColumnInfo(name = "description")
     public String description;
 
+    @ColumnInfo(name = "priority")
     public boolean priority;
 
+    @ColumnInfo(name = "status")
     public String status;
 
     public long listId;
 
-    public TaskEntity(long id, String name, String description, boolean priority, String status, long listId) {
+    public TaskEntity(final long id, final String name, final String description, final boolean priority,
+                      final String status, final long listId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,7 +36,7 @@ public class TaskEntity {
     }
 
     @Ignore
-    public TaskEntity(String name, String description, boolean priority, String status, long listId) {
+    public TaskEntity(final String name, final String description, final boolean priority, final String status, final long listId) {
         this.name = name;
         this.description = description;
         this.priority = priority;

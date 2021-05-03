@@ -17,9 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".lists.tasks.CreateTaskActivity"
-            android:parentActivityName=".lists.tasks.TaskActivity" />
-        <activity android:name=".lists.tasks.TaskActivity"
+        <activity android:name=".lists.tasks.taskActivity.TaskActivity"
             android:parentActivityName=".lists.lists.listActivity.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -29,10 +27,12 @@
                 <data android:host="detail" android:pathPrefix="/list" />
             </intent-filter>
         </activity>
+        <activity android:name=".lists.tasks.createTaskActivity.CreateTaskActivity"
+            android:parentActivityName=".lists.tasks.taskActivity.TaskActivity" />
         <activity android:name=".lists.categories.CategoriesActivity"/>
         <activity android:name=".landing.WelcomeActivity"/>
         <activity android:name=".lists.lists.editListActivity.EditListActivity"
-            android:parentActivityName=".lists.tasks.TaskActivity" />
+            android:parentActivityName=".lists.tasks.taskActivity.TaskActivity" />
     </application>
 
 </manifest>

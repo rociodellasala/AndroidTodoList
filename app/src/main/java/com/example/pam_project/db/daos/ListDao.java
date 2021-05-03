@@ -20,7 +20,7 @@ public interface ListDao {
     Flowable<List<ListEntity>> getAllLists();
 
     @Query("SELECT * FROM Lists WHERE id =:id")
-    Flowable<ListEntity> getListById(long id);
+    Flowable<ListEntity> getListById(final long id);
 
     @Insert
     long insertList(final ListEntity list);
@@ -39,5 +39,5 @@ public interface ListDao {
 
     @Transaction
     @Query("SELECT * FROM Lists WHERE id =:id")
-    Flowable<ListsWithTasks> getListsWithTasks(long id);
+    Flowable<ListsWithTasks> getListsWithTasks(final long id);
 }

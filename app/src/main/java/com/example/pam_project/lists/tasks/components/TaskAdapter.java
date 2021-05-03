@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.tasks;
+package com.example.pam_project.lists.tasks.components;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.utils.TaskStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -17,8 +19,17 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TASK_DONE = 2;
     private final List<TaskInformation> dataSet;
 
-    public TaskAdapter(List<TaskInformation> dataSet) {
-        this.dataSet = dataSet;
+    public TaskAdapter() {
+        this.dataSet = new ArrayList<>();
+    }
+
+    public void update(final List<TaskInformation> newDataSet){
+        this.dataSet.clear();
+        if(newDataSet != null){
+            dataSet.addAll(newDataSet);
+        }
+
+        notifyDataSetChanged();
     }
 
     public void addItem(TaskInformation newTask) {

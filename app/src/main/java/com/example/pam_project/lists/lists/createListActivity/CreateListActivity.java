@@ -3,6 +3,7 @@ package com.example.pam_project.lists.lists.createListActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
 import com.example.pam_project.db.mappers.CategoryMapper;
+import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.RoomCategoriesRepository;
@@ -24,7 +25,7 @@ import android.widget.Spinner;
 import java.util.List;
 import java.util.Objects;
 
-public class CreateListActivity extends AppCompatActivity implements CreateListView{
+public class CreateListActivity extends AppCompatActivity implements CreateListView {
 
     private CreateListPresenter createListPresenter;
     private SpinnerCategoryAdapter adapter;
@@ -36,8 +37,10 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
         final CategoryMapper categoryMapper = new CategoryMapper();
+        final ListMapper listMapper = new ListMapper();
         final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(), categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(), mainStorage.getStorage().categoryDao());
+        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
+                mainStorage.getStorage().categoryDao(), listMapper);
 
         createListPresenter = new CreateListPresenter(categoriesRepository, listsRepository, this);
 
@@ -97,7 +100,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
 
             if(categoryId != null){
                 createListPresenter.insertList(listTile, categoryId);
-            }else{
+            } else {
                 this.onFailedInsert();
             }
             finish();

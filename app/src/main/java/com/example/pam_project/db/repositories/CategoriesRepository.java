@@ -5,7 +5,6 @@ import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.util.List;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public interface CategoriesRepository {
