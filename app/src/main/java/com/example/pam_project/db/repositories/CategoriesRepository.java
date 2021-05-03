@@ -10,9 +10,11 @@ import io.reactivex.Flowable;
 
 public interface CategoriesRepository {
 
-    Flowable<CategoryInformation> getCategory(final long id);
+    CategoryInformation getCategory(final long id);
 
     Flowable<Map<CategoryInformation, List<ListInformation>>> getCategoriesWithLists();
 
     Flowable<List<CategoryInformation>> getCategories();
+
+    void updateCategory(long id, String name, String color);
 }
