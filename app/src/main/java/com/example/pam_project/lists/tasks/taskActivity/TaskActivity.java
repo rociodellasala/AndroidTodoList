@@ -149,9 +149,9 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
 
     @Override
     public void showAddTask() {
-        Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
+        Intent activityIntent = new Intent(getApplicationContext(), CreateTaskActivity.class);
         activityIntent.putExtra("id", listId);
-        startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
+        startActivityForResult(activityIntent, CREATE_TASK_ACTIVITY_REGISTRY);
     }
 
     @Override

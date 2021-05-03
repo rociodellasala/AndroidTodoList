@@ -1,6 +1,15 @@
 package com.example.pam_project.lists.lists.editListActivity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Spinner;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.pam_project.R;
 import com.example.pam_project.db.mappers.CategoryMapper;
 import com.example.pam_project.db.mappers.ListMapper;
@@ -15,18 +24,10 @@ import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.lists.lists.components.SpinnerActivity;
 import com.example.pam_project.lists.lists.components.SpinnerCategoryAdapter;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.Spinner;
-
 import java.util.List;
 import java.util.Objects;
 
-public class EditListActivity extends AppCompatActivity implements EditListView{
+public class EditListActivity extends AppCompatActivity implements EditListView {
 
     private EditListPresenter editListPresenter;
     private SpinnerCategoryAdapter adapter;
