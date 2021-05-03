@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".lists.tasks.createTaskActivity.CreateTaskActivity"
             android:parentActivityName=".lists.tasks.taskActivity.TaskActivity" />
-        <activity android:name=".lists.categories.CategoriesActivity"/>
+        <activity android:name=".lists.categories.categoryactivity.CategoryActivity"/>
         <activity android:name=".landing.WelcomeActivity"/>
         <activity android:name=".lists.lists.editListActivity.EditListActivity"
             android:parentActivityName=".lists.tasks.taskActivity.TaskActivity" />

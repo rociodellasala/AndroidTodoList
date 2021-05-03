@@ -33,9 +33,11 @@ public class ListPresenter {
 
             if(view.get() != null)
                 view.get().launchFtu();
-        }else{
-            view.get().showLists();
-            fetchLists();
+        } else {
+            if (view.get() != null) {
+                view.get().showLists();
+                fetchLists();
+            }
         }
     }
 

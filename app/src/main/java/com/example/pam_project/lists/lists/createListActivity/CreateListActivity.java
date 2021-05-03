@@ -10,7 +10,7 @@ import com.example.pam_project.db.repositories.RoomCategoriesRepository;
 import com.example.pam_project.db.repositories.RoomListsRepository;
 import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
-import com.example.pam_project.lists.categories.CategoryInformation;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.SpinnerActivity;
 import com.example.pam_project.lists.lists.components.SpinnerCategoryAdapter;
 

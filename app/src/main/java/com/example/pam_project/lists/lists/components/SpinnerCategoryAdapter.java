@@ -3,7 +3,7 @@ package com.example.pam_project.lists.lists.components;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import com.example.pam_project.lists.categories.CategoryInformation;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

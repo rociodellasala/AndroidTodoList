@@ -30,7 +30,7 @@ import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 
-import com.example.pam_project.lists.categories.CategoriesActivity;
+import com.example.pam_project.lists.categories.categoryactivity.CategoryActivity;
 
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
@@ -147,7 +147,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
     @Override
     public void showManageCategories() {
-        Intent categoriesIntent = new Intent(getApplicationContext(), CategoriesActivity.class);
+        Intent categoriesIntent = new Intent(getApplicationContext(), CategoryActivity.class);
         startActivity(categoriesIntent);
     }
 
