@@ -44,6 +44,4 @@ public interface CategoryDao {
     @Transaction
     @Query("SELECT * FROM Categories")
     Flowable<List<CategoriesWithLists>> getAllCategoriesWithLists();
-
-
 }

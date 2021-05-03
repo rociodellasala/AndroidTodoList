@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.tasks;
+package com.example.pam_project.lists.tasks.components;
 
 import com.example.pam_project.utils.TaskStatus;
 

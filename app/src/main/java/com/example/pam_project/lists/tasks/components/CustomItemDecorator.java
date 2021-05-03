@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.tasks;
+package com.example.pam_project.lists.tasks.components;
 
 import android.content.Context;
 import android.graphics.Canvas;

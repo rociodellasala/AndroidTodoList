@@ -1,15 +1,18 @@
 package com.example.pam_project.lists.lists.components;
 
+import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.utils.AppColor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListInformation implements Serializable {
     private long id;
     private final String title;
     private long categoryId;
     private AppColor color;
-
+    private List<TaskInformation> tasks;
 
     public ListInformation(final long id, final String title, final long categoryId, AppColor color) {
         this.id = id;
@@ -18,12 +21,18 @@ public class ListInformation implements Serializable {
         this.color = color;
     }
 
+    public ListInformation(final long id, final String title, final long categoryId, List<TaskInformation> tasks) {
+        this.id = id;
+        this.title = title;
+        this.categoryId = categoryId;
+        this.tasks = tasks;
+    }
+
     public ListInformation(final long id ,final String title, final long categoryId){
         this.id = id;
         this.title = title;
         this.categoryId = categoryId;
     }
-
 
     public ListInformation(final String title, AppColor color) {
         this.title = title;
@@ -46,4 +55,5 @@ public class ListInformation implements Serializable {
         return color;
     }
 
+    public List<TaskInformation> getTasks() { return tasks; }
 }

@@ -40,7 +40,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
 
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
-        mainStorage.populateStorage();
 
         final CategoryMapper categoryMapper = new CategoryMapper();
         final CategoriesRepository repository = new RoomCategoriesRepository(

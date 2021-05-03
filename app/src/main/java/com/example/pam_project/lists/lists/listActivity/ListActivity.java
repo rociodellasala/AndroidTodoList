@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 
 import com.example.pam_project.db.mappers.CategoryMapper;
+import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.RoomCategoriesRepository;
@@ -48,6 +49,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private ListPresenter listPresenter;
+
     private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
 
     @Override
@@ -56,15 +58,16 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
-        mainStorage.populateStorage();
+//        mainStorage.populateStorage();
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
         final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
         final CategoryMapper categoryMapper = new CategoryMapper();
-        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(
-                mainStorage.getStorage().categoryDao(), categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(
-                mainStorage.getStorage().listDao(), mainStorage.getStorage().categoryDao());
+        final ListMapper listMapper = new ListMapper();
+        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(),
+                categoryMapper);
+        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
+                mainStorage.getStorage().categoryDao(), listMapper);
 
         listPresenter = new ListPresenter(storage, categoriesRepository, listsRepository, this);
 
@@ -78,7 +81,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
     }
-
 
     @Override
     protected void onStart() {
@@ -124,7 +126,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public void showSearchBar(){
         // TODO search
     }
-
 
     @Override
     public void showFilterDialog() {
