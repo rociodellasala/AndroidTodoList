@@ -19,15 +19,10 @@ import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.lists.categories.components.CategoryAdapter;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.categories.createcategoryactivity.CreateCategoryActivity;
-import com.example.pam_project.lists.lists.createListActivity.CreateListActivity;
-import com.example.pam_project.utils.AppColor;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryView {
     private RecyclerView recyclerView;
