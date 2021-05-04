@@ -111,21 +111,35 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
         final Spinner spinner = findViewById(R.id.edit_list_category_spinner);
-        final EditText listTitleInput = findViewById(R.id.edit_list_title_input);
+        final EditText listNameInput = findViewById(R.id.edit_list_title_input);
 
         if (itemId == R.id.check_add_button) {
-            String listTile = listTitleInput.getText().toString();
+            String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
-
-            if(categoryId != null){
-                editListPresenter.editList(listId, listTile, categoryId);
+            String errorMessage = checkForm(listName);
+            if(errorMessage != null) {
+                listNameInput.setError(errorMessage);
             } else {
-                this.onFailedUpdate();
+                if(categoryId != null){
+                    editListPresenter.editList(listId, listName, categoryId);
+                } else {
+                    this.onFailedUpdate();
+                }
+                finish();
             }
-            finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String checkForm(String listName) {
+        String errorMessage = null;
+
+        if(listName == null || listName.trim().isEmpty()) {
+            errorMessage = getString(R.string.error_empty_input);
+        }
+
+        return errorMessage;
     }
 
     @Override

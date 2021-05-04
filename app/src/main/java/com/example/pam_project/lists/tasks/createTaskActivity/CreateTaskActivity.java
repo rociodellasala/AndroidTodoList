@@ -68,20 +68,35 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
-        final EditText taskTitleInput = findViewById(R.id.create_task_title_input);
+        final EditText taskNameInput = findViewById(R.id.create_task_title_input);
         final EditText taskDescriptionInput = findViewById(R.id.create_task_description_input);
         final CheckBox checkboxUrgencyInput = findViewById(R.id.create_task_priority_checkbox);
 
         if (itemId == R.id.check_add_button) {
-            String taskTile = taskTitleInput.getText().toString();
+            String taskName = taskNameInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
             boolean taskUrgency = checkboxUrgencyInput.isChecked();
 
-            createTaskPresenter.insertTask(taskTile, taskDescription, taskUrgency, listId);
-            finish();
+            String errorMessage = checkForm(taskName);
+            if(errorMessage != null) {
+                taskNameInput.setError(errorMessage);
+            } else {
+                createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
+                finish();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String checkForm(String taskName) {
+        String errorMessage = null;
+
+        if(taskName == null || taskName.trim().isEmpty()) {
+            errorMessage = getString(R.string.error_empty_input);
+        }
+
+        return errorMessage;
     }
 
     @Override
