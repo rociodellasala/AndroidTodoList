@@ -9,10 +9,12 @@ import com.example.pam_project.db.entities.ListEntity;
 import java.util.List;
 
 public class CategoriesWithLists {
-    @Embedded public CategoryEntity category;
+    @Embedded
+    public CategoryEntity category;
     @Relation(
             parentColumn = "id",
-            entityColumn = "categoryId"
+            entityColumn = "categoryId",
+            entity = ListEntity.class
     )
-    public List<ListEntity> lists;
+    public List<ListsWithTasks> lists;
 }

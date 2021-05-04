@@ -6,6 +6,7 @@
     <string name="start">Start</string>
     <string name="add_list">New List</string>
     <string name="add_task">New Task</string>
+    <string name="list_task_quantity">Number of tasks</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Create list</string>
     <string name="add_list_check_button">Create list</string>
@@ -26,19 +27,13 @@
     <string name="category_color_label">Color</string>
     <string name="delete_category">Delete</string>
     <!--Sort by options-->
-    <string-array name="sort_by_criteria">
-        <item>@string/sort_by_category_alphabetically</item>
-        <item>@string/sort_by_category_priority</item>
-        <item>@string/sort_by_list_alphabetically</item>
-        <item>@string/sort_by_task_number</item>
-    </string-array>
     <string name="sort_by_category_alphabetically">Category alphabetically</string>
     <string name="sort_by_category_priority">Category priority</string>
     <string name="sort_by_list_alphabetically">List alphabetically</string>
     <string name="sort_by_task_number">Number of tasks</string>
     <string name="select_all">All</string>
-    <!---Create task activity-->
     <string name="activity_title_create_task">Create task</string>
+    <!---Create task activity-->
     <string name="add_task_check_button">Create task</string>
     <string name="create_task_name_label">Name</string>
     <string name="create_task_description_label">Description</string>
@@ -46,8 +41,14 @@
     <string name="done_tasks">Done</string>
     <string name="create_task_priority_label">Priority</string>
     <string name="create_task_priority_checkbox">Urgent</string>
-    <!---Edit list activity-->
     <string name="activity_title_edit_list">Edit list</string>
+    <!---Edit list activity-->
     <string name="edit_list_name_label">Name</string>
     <string name="edit_list_category_label">Category</string>
+    <string-array name="sort_by_criteria">
+        <item>@string/sort_by_category_alphabetically</item>
+        <item>@string/sort_by_category_priority</item>
+        <item>@string/sort_by_list_alphabetically</item>
+        <item>@string/sort_by_task_number</item>
+    </string-array>
 </resources>

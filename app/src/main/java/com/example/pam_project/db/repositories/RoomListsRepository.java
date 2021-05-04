@@ -6,12 +6,8 @@ import com.example.pam_project.db.entities.CategoryEntity;
 import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.lists.lists.components.ListInformation;
-import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.utils.AppColor;
 import com.example.pam_project.utils.ColorFinder;
-
-import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Flowable;
 
@@ -28,7 +24,7 @@ public class RoomListsRepository implements ListsRepository {
     }
 
     @Override
-    public ListInformation getList(final long listId){
+    public ListInformation getList(final long listId) {
         ListEntity listEntity = listDao.getListById(listId).blockingFirst();
         CategoryEntity categoryEntity = categoryDao.getCategoryById(listEntity.categoryId).blockingFirst();
         AppColor color = ColorFinder.findColor(categoryEntity.color);

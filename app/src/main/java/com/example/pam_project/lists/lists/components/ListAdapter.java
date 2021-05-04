@@ -23,9 +23,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         this.dataSet = new ArrayList<>();
     }
 
-    public void update(final List<ListInformation> newDataSet){
+    public void update(final List<ListInformation> newDataSet) {
         this.dataSet.clear();
-        if(newDataSet != null){
+        if (newDataSet != null) {
             dataSet.addAll(newDataSet);
         }
 

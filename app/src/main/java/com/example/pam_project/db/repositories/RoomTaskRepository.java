@@ -12,7 +12,7 @@ public class RoomTaskRepository implements TaskRepository {
     private final TaskDao taskDao;
     private final TaskMapper mapper;
 
-    public RoomTaskRepository(final TaskDao taskDao, final TaskMapper mapper){
+    public RoomTaskRepository(final TaskDao taskDao, final TaskMapper mapper) {
         this.taskDao = taskDao;
         this.mapper = mapper;
     }
