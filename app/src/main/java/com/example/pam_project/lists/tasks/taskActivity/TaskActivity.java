@@ -3,12 +3,14 @@ package com.example.pam_project.lists.tasks.taskActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,7 @@ import com.example.pam_project.lists.tasks.components.CustomItemDecorator;
 import com.example.pam_project.lists.tasks.components.TaskAdapter;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.lists.tasks.createTaskActivity.CreateTaskActivity;
+import com.example.pam_project.utils.TaskStatus;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -83,6 +86,8 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
         String[] headers = {getString(R.string.pending_tasks), getString(R.string.done_tasks)};
         recyclerView.addItemDecoration(new CustomItemDecorator(this, recyclerView,  R.layout.text_header, headers));
 
+        final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
+        touchHelper.attachToRecyclerView(recyclerView);
         setExtendedFloatingButtonAction();
     }
 
@@ -152,6 +157,50 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
         Intent activityIntent = new Intent(getApplicationContext(), CreateTaskActivity.class);
         activityIntent.putExtra("id", listId);
         startActivityForResult(activityIntent, CREATE_TASK_ACTIVITY_REGISTRY);
+    }
+
+    @Override
+    public void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition){
+        adapter.update(model, adapterPosition);
+    }
+
+    private ItemTouchHelper.SimpleCallback setSwippableItems() {
+        return new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView1,
+                                  @NonNull RecyclerView.ViewHolder dragged,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder swippedItem, int direction) {
+                TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
+
+                if(taskInformation.getStatus().equals(TaskStatus.PENDING)){
+                    taskPresenter.onTaskComplete(swippedItem.getAdapterPosition(),
+                            taskInformation.getId(), taskInformation.getTitle(),
+                            taskInformation.getDescription(), taskInformation.getUrgency(),
+                            TaskStatus.DONE, listId);
+                } else
+                    adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public boolean isItemViewSwipeEnabled() {
+                return true;
+            }
+
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView,
+                                        @NonNull RecyclerView.ViewHolder viewHolder) {
+                final int dragFlags = 0;
+                final int swipeFlags = ItemTouchHelper.LEFT;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        };
     }
 
     @Override

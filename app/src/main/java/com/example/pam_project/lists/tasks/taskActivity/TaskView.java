@@ -10,9 +10,11 @@ public interface TaskView {
 
     void bindTasks(final List<TaskInformation> model);
 
-    void bindTask(final TaskInformation model);
+    void bindTask(TaskInformation model);
+
+    void bindListName(final String name);
 
     void showAddTask();
 
-    void bindListName(final String name);
+    void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition);
 }
