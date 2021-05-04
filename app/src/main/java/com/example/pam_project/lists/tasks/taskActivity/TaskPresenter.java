@@ -1,12 +1,16 @@
 package com.example.pam_project.lists.tasks.taskActivity;
 
+import android.util.Log;
+
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.TaskRepository;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
+import com.example.pam_project.utils.TaskStatus;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -47,6 +51,21 @@ public class TaskPresenter {
                 });
     }
 
+    public void onTaskComplete(final int position, final long id, final String name,
+                               final String description, final boolean priority,
+                               final TaskStatus status, final long listId) {
+        Completable.fromAction(() -> {
+            taskRepository.updateTask(id, name, description, priority, status, listId);
+            if(view.get() != null){
+                TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
+                view.get().onSuccessfulUpdate(taskInformation, position);
+            }
+        }).onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
     public void appendTask(final long id){
         TaskInformation model = taskRepository.getTask(id);
         if(view.get() != null)
@@ -62,4 +81,6 @@ public class TaskPresenter {
         if(view.get() != null)
             view.get().showAddTask();
     }
+
+
 }

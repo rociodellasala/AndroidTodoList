@@ -35,6 +35,6 @@ public class RoomTaskRepository implements TaskRepository {
     public void updateTask(final long id, final String name, final String description, final boolean priority,
                            final TaskStatus status, final long listId) {
         TaskEntity taskEntity = new TaskEntity(id, name, description, priority, StatusMapper.toStringStatus(status), listId);
-        taskDao.insertTask(taskEntity);
+        taskDao.updateTask(taskEntity);
     }
 }
