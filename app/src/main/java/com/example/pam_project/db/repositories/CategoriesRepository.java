@@ -16,5 +16,7 @@ public interface CategoriesRepository {
 
     Flowable<List<CategoryInformation>> getCategories();
 
+    long insertCategory(String name, String color);
+
     void updateCategory(long id, String name, String color);
 }

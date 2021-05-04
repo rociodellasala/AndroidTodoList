@@ -38,6 +38,12 @@ public class RoomCategoriesRepository implements CategoriesRepository {
     }
 
     @Override
+    public long insertCategory(final String name, final String color) {
+        CategoryEntity entity = new CategoryEntity(name, color);
+        return categoryDao.insertCategory(entity);
+    }
+
+    @Override
     public void updateCategory(final long id, final String name, final String color) {
         CategoryEntity entity = new CategoryEntity(id, name, color);
         categoryDao.updateCategory(entity);

@@ -52,4 +52,5 @@
     <string name="activity_title_create_category">Crear categoría</string>
     <!--Edit category activity-->
     <string name="activity_title_edit_category">Editar categoría</string>
+    <string name="create_category_name_input">Nombre</string>
 </resources>

@@ -26,7 +26,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         String numberOfTasksTitle = itemView.getContext().getResources().getString(R.string.list_task_quantity);
         numberOfTasks.setText(numberOfTasksTitle + ": " + String.valueOf(list.getTasks().size()));
         GradientDrawable drawable = (GradientDrawable) itemView.getBackground();
-        drawable.setColor(Color.parseColor(list.getColor().getHexValue()));
+        drawable.setColor(list.getColor().getARGBValue());
 
         itemView.setOnClickListener(v -> {
             if (listener != null) {

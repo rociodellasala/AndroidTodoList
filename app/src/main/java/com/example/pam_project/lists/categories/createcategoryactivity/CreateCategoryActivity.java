@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.editcategoryactivity;
+package com.example.pam_project.lists.categories.createcategoryactivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,19 +15,15 @@ import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.RoomCategoriesRepository;
 import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
-import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.utils.AppColor;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
 import java.util.Objects;
 
-public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
-    private EditCategoryPresenter presenter;
+public class CreateCategoryActivity extends AppCompatActivity implements CreateCategoryView {
+    private CreateCategoryPresenter presenter;
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
     private int selectedColor = DEFAULT_COLOR.getARGBValue();
-    private long categoryId;
-
-    private final static String CATEGORY_ID_PARAMETER = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +35,10 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         final CategoriesRepository repository = new RoomCategoriesRepository(
                 mainStorage.getStorage().categoryDao(), mapper);
 
-        presenter = new EditCategoryPresenter(categoryId, repository, this);
+        presenter = new CreateCategoryPresenter(repository, this);
 
-        categoryId = getIntent().getLongExtra(CATEGORY_ID_PARAMETER, -1);
-
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
-        setContentView(R.layout.activity_edit_category);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_category);
+        setContentView(R.layout.activity_create_category);
 
         setup();
     }
@@ -84,7 +78,7 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         final EditText categoryNameInput = findViewById(R.id.edit_category_name_input);
 
         if (itemId == R.id.check_add_button) {
-            String categoryName = categoryNameInput.getText().toString();
+            final String categoryName = categoryNameInput.getText().toString();
             final AppColor color = AppColor.fromARGBValue(selectedColor);
             String colorName = DEFAULT_COLOR.name();
             if (color != null) {
@@ -92,9 +86,9 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
             }
 
             if(!categoryName.isEmpty()) {
-                presenter.editCategory(categoryName, colorName);
+                presenter.insertCategory(categoryName, colorName);
             } else {
-                this.onFailedUpdate();
+                this.onFailedInsert();
             }
             finish();
         }
@@ -103,23 +97,16 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     }
 
     @Override
-    public void bindCategory(final CategoryInformation model) {
-        EditText title = findViewById(R.id.edit_category_name_input);
-        long categoryId = model.getId();
-        title.setText(model.getTitle());
-    }
-
-    @Override
-    public void onSuccessfulUpdate(final String name, final String color) {
+    public void onSuccessfulInsert(final long id, final String name, final String color) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("categoryName", name);
         returnIntent.putExtra("color", color);
-        returnIntent.putExtra("id", categoryId);
+        returnIntent.putExtra("id", id);
         setResult(Activity.RESULT_OK, returnIntent);
     }
 
     @Override
-    public void onFailedUpdate() {
+    public void onFailedInsert() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }

@@ -33,6 +33,10 @@
         <activity android:name=".landing.WelcomeActivity"/>
         <activity android:name=".lists.lists.editListActivity.EditListActivity"
             android:parentActivityName=".lists.tasks.taskActivity.TaskActivity" />
+        <activity android:name=".lists.categories.createcategoryactivity.CreateCategoryActivity"
+            android:parentActivityName=".lists.categories.categoryactivity.CategoryActivity"/>
+        <activity android:name=".lists.categories.editcategoryactivity.EditCategoryActivity"
+            android:parentActivityName=".lists.categories.categoryactivity.CategoryActivity"/>
     </application>
 
 </manifest>
