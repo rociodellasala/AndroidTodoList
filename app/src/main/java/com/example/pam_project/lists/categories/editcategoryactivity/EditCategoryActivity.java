@@ -86,21 +86,38 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         if (itemId == R.id.check_add_button) {
             String categoryName = categoryNameInput.getText().toString();
             final AppColor color = AppColor.fromARGBValue(selectedColor);
+            String errorMessage = checkForm(categoryName);
+
             String colorName = DEFAULT_COLOR.name();
             if (color != null) {
                 colorName = color.name();
             }
 
-            if(!categoryName.isEmpty()) {
-                presenter.editCategory(categoryName, colorName);
+            if(errorMessage != null) {
+                categoryNameInput.setError(errorMessage);
             } else {
-                this.onFailedUpdate();
+                if (!categoryName.isEmpty()) {
+                    presenter.editCategory(categoryName, colorName);
+                } else {
+                    this.onFailedUpdate();
+                }
+                finish();
             }
-            finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private String checkForm(String categoryName) {
+        String errorMessage = null;
+
+        if(categoryName == null || categoryName.trim().isEmpty()) {
+            errorMessage = getString(R.string.error_empty_input);
+        }
+
+        return errorMessage;
+    }
+
 
     @Override
     public void bindCategory(final CategoryInformation model) {
