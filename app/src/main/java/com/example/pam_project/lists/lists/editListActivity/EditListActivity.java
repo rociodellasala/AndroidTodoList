@@ -135,7 +135,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     private String checkForm(String listName) {
         String errorMessage = null;
 
-        if(listName.length() == 0) {
+        if(listName == null || listName != null && listName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 

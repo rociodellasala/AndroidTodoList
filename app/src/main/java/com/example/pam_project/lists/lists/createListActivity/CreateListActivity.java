@@ -118,7 +118,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     private String checkForm(String listName) {
         String errorMessage = null;
 
-        if(listName.length() == 0) {
+        if(listName == null || listName != null && listName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 
