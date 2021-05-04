@@ -48,4 +48,8 @@
     <string name="edit_list_category_label">Categoría</string>
     <!--Form errors-->
     <string name="error_empty_input">El campo no puede ser vacío</string>
+    <!--Create category activity-->
+    <string name="activity_title_create_category">Crear categoría</string>
+    <!--Edit category activity-->
+    <string name="activity_title_edit_category">Editar categoría</string>
 </resources>

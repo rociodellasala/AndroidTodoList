@@ -19,7 +19,9 @@ public class EditListPresenter {
     private Disposable disposable;
 
 
-    public EditListPresenter(final CategoriesRepository categoriesRepository, final ListsRepository listsRepository, final EditListView view) {
+    public EditListPresenter(final CategoriesRepository categoriesRepository,
+                             final ListsRepository listsRepository, final EditListView view) {
+
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
@@ -29,11 +31,10 @@ public class EditListPresenter {
         if(view.get() != null){
             fetchCategories(id);
         }
-
     }
 
 
-    private void fetchCategories(final long id){
+    private void fetchCategories(final long id) {
         disposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -45,13 +46,13 @@ public class EditListPresenter {
                 });
     }
 
-    private void fetchList(final long id){
+    private void fetchList(final long id) {
         ListInformation model = listsRepository.getList(id);
         if(view.get() != null)
             view.get().bindList(model);
     }
 
-    public void editList(final long id, final String name, final Long categoryId){
+    public void editList(final long id, final String name, final Long categoryId) {
         Completable.fromAction(() -> {
             listsRepository.updateList(id, name, categoryId);
             if(view.get() != null){

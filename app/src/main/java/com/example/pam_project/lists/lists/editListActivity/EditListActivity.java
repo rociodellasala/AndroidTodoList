@@ -34,7 +34,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     private Spinner spinner;
     private long listId;
 
-    private final static String  LIST_ID_PARAMETER = "id";
+    private static final String LIST_ID_PARAMETER = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
