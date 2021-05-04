@@ -51,4 +51,6 @@
         <item>@string/sort_by_list_alphabetically</item>
         <item>@string/sort_by_task_number</item>
     </string-array>
+    <!--Form errors-->
+    <string name="error_empty_input">Input cannot be empty</string>
 </resources>

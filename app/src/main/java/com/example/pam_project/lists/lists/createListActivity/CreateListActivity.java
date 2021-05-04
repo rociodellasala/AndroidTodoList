@@ -1,6 +1,15 @@
 package com.example.pam_project.lists.lists.createListActivity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Spinner;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.pam_project.R;
 import com.example.pam_project.db.mappers.CategoryMapper;
 import com.example.pam_project.db.mappers.ListMapper;
@@ -13,14 +22,6 @@ import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.SpinnerActivity;
 import com.example.pam_project.lists.lists.components.SpinnerCategoryAdapter;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import java.util.List;
 import java.util.Objects;
@@ -92,21 +93,36 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
         final Spinner spinner = findViewById(R.id.create_list_category_spinner);
-        final EditText listTitleInput = findViewById(R.id.create_list_title_input);
+        final EditText listNameInput = findViewById(R.id.create_list_title_input);
 
         if (itemId == R.id.check_add_button) {
-            String listTile = listTitleInput.getText().toString();
+            String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
+            String errorMessage = checkForm(listName);
 
-            if(categoryId != null){
-                createListPresenter.insertList(listTile, categoryId);
+            if(errorMessage != null) {
+                listNameInput.setError(errorMessage);
             } else {
-                this.onFailedInsert();
+                if (categoryId != null) {
+                    createListPresenter.insertList(listName, categoryId);
+                } else {
+                    this.onFailedInsert();
+                }
+                finish();
             }
-            finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String checkForm(String listName) {
+        String errorMessage = null;
+
+        if(listName == null || listName.trim().isEmpty()) {
+            errorMessage = getString(R.string.error_empty_input);
+        }
+
+        return errorMessage;
     }
 
     @Override
