@@ -1,5 +1,6 @@
 package com.example.pam_project.lists.tasks.createTaskActivity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
 import com.example.pam_project.db.mappers.TaskMapper;
@@ -36,6 +37,11 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
 
         createTaskPresenter = new CreateTaskPresenter(taskRepository, this);
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_task);
         setContentView(R.layout.activity_create_task);
@@ -84,6 +90,8 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
                 createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
                 finish();
             }
+        } else if (itemId == android.R.id.home) {
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
@@ -102,5 +110,11 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void onStop(){
         super.onStop();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
     }
 }
