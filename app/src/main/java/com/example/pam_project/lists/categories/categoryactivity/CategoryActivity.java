@@ -18,6 +18,7 @@ import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.lists.categories.components.CategoryAdapter;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
+import com.example.pam_project.lists.categories.createcategoryactivity.CreateCategoryActivity;
 import com.example.pam_project.lists.lists.createListActivity.CreateListActivity;
 import com.example.pam_project.utils.AppColor;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -32,7 +33,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
     private RecyclerView recyclerView;
     private CategoryPresenter presenter;
     private CategoryAdapter adapter;
-    private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 2;
+    private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
     private void setExtendedFloatingButtonAction(){
         ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_category);
         addListFAB.setOnClickListener(view -> {
-            Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
+            Intent activityIntent = new Intent(getApplicationContext(), CreateCategoryActivity.class);
             startActivityForResult(activityIntent, CREATE_CATEGORY_ACTIVITY_REGISTRY);
         });
     }
