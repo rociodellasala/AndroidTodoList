@@ -195,8 +195,14 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
 
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView,
-                                        @NonNull RecyclerView.ViewHolder viewHolder) {
+                                        @NonNull RecyclerView.ViewHolder swippedItem) {
+
                 final int dragFlags = 0;
+
+                TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
+                if (taskInformation.getStatus().equals(TaskStatus.DONE))
+                    return makeMovementFlags(dragFlags, 0);
+
                 final int swipeFlags = ItemTouchHelper.LEFT;
                 return makeMovementFlags(dragFlags, swipeFlags);
             }
