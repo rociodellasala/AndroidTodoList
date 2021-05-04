@@ -13,29 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 
 public class CustomItemDecorator extends RecyclerView.ItemDecoration {
+    private static final int TASK_PENDING = 0;
+    private static final int TASK_DONE = 1;
+
     private View[] mLayout;
     private TextView[] textView;
-    private String[] headers;
+    private String[] allHeaders;
+    private Context context;
+    private int resId;
 
-    public CustomItemDecorator(final Context context, RecyclerView parent, @LayoutRes int resId, String[] headers) {
-        this.headers = headers;
-        this.initializeLayout(parent, context, resId, headers.length);
+    public CustomItemDecorator(final Context context, RecyclerView parent, @LayoutRes int resId, String[] allHeaders) {
+        this.allHeaders = allHeaders;
+        mLayout = new View[allHeaders.length];
+        textView = new TextView[allHeaders.length];
+        this.context = context;
+        this.resId = resId;
     }
-
-    void initializeLayout(RecyclerView parent, Context context, int resId, int size) {
-        mLayout = new View[size];
-        textView = new TextView[size];
-
-        for(int i = 0; i < size; i++) {
-            mLayout[i] = LayoutInflater.from(context).inflate(resId, parent, false);
-            textView[i] = mLayout[i].findViewById(R.id.recycler_header);
-            textView[i].setText(headers[i]);
-            textView[i].setVisibility(View.INVISIBLE);
-            mLayout[i].measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        }
-    }
-
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -58,6 +51,8 @@ public class CustomItemDecorator extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        String[] headers = updatePendingHeaders(parent);
+        updateLayout(parent, headers);
         int currentViewType = -1;
 
         for (int i = 0, j = 0; i < parent.getChildCount(); i++) {
@@ -72,5 +67,39 @@ public class CustomItemDecorator extends RecyclerView.ItemDecoration {
                 outRect.setEmpty();
             }
         }
+    }
+
+    private void updateLayout(RecyclerView parent, String[] headers) {
+        for (int i = 0; i < headers.length; i++) {
+            mLayout[i] = LayoutInflater.from(context).inflate(resId, parent, false);
+            textView[i] = mLayout[i].findViewById(R.id.recycler_header);
+            textView[i].setText(headers[i]);
+            textView[i].setVisibility(View.INVISIBLE);
+            mLayout[i].measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        }
+    }
+
+    private String[] updatePendingHeaders(RecyclerView parent) {
+        String[] updatedHeaders = new String[allHeaders.length];
+
+        int currentViewType = -1;
+
+        for (int i = 0, j = 0; i < parent.getChildCount(); i++) {
+            View view1 = parent.getChildAt(i);
+            int position = parent.getChildAdapterPosition(view1);
+            int viewType = parent.getAdapter().getItemViewType(position);
+            if (viewType != currentViewType) {
+                if (viewType == TASK_PENDING) {
+                    updatedHeaders[j] = allHeaders[TASK_PENDING];
+                } else {
+                    updatedHeaders[j] = allHeaders[TASK_DONE];
+                }
+                j++;
+                currentViewType = viewType;
+            }
+        }
+
+        return updatedHeaders;
     }
 }

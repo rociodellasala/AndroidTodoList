@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int TASK_PENDING = 1;
-    private static final int TASK_DONE = 2;
+    private static final int TASK_PENDING = 0;
+    private static final int TASK_DONE = 1;
     private final List<TaskInformation> dataSet;
 
     public TaskAdapter() {
