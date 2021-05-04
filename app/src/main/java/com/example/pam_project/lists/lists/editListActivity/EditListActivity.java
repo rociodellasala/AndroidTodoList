@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
@@ -53,6 +54,12 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_list);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         setContentView(R.layout.activity_edit_list);
         setup();
     }
@@ -127,6 +134,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
                 }
                 finish();
             }
+        } else if (itemId == android.R.id.home) {
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
@@ -146,5 +155,11 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     public void onStop(){
         super.onStop();
         editListPresenter.onViewDetached();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
     }
 }
