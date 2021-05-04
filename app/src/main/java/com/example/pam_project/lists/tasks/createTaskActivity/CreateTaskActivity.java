@@ -92,7 +92,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     private String checkForm(String taskName) {
         String errorMessage = null;
 
-        if(taskName == null || taskName != null && taskName.trim().isEmpty()) {
+        if(taskName == null || taskName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 
