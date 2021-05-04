@@ -2,12 +2,16 @@ package com.example.pam_project.lists.lists.editListActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
@@ -26,6 +30,7 @@ import com.example.pam_project.lists.lists.components.SpinnerCategoryAdapter;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class EditListActivity extends AppCompatActivity implements EditListView {
 
@@ -34,7 +39,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     private Spinner spinner;
     private long listId;
 
-    private static final String LIST_ID_PARAMETER = "id";
+    private final static String  LIST_ID_PARAMETER = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +58,18 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_list);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         setContentView(R.layout.activity_edit_list);
         setup();
     }
 
     private void setup(){
+        Log.e("DALEawdadEEEE", "AH");
         spinner = findViewById(R.id.edit_list_category_spinner);
         adapter = new SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item);
         adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -111,40 +123,34 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
         final Spinner spinner = findViewById(R.id.edit_list_category_spinner);
-        final EditText listNameInput = findViewById(R.id.edit_list_title_input);
+        final EditText listTitleInput = findViewById(R.id.edit_list_title_input);
 
         if (itemId == R.id.check_add_button) {
-            String listName = listNameInput.getText().toString();
+            String listTile = listTitleInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
-            String errorMessage = checkForm(listName);
-            if(errorMessage != null) {
-                listNameInput.setError(errorMessage);
+
+            if(categoryId != null){
+                editListPresenter.editList(listId, listTile, categoryId);
             } else {
-                if(categoryId != null){
-                    editListPresenter.editList(listId, listName, categoryId);
-                } else {
-                    this.onFailedUpdate();
-                }
-                finish();
+                this.onFailedUpdate();
             }
+            finish();
+        }else if (itemId == android.R.id.home) {
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private String checkForm(String listName) {
-        String errorMessage = null;
-
-        if(listName == null || listName.trim().isEmpty()) {
-            errorMessage = getString(R.string.error_empty_input);
-        }
-
-        return errorMessage;
     }
 
     @Override
     public void onStop(){
         super.onStop();
         editListPresenter.onViewDetached();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
     }
 }
