@@ -6,6 +6,9 @@ import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -20,7 +23,7 @@ public class ListPresenter {
     private Disposable disposable;
 
     public ListPresenter(final FtuStorage ftuStorage, final CategoriesRepository categoriesRepository,
-                         final ListsRepository listsRepository, final ListView view){
+                         final ListsRepository listsRepository, final ListView view) {
         this.ftuStorage = ftuStorage;
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
@@ -31,7 +34,7 @@ public class ListPresenter {
         if (ftuStorage.isActive()) {
             ftuStorage.deactivate();
 
-            if(view.get() != null)
+            if (view.get() != null)
                 view.get().launchFtu();
         } else {
             if (view.get() != null) {
@@ -41,55 +44,62 @@ public class ListPresenter {
         }
     }
 
-    private void fetchLists(){
+    private void fetchLists() {
         disposable = categoriesRepository.getCategoriesWithLists()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-                    if(view.get() != null){
-                        view.get().bindLists(model);
+                    if (view.get() != null) {
+                        List<ListInformation> finalList = new ArrayList<>();
+                        for (final List<ListInformation> list : model.values()) {
+                            for (final ListInformation listInformation : list) {
+                                finalList.add(listInformation);
+                            }
+                        }
+                        Collections.sort(finalList);
+                        view.get().bindLists(finalList);
                     }
                 });
     }
 
-    public void appendList(final long id){
+    public void appendList(final long id) {
         ListInformation model = listsRepository.getList(id);
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().bindList(model);
     }
 
     public void onListClicked(final long id) {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showListContent(id);
     }
 
     public void onButtonClicked() {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showAddList();
     }
 
     public void onSearchBar() {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showSearchBar();
     }
 
     public void onFilterDialog() {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showFilterDialog();
     }
 
     public void onSortByDialog() {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showSortByDialog();
     }
 
     public void onManageCategories() {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showManageCategories();
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 

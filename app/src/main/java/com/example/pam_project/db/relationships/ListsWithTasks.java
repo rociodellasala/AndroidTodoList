@@ -3,8 +3,8 @@ package com.example.pam_project.db.relationships;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.example.pam_project.db.entities.TaskEntity;
 import com.example.pam_project.db.entities.ListEntity;
+import com.example.pam_project.db.entities.TaskEntity;
 
 import java.util.List;
 

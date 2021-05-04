@@ -12,15 +12,15 @@ import java.util.List;
 
 public class ListMapper {
 
-    public ListInformation toModel(final ListEntity entity){
+    public ListInformation toModel(final ListEntity entity) {
         return new ListInformation(entity.id, entity.name, entity.categoryId);
     }
 
-    public ListInformation toModelWithTasks(final ListEntity entity, final List<TaskInformation> tasks){
+    public ListInformation toModelWithTasks(final ListEntity entity, final List<TaskInformation> tasks) {
         return new ListInformation(entity.id, entity.name, entity.categoryId, tasks);
     }
 
-    public ListInformation toListWithTasksModel(final ListsWithTasks entity){
+    public ListInformation toListWithTasksModel(final ListsWithTasks entity) {
         final List<TaskInformation> listOfTasks = new ArrayList<>();
 
         for (final TaskEntity taskEntity : entity.tasks) {

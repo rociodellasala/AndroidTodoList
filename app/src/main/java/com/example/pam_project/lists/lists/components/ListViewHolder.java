@@ -21,9 +21,10 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final ListInformation list) {
         final TextView title = itemView.findViewById(R.id.title);
-//        final TextView numberOfTasks = itemView.findViewById(R.id.number_of_tasks);
+        final TextView numberOfTasks = itemView.findViewById(R.id.number_of_tasks);
         title.setText(list.getTitle());
-//        numberOfTasks.setText(String.valueOf(list.getNumberOfTasks()));
+        String numberOfTasksTitle = itemView.getContext().getResources().getString(R.string.list_task_quantity);
+        numberOfTasks.setText(numberOfTasksTitle + ": " + String.valueOf(list.getTasks().size()));
         GradientDrawable drawable = (GradientDrawable) itemView.getBackground();
         drawable.setColor(Color.parseColor(list.getColor().getHexValue()));
 

@@ -4,12 +4,11 @@ import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.utils.AppColor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListInformation implements Serializable {
-    private long id;
+public class ListInformation implements Serializable, Comparable<ListInformation> {
     private final String title;
+    private long id;
     private long categoryId;
     private AppColor color;
     private List<TaskInformation> tasks;
@@ -21,6 +20,15 @@ public class ListInformation implements Serializable {
         this.color = color;
     }
 
+    public ListInformation(final long id, final String title, final long categoryId, AppColor color, List<TaskInformation> tasks) {
+        this.id = id;
+        this.title = title;
+        this.categoryId = categoryId;
+        this.color = color;
+        this.tasks = tasks;
+    }
+
+
     public ListInformation(final long id, final String title, final long categoryId, List<TaskInformation> tasks) {
         this.id = id;
         this.title = title;
@@ -28,7 +36,7 @@ public class ListInformation implements Serializable {
         this.tasks = tasks;
     }
 
-    public ListInformation(final long id ,final String title, final long categoryId){
+    public ListInformation(final long id, final String title, final long categoryId) {
         this.id = id;
         this.title = title;
         this.categoryId = categoryId;
@@ -55,5 +63,12 @@ public class ListInformation implements Serializable {
         return color;
     }
 
-    public List<TaskInformation> getTasks() { return tasks; }
+    public List<TaskInformation> getTasks() {
+        return tasks;
+    }
+
+    @Override
+    public int compareTo(ListInformation o) {
+        return Long.compare(this.id, o.getId());
+    }
 }

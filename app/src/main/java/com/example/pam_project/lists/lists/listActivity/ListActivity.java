@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-
 import com.example.pam_project.db.mappers.CategoryMapper;
 import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
@@ -29,15 +28,13 @@ import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
-
 import com.example.pam_project.lists.categories.categoryactivity.CategoryActivity;
-
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
-import com.example.pam_project.lists.lists.createListActivity.CreateListActivity;
 import com.example.pam_project.lists.lists.components.ListAdapter;
 import com.example.pam_project.lists.lists.components.ListInformation;
+import com.example.pam_project.lists.lists.createListActivity.CreateListActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -45,12 +42,10 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String PAM_PREF = "app-pref";
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
-
+    private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private ListPresenter listPresenter;
-
-    private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +84,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    public void showLists(){
+    public void showLists() {
         adapter = new ListAdapter();
         adapter.setOnClickedListener(this);
         recyclerView.setAdapter(adapter);
@@ -106,24 +101,24 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    public void bindList(final ListInformation model){
+    public void bindList(final ListInformation model) {
         adapter.addItem(model);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showListContent(final long id){
+    public void showListContent(final long id) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
     }
 
     @Override
-    public void showAddList(){
+    public void showAddList() {
         Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
         startActivityForResult(activityIntent, CREATE_LIST_ACTIVITY_REGISTRY);
     }
 
     @Override
-    public void showSearchBar(){
+    public void showSearchBar() {
         // TODO search
     }
 
