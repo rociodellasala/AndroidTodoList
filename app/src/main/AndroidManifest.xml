@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".lists.tasks.createTaskActivity.CreateTaskActivity"/>
-        <activity android:name=".lists.categories.categoryactivity.CategoryActivity"/>
+        <activity android:name=".lists.categories.categoryactivity.CategoryActivity"
+            android:parentActivityName=".lists.lists.listActivity.ListActivity"/>
         <activity android:name=".landing.WelcomeActivity"/>
         <activity android:name=".lists.lists.editListActivity.EditListActivity"/>
         <activity android:name=".lists.categories.createcategoryactivity.CreateCategoryActivity"
