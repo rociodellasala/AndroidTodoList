@@ -7,7 +7,7 @@ public class SharedPreferencesFtuStorage implements FtuStorage {
     private static final String FTU_KEY = "is_ftu";
     private final SharedPreferences sharedPref;
 
-    public SharedPreferencesFtuStorage(final SharedPreferences sharedPref){
+    public SharedPreferencesFtuStorage(final SharedPreferences sharedPref) {
         this.sharedPref = sharedPref;
     }
 

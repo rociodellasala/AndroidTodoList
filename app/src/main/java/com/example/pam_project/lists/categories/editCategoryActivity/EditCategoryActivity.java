@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.createcategoryactivity;
+package com.example.pam_project.lists.categories.editCategoryActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,15 +15,18 @@ import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.RoomCategoriesRepository;
 import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.utils.AppColor;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
 import java.util.Objects;
 
-public class CreateCategoryActivity extends AppCompatActivity implements CreateCategoryView {
-    private CreateCategoryPresenter presenter;
+public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
+    private final static String CATEGORY_ID_PARAMETER = "id";
+    private EditCategoryPresenter presenter;
     private int selectedColor = DEFAULT_COLOR.getARGBValue();
+    private long categoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +38,12 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
         final CategoriesRepository repository = new RoomCategoriesRepository(
                 mainStorage.getStorage().categoryDao(), mapper);
 
-        presenter = new CreateCategoryPresenter(repository, this);
+        presenter = new EditCategoryPresenter(categoryId, repository, this);
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_category);
-        setContentView(R.layout.activity_create_category);
+        categoryId = getIntent().getLongExtra(CATEGORY_ID_PARAMETER, -1);
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
+        setContentView(R.layout.activity_edit_category);
 
         setup();
     }
@@ -78,7 +83,7 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
         final EditText categoryNameInput = findViewById(R.id.edit_category_name_input);
 
         if (itemId == R.id.check_add_button) {
-            final String categoryName = categoryNameInput.getText().toString();
+            String categoryName = categoryNameInput.getText().toString();
             final AppColor color = AppColor.fromARGBValue(selectedColor);
             String errorMessage = checkForm(categoryName);
 
@@ -87,13 +92,13 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
                 colorName = color.name();
             }
 
-            if(errorMessage != null) {
+            if (errorMessage != null) {
                 categoryNameInput.setError(errorMessage);
             } else {
                 if (!categoryName.isEmpty()) {
-                    presenter.insertCategory(categoryName, colorName);
+                    presenter.editCategory(categoryName, colorName);
                 } else {
-                    this.onFailedInsert();
+                    this.onFailedUpdate();
                 }
                 finish();
             }
@@ -105,24 +110,32 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     private String checkForm(String categoryName) {
         String errorMessage = null;
 
-        if(categoryName == null || categoryName.trim().isEmpty()) {
+        if (categoryName == null || categoryName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 
         return errorMessage;
     }
 
+
     @Override
-    public void onSuccessfulInsert(final long id, final String name, final String color) {
+    public void bindCategory(final CategoryInformation model) {
+        EditText title = findViewById(R.id.edit_category_name_input);
+        long categoryId = model.getId();
+        title.setText(model.getTitle());
+    }
+
+    @Override
+    public void onSuccessfulUpdate(final String name, final String color) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("categoryName", name);
         returnIntent.putExtra("color", color);
-        returnIntent.putExtra("id", id);
+        returnIntent.putExtra("id", categoryId);
         setResult(Activity.RESULT_OK, returnIntent);
     }
 
     @Override
-    public void onFailedInsert() {
+    public void onFailedUpdate() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }

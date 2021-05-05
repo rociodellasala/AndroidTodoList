@@ -1,7 +1,5 @@
 package com.example.pam_project.lists.tasks.taskActivity;
 
-import android.util.Log;
-
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.TaskRepository;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
@@ -21,7 +19,7 @@ public class TaskPresenter {
     private final ListsRepository listsRepository;
     private final WeakReference<TaskView> view;
     private Disposable disposable;
-    private long listId;
+    private final long listId;
 
     public TaskPresenter(final TaskRepository taskRepository, final ListsRepository listsRepository,
                          final TaskView view, final long listId) {
@@ -38,13 +36,13 @@ public class TaskPresenter {
         }
     }
 
-    private void fetchTasks(){
+    private void fetchTasks() {
         disposable = listsRepository.getListWithTasks(listId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
                     Collections.sort(model.getTasks(), Collections.reverseOrder());
-                    if(view.get() != null){
+                    if (view.get() != null) {
                         view.get().bindListName(model.getTitle());
                         view.get().bindTasks(model.getTasks());
                     }
@@ -56,7 +54,7 @@ public class TaskPresenter {
                                final TaskStatus status, final long listId) {
         Completable.fromAction(() -> {
             taskRepository.updateTask(id, name, description, priority, status, listId);
-            if(view.get() != null){
+            if (view.get() != null) {
                 TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
                 view.get().onSuccessfulUpdate(taskInformation, position);
             }
@@ -66,19 +64,19 @@ public class TaskPresenter {
                 .subscribe();
     }
 
-    public void appendTask(final long id){
+    public void appendTask(final long id) {
         TaskInformation model = taskRepository.getTask(id);
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().bindTask(model);
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 
     public void onButtonAddClicked() {
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().showAddTask();
     }
 

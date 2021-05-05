@@ -1,6 +1,5 @@
 package com.example.pam_project.lists.tasks.components;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,9 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.dataSet = new ArrayList<>();
     }
 
-    public void update(final List<TaskInformation> newDataSet){
+    public void update(final List<TaskInformation> newDataSet) {
         this.dataSet.clear();
-        if(newDataSet != null){
+        if (newDataSet != null) {
             dataSet.addAll(newDataSet);
         }
 
@@ -45,7 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.dataSet.add(newTask);
     }
 
-    public TaskInformation getItem(int adapterPosition){
+    public TaskInformation getItem(int adapterPosition) {
         return this.dataSet.get(adapterPosition);
     }
 
@@ -55,7 +54,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final View view;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 
-        if(viewType == TASK_PENDING) {
+        if (viewType == TASK_PENDING) {
             view = layoutInflater.inflate(R.layout.task_view_holder_pending, parent, false);
             return new TaskViewHolderPending(view);
         } else {
@@ -67,23 +66,23 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Object item = dataSet.get(position);
+        TaskInformation item = dataSet.get(position);
 
         if (holder instanceof TaskViewHolderPending) {
-            ((TaskViewHolderPending) holder).bind((TaskInformation) item);
+            ((TaskViewHolderPending) holder).bind(item);
         } else {
-            ((TaskViewHolderDone) holder).bind((TaskInformation) item);
+            ((TaskViewHolderDone) holder).bind(item);
         }
     }
 
     @Override
     public int getItemCount() {
-        return dataSet == null ? 0 : dataSet.size();
+        return dataSet.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         TaskStatus status = dataSet.get(position).getStatus();
-        return status.equals(TaskStatus.PENDING) ? TASK_PENDING :  TASK_DONE;
+        return status.equals(TaskStatus.PENDING) ? TASK_PENDING : TASK_DONE;
     }
 }

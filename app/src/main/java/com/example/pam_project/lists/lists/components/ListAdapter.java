@@ -56,7 +56,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     @Override
     public int getItemCount() {
-        return dataSet == null ? 0 : dataSet.size();
+        return dataSet.size();
     }
 
     public int getSortIndex() {

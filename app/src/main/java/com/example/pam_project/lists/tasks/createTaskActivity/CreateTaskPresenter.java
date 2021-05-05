@@ -18,11 +18,11 @@ public class CreateTaskPresenter {
         this.view = new WeakReference<>(view);
     }
 
-    public void insertTask(final String name, final String description, final boolean priority, final long listId){
+    public void insertTask(final String name, final String description, final boolean priority, final long listId) {
         Completable.fromAction(() -> {
             long id = taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
-            if(view.get() != null){
-                view.get().onSuccessfulInsert(id);
+            if (view.get() != null) {
+                view.get().onSuccessfulInsert();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

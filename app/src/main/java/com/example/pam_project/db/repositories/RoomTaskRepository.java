@@ -2,7 +2,6 @@ package com.example.pam_project.db.repositories;
 
 import com.example.pam_project.db.daos.TaskDao;
 import com.example.pam_project.db.entities.TaskEntity;
-import com.example.pam_project.db.mappers.TaskMapper;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.utils.StatusMapper;
 import com.example.pam_project.utils.TaskStatus;
@@ -10,11 +9,9 @@ import com.example.pam_project.utils.TaskStatus;
 public class RoomTaskRepository implements TaskRepository {
 
     private final TaskDao taskDao;
-    private final TaskMapper mapper;
 
-    public RoomTaskRepository(final TaskDao taskDao, final TaskMapper mapper) {
+    public RoomTaskRepository(final TaskDao taskDao) {
         this.taskDao = taskDao;
-        this.mapper = mapper;
     }
 
     @Override

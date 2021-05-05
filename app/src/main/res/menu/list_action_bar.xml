@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/list_action_bar_search"
-          android:icon="@drawable/ic_search"
-          android:title="@string/search"
-          app:showAsAction="ifRoom" />
-    <item android:id="@+id/list_action_bar_filter"
-          android:icon="@drawable/ic_filter"
-          android:title="@string/filter" />
-    <item android:id="@+id/list_action_bar_sort_by"
-          android:icon="@drawable/ic_sort_by"
-          android:title="@string/sort_by" />
-    <item android:id="@+id/list_action_bar_manage_categories"
-          android:title="@string/manage_categories" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/list_action_bar_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/list_action_bar_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter" />
+    <item
+        android:id="@+id/list_action_bar_sort_by"
+        android:icon="@drawable/ic_sort_by"
+        android:title="@string/sort_by" />
+    <item
+        android:id="@+id/list_action_bar_manage_categories"
+        android:title="@string/manage_categories" />
 </menu>

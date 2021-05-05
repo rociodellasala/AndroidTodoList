@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import io.reactivex.annotations.NonNull;
-
 @Entity(tableName = "Categories")
 public class CategoryEntity {
 
@@ -14,11 +12,10 @@ public class CategoryEntity {
     public long id;
 
     @ColumnInfo(name = "name")
-    @NonNull
-    public String name;
+    public final String name;
 
     @ColumnInfo(name = "color")
-    public String color;
+    public final String color;
 
     public CategoryEntity(long id, String name, String color) {
         this.id = id;

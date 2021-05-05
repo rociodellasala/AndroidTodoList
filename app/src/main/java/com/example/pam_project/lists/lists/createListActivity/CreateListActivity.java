@@ -50,7 +50,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         setup();
     }
 
-    private void setup(){
+    private void setup() {
         Spinner spinner = findViewById(R.id.create_list_category_spinner);
         adapter = new SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item);
         adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,7 +61,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
 
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         createListPresenter.onViewAttached();
     }
@@ -72,13 +72,13 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     }
 
     @Override
-    public void onSuccessfulInsert(final long id) {
+    public void onSuccessfulInsert() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
     }
 
     @Override
-    public void onFailedInsert(){
+    public void onFailedInsert() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }
@@ -100,7 +100,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
             String errorMessage = checkForm(listName);
 
-            if(errorMessage != null) {
+            if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
                 if (categoryId != null) {
@@ -118,7 +118,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     private String checkForm(String listName) {
         String errorMessage = null;
 
-        if(listName == null || listName.trim().isEmpty()) {
+        if (listName == null || listName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 
@@ -126,7 +126,7 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         createListPresenter.onViewDetached();
     }

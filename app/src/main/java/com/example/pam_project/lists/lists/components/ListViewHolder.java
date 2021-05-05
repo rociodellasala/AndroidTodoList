@@ -1,6 +1,5 @@
 package com.example.pam_project.lists.lists.components;
 
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.TextView;
@@ -24,7 +23,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         final TextView numberOfTasks = itemView.findViewById(R.id.number_of_tasks);
         title.setText(list.getTitle());
         String numberOfTasksTitle = itemView.getContext().getResources().getString(R.string.list_task_quantity);
-        numberOfTasks.setText(numberOfTasksTitle + ": " + String.valueOf(list.getTasks().size()));
+        String text = numberOfTasksTitle + ": " + list.getTasks().size();
+        numberOfTasks.setText(text);
         GradientDrawable drawable = (GradientDrawable) itemView.getBackground();
         drawable.setColor(list.getColor().getARGBValue());
 

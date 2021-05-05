@@ -1,14 +1,5 @@
 package com.example.pam_project.lists.tasks.createTaskActivity;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import com.example.pam_project.R;
-import com.example.pam_project.db.mappers.TaskMapper;
-import com.example.pam_project.db.repositories.RoomTaskRepository;
-import com.example.pam_project.db.repositories.TaskRepository;
-import com.example.pam_project.db.utils.Database;
-import com.example.pam_project.db.utils.Storage;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +8,22 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.pam_project.R;
+import com.example.pam_project.db.repositories.RoomTaskRepository;
+import com.example.pam_project.db.repositories.TaskRepository;
+import com.example.pam_project.db.utils.Database;
+import com.example.pam_project.db.utils.Storage;
+
 import java.util.Objects;
 
 public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
 
+    private final static String LIST_ID_PARAMETER = "id";
     private CreateTaskPresenter createTaskPresenter;
     private long listId;
-
-    private final static String  LIST_ID_PARAMETER = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +31,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
 
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
-        final TaskMapper taskMapper = new TaskMapper();
-        final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao(), taskMapper);
+        final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao());
 
         createTaskPresenter = new CreateTaskPresenter(taskRepository, this);
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
@@ -48,7 +46,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
     }
 
@@ -59,13 +57,13 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     @Override
-    public void onSuccessfulInsert(final long id) {
+    public void onSuccessfulInsert() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
     }
 
     @Override
-    public void onFailedInsert(){
+    public void onFailedInsert() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }
@@ -84,7 +82,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             boolean taskUrgency = checkboxUrgencyInput.isChecked();
 
             String errorMessage = checkForm(taskName);
-            if(errorMessage != null) {
+            if (errorMessage != null) {
                 taskNameInput.setError(errorMessage);
             } else {
                 createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
@@ -100,7 +98,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     private String checkForm(String taskName) {
         String errorMessage = null;
 
-        if(taskName == null || taskName.trim().isEmpty()) {
+        if (taskName == null || taskName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 
@@ -108,13 +106,12 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         super.onBackPressed();
     }
 }

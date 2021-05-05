@@ -1,7 +1,5 @@
 package com.example.pam_project.db.mappers;
 
-import android.util.Log;
-
 import com.example.pam_project.db.entities.CategoryEntity;
 import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.entities.TaskEntity;

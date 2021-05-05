@@ -13,14 +13,13 @@
     <string name="create_list_name_label">Name</string>
     <string name="create_list_category_label">Category</string>
     <string name="default_category">Uncategorized</string>
-    <string name="spinner_category_placeholder">Select category</string>
-    <string name="edit_list_button">Edit list</string>
     <!--List Overflow Menu-->
     <string name="search">Search</string>
     <string name="filter">Filter</string>
     <string name="sort_by">Sort by</string>
     <string name="manage_categories">Manage categories</string>
     <!--Category activity-->
+    <string name="activity_title_category">Categories</string>
     <string name="add_category">Add category</string>
     <!--Create or modify Category activity-->
     <string name="category_name_label">Name</string>
@@ -31,10 +30,8 @@
     <string name="sort_by_category_priority">Category priority</string>
     <string name="sort_by_list_alphabetically">List alphabetically</string>
     <string name="sort_by_task_number">Number of tasks</string>
-    <string name="select_all">All</string>
     <string name="activity_title_create_task">Create task</string>
     <!---Create task activity-->
-    <string name="add_task_check_button">Create task</string>
     <string name="create_task_name_label">Name</string>
     <string name="create_task_description_label">Description</string>
     <string name="pending_tasks">Pending</string>
@@ -45,17 +42,16 @@
     <!---Edit list activity-->
     <string name="edit_list_name_label">Name</string>
     <string name="edit_list_category_label">Category</string>
+    <string name="error_empty_input">Input cannot be empty</string>
+    <!--Form errors-->
+    <string name="activity_title_create_category">Create category</string>
+    <!--Create category activity-->
+    <string name="activity_title_edit_category">Edit category</string>
+    <!--Edit category activity-->
     <string-array name="sort_by_criteria">
         <item>@string/sort_by_category_alphabetically</item>
         <item>@string/sort_by_category_priority</item>
         <item>@string/sort_by_list_alphabetically</item>
         <item>@string/sort_by_task_number</item>
     </string-array>
-    <!--Form errors-->
-    <string name="error_empty_input">Input cannot be empty</string>
-    <!--Create category activity-->
-    <string name="activity_title_create_category">Create category</string>
-    <!--Edit category activity-->
-    <string name="activity_title_edit_category">Edit category</string>
-    <string name="create_category_name_input">Name</string>
 </resources>
