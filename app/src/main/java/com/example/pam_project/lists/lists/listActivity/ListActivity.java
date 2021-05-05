@@ -53,7 +53,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
-        //mainStorage.populateStorage();
 
         final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
         final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
