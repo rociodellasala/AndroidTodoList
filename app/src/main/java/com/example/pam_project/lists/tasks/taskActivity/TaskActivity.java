@@ -100,16 +100,16 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
                 String taskId = data.getStringExtra("taskId");
                 taskPresenter.appendTask(Long.parseLong(taskId));
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        } else if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Write
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
+//        } else if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                // Write
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
         }
     }
 

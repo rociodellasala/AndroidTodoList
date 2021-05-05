@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import io.reactivex.annotations.NonNull;
-
 @Entity(tableName = "Lists")
 public class ListEntity {
 
@@ -14,7 +12,6 @@ public class ListEntity {
     public long id;
 
     @ColumnInfo(name = "name")
-    @NonNull
     public final String name;
 
     @ColumnInfo(name = "categoryId")

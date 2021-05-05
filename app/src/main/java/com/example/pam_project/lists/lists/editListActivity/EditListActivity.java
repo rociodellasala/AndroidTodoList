@@ -155,9 +155,4 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         super.onStop();
         editListPresenter.onViewDetached();
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 }

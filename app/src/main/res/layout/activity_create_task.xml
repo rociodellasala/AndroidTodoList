@@ -23,22 +23,6 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/create_task_description_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:ems="16"
-        android:hint="@string/create_task_description_label"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_task_description_label" />
-
-    <EditText
         android:id="@+id/create_task_title_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +37,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_task_name_label" />
+
+    <EditText
+        android:id="@+id/create_task_description_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:ems="16"
+        android:hint="@string/create_task_description_label"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_task_description_label" />
 
     <TextView
         android:id="@+id/create_task_name_label"

@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import io.reactivex.annotations.NonNull;
-
 @Entity(tableName = "Tasks")
 public class TaskEntity {
 
@@ -14,7 +12,6 @@ public class TaskEntity {
     public long id;
 
     @ColumnInfo(name = "name")
-    @NonNull
     public final String name;
 
     @ColumnInfo(name = "description")
@@ -24,7 +21,6 @@ public class TaskEntity {
     public final boolean priority;
 
     @ColumnInfo(name = "status")
-    @NonNull
     public final String status;
 
     public final long listId;
