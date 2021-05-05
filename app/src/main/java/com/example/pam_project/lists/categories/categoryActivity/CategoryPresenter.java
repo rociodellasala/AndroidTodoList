@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.categoryactivity;
+package com.example.pam_project.lists.categories.categoryActivity;
 
 import com.example.pam_project.db.repositories.CategoriesRepository;
 
@@ -27,7 +27,7 @@ public class CategoryPresenter {
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 
@@ -36,7 +36,7 @@ public class CategoryPresenter {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-                    if(view.get() != null){
+                    if (view.get() != null) {
                         view.get().bindCategories(model);
                     }
                 });

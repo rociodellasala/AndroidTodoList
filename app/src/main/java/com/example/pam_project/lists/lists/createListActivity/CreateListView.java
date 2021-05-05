@@ -8,7 +8,7 @@ public interface CreateListView {
 
     void bindCategories(final List<CategoryInformation> model);
 
-    void onSuccessfulInsert(final long id);
+    void onSuccessfulInsert();
 
     void onFailedInsert();
 

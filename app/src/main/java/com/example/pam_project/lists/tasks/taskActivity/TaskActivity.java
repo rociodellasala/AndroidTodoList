@@ -3,7 +3,6 @@ package com.example.pam_project.lists.tasks.taskActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.db.mappers.ListMapper;
-import com.example.pam_project.db.mappers.TaskMapper;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.RoomListsRepository;
 import com.example.pam_project.db.repositories.RoomTaskRepository;
@@ -35,13 +33,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class TaskActivity extends AppCompatActivity implements TaskView {
+    private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
+    private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
     private TaskPresenter taskPresenter;
     private long listId;
-
-    private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
-    private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +50,8 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
 
-        final TaskMapper taskMapper = new TaskMapper();
         final ListMapper listMapper = new ListMapper();
-        final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao(), taskMapper);
+        final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao());
         final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
                 mainStorage.getStorage().categoryDao(), listMapper);
 
@@ -84,7 +80,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         String[] headers = {getString(R.string.pending_tasks), getString(R.string.done_tasks)};
-        recyclerView.addItemDecoration(new CustomItemDecorator(this, recyclerView,  R.layout.text_header, headers));
+        recyclerView.addItemDecoration(new CustomItemDecorator(this, R.layout.text_header, headers));
 
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
         touchHelper.attachToRecyclerView(recyclerView);
@@ -100,20 +96,20 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CREATE_TASK_ACTIVITY_REGISTRY) {
-            if(resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 String taskId = data.getStringExtra("taskId");
                 taskPresenter.appendTask(Long.parseLong(taskId));
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        } else if(requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Write
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
+//        } else if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                // Write
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
         }
     }
 
@@ -160,12 +156,12 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    public void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition){
+    public void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition) {
         adapter.update(model, adapterPosition);
     }
 
     private ItemTouchHelper.SimpleCallback setSwippableItems() {
-        return new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        return new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView1,
@@ -178,7 +174,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
             public void onSwiped(@NonNull RecyclerView.ViewHolder swippedItem, int direction) {
                 TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
 
-                if(taskInformation.getStatus().equals(TaskStatus.PENDING)){
+                if (taskInformation.getStatus().equals(TaskStatus.PENDING)) {
                     taskPresenter.onTaskComplete(swippedItem.getAdapterPosition(),
                             taskInformation.getId(), taskInformation.getTitle(),
                             taskInformation.getDescription(), taskInformation.getUrgency(),

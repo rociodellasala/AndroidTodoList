@@ -6,12 +6,12 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class Database implements Storage{
+public class Database implements Storage {
 
-    private AppDatabase database;
     private final Context context;
+    private AppDatabase database;
 
-    public Database(Context context){
+    public Database(Context context) {
         this.context = context;
     }
 

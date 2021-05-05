@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.editcategoryactivity;
+package com.example.pam_project.lists.categories.editCategoryActivity;
 
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
@@ -6,7 +6,6 @@ import com.example.pam_project.lists.categories.components.CategoryInformation;
 import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -36,7 +35,7 @@ public class EditCategoryPresenter {
     public void editCategory(final String name, final String color) {
         Completable.fromAction(() -> {
             repository.updateCategory(categoryId, name, color);
-            if(view.get() != null){
+            if (view.get() != null) {
                 view.get().onSuccessfulUpdate(name, color);
             }
         }).onErrorComplete()
@@ -46,7 +45,7 @@ public class EditCategoryPresenter {
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 

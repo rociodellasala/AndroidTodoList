@@ -5,9 +5,9 @@ import com.example.pam_project.utils.AppColor;
 import java.io.Serializable;
 
 public class CategoryInformation implements Serializable {
-    private long id;
     private final String title;
     private final AppColor color;
+    private long id;
 
     public CategoryInformation(final String title, AppColor color) {
         this.title = title;
@@ -20,7 +20,7 @@ public class CategoryInformation implements Serializable {
         this.id = id;
     }
 
-    public long getId(){
+    public long getId() {
         return id;
     }
 

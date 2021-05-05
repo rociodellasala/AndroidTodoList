@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.createcategoryactivity;
+package com.example.pam_project.lists.categories.createCategoryActivity;
 
 import com.example.pam_project.db.repositories.CategoriesRepository;
 
@@ -28,7 +28,7 @@ public class CreateCategoryPresenter {
     public void insertCategory(final String name, final String color) {
         Completable.fromAction(() -> {
             final long id = repository.insertCategory(name, color);
-            if(view.get() != null) {
+            if (view.get() != null) {
                 view.get().onSuccessfulInsert(id, name, color);
             }
         }).onErrorComplete()
@@ -38,7 +38,7 @@ public class CreateCategoryPresenter {
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 

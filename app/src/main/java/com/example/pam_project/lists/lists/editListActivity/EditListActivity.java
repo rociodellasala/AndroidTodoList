@@ -30,12 +30,11 @@ import java.util.Objects;
 
 public class EditListActivity extends AppCompatActivity implements EditListView {
 
+    private static final String LIST_ID_PARAMETER = "id";
     private EditListPresenter editListPresenter;
     private SpinnerCategoryAdapter adapter;
     private Spinner spinner;
     private long listId;
-
-    private static final String LIST_ID_PARAMETER = "id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         setup();
     }
 
-    private void setup(){
+    private void setup() {
         spinner = findViewById(R.id.edit_list_category_spinner);
         adapter = new SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item);
         adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -74,7 +73,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         editListPresenter.onViewAttached(listId);
     }
@@ -85,7 +84,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void bindList(final ListInformation model){
+    public void bindList(final ListInformation model) {
         EditText title = findViewById(R.id.edit_list_title_input);
         long categoryId = model.getCategoryId();
         int spinnerPosition = adapter.getCategories().getPosition(adapter.getCategoryById(categoryId));
@@ -103,7 +102,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onFailedUpdate(){
+    public void onFailedUpdate() {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }
@@ -124,10 +123,10 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
             String errorMessage = checkForm(listName);
-            if(errorMessage != null) {
+            if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                if(categoryId != null){
+                if (categoryId != null) {
                     editListPresenter.editList(listId, listName, categoryId);
                 } else {
                     this.onFailedUpdate();
@@ -144,7 +143,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     private String checkForm(String listName) {
         String errorMessage = null;
 
-        if(listName == null || listName.trim().isEmpty()) {
+        if (listName == null || listName.trim().isEmpty()) {
             errorMessage = getString(R.string.error_empty_input);
         }
 
@@ -152,14 +151,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         editListPresenter.onViewDetached();
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        super.onBackPressed();
     }
 }

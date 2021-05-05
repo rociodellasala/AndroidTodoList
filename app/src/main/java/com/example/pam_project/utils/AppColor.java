@@ -14,20 +14,20 @@ public enum AppColor {
         this.hexValue = hexValue;
     }
 
-    public String getHexValue() {
-        return hexValue;
-    }
-
-    public int getARGBValue() {
-        return Color.parseColor(getHexValue());
-    }
-
     public static AppColor fromARGBValue(int value) {
         for (AppColor color : values()) {
             if (color.getARGBValue() == value)
                 return color;
         }
         return null;
+    }
+
+    public String getHexValue() {
+        return hexValue;
+    }
+
+    public int getARGBValue() {
+        return Color.parseColor(getHexValue());
     }
 
 }

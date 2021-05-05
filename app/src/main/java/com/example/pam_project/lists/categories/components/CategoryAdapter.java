@@ -8,21 +8,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder>{
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private final List<CategoryInformation> dataSet;
 
     public CategoryAdapter() {
         this.dataSet = new ArrayList<>();
     }
 
-    public void update(final List<CategoryInformation> newDataSet){
+    public void update(final List<CategoryInformation> newDataSet) {
         this.dataSet.clear();
-        if(newDataSet != null){
+        if (newDataSet != null) {
             dataSet.addAll(newDataSet);
         }
 
@@ -48,6 +47,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder>{
 
     @Override
     public int getItemCount() {
-        return dataSet == null ? 0 : dataSet.size();
+        return dataSet.size();
     }
 }

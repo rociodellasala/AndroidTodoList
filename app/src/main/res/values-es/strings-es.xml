@@ -14,14 +14,13 @@
     <string name="create_list_name_label">Nombre</string>
     <string name="create_list_category_label">Categoría</string>
     <string name="default_category">Sin categoría</string>
-    <string name="spinner_category_placeholder">Select category</string>
-    <string name="edit_list_button">Editar lista</string>
     <!--List Overflow Menu-->
     <string name="search">Buscar</string>
     <string name="filter">Filtrar</string>
     <string name="sort_by">Ordenar por</string>
     <string name="manage_categories">Administrar categorías</string>
     <!--Category activity-->
+    <string name="activity_title_category">Categorías</string>
     <string name="add_category">Crear categoría</string>
     <!--Create or modify Category activity-->
     <string name="category_name_label">Nombre</string>
@@ -32,10 +31,8 @@
     <string name="sort_by_category_priority">Categorías por prioridad</string>
     <string name="sort_by_list_alphabetically">Listas alfabéticamente</string>
     <string name="sort_by_task_number">Cantidad de tareas</string>
-    <string name="select_all">Todo</string>
     <!---Create task activity-->
     <string name="activity_title_create_task">Crear tarea</string>
-    <string name="add_task_check_button">Crear tarea</string>
     <string name="create_task_name_label">Nombre</string>
     <string name="create_task_description_label">Descripción</string>
     <string name="pending_tasks">Pendientes</string>
@@ -52,5 +49,4 @@
     <string name="activity_title_create_category">Crear categoría</string>
     <!--Edit category activity-->
     <string name="activity_title_edit_category">Editar categoría</string>
-    <string name="create_category_name_input">Nombre</string>
 </resources>

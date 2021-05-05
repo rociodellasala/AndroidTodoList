@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.categoryactivity;
+package com.example.pam_project.lists.categories.categoryActivity;
 
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 
