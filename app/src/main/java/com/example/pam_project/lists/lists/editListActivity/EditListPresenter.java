@@ -28,7 +28,7 @@ public class EditListPresenter {
     }
 
     public void onViewAttached(final long id) {
-        if(view.get() != null){
+        if (view.get() != null) {
             fetchCategories(id);
         }
     }
@@ -39,7 +39,7 @@ public class EditListPresenter {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-                    if(view.get() != null){
+                    if (view.get() != null) {
                         view.get().bindCategories(model);
                         fetchList(id);
                     }
@@ -48,14 +48,14 @@ public class EditListPresenter {
 
     private void fetchList(final long id) {
         ListInformation model = listsRepository.getList(id);
-        if(view.get() != null)
+        if (view.get() != null)
             view.get().bindList(model);
     }
 
     public void editList(final long id, final String name, final Long categoryId) {
         Completable.fromAction(() -> {
             listsRepository.updateList(id, name, categoryId);
-            if(view.get() != null){
+            if (view.get() != null) {
                 view.get().onSuccessfulUpdate(name, categoryId);
             }
         }).onErrorComplete()
@@ -65,7 +65,7 @@ public class EditListPresenter {
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 

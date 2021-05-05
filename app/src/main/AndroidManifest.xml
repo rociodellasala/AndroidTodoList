@@ -4,38 +4,48 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PAMProject">
-        <activity android:name=".lists.lists.createListActivity.CreateListActivity"
-            android:parentActivityName=".lists.lists.listActivity.ListActivity"/>
+        <activity
+            android:name=".lists.lists.createListActivity.CreateListActivity"
+            android:parentActivityName=".lists.lists.listActivity.ListActivity" />
         <activity android:name=".lists.lists.listActivity.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".lists.tasks.taskActivity.TaskActivity"
+        <activity
+            android:name=".lists.tasks.taskActivity.TaskActivity"
             android:parentActivityName=".lists.lists.listActivity.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="pam"/>
-                <data android:host="detail" android:pathPrefix="/list" />
+
+                <data android:scheme="pam" />
+                <data
+                    android:host="detail"
+                    android:pathPrefix="/list" />
             </intent-filter>
         </activity>
-        <activity android:name=".lists.tasks.createTaskActivity.CreateTaskActivity"/>
-        <activity android:name=".lists.categories.categoryactivity.CategoryActivity"
-            android:parentActivityName=".lists.lists.listActivity.ListActivity"/>
-        <activity android:name=".landing.WelcomeActivity"/>
-        <activity android:name=".lists.lists.editListActivity.EditListActivity"/>
-        <activity android:name=".lists.categories.createcategoryactivity.CreateCategoryActivity"
-            android:parentActivityName=".lists.categories.categoryactivity.CategoryActivity"/>
-        <activity android:name=".lists.categories.editcategoryactivity.EditCategoryActivity"
-            android:parentActivityName=".lists.categories.categoryactivity.CategoryActivity"/>
+        <activity android:name=".lists.tasks.createTaskActivity.CreateTaskActivity" />
+        <activity
+            android:name=".lists.categories.categoryActivity.CategoryActivity"
+            android:parentActivityName=".lists.lists.listActivity.ListActivity" />
+        <activity android:name=".landing.WelcomeActivity" />
+        <activity android:name=".lists.lists.editListActivity.EditListActivity" />
+        <activity
+            android:name=".lists.categories.createCategoryActivity.CreateCategoryActivity"
+            android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity" />
+        <activity
+            android:name=".lists.categories.editCategoryActivity.EditCategoryActivity"
+            android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.createcategoryactivity;
+package com.example.pam_project.lists.categories.createCategoryActivity;
 
 public interface CreateCategoryView {
 

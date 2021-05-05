@@ -1,4 +1,4 @@
-package com.example.pam_project.lists.categories.categoryactivity;
+package com.example.pam_project.lists.categories.categoryActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,17 +18,18 @@ import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.lists.categories.components.CategoryAdapter;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
-import com.example.pam_project.lists.categories.createcategoryactivity.CreateCategoryActivity;
+import com.example.pam_project.lists.categories.createCategoryActivity.CreateCategoryActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryView {
+    private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 8;
     private RecyclerView recyclerView;
     private CategoryPresenter presenter;
     private CategoryAdapter adapter;
-    private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,10 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
         final CategoryMapper categoryMapper = new CategoryMapper();
         final CategoriesRepository repository = new RoomCategoriesRepository(
                 mainStorage.getStorage().categoryDao(), categoryMapper);
+
         presenter = new CategoryPresenter(repository, this);
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_category);
 
         setContentView(R.layout.activity_category);
         setup();
@@ -69,7 +73,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
         setExtendedFloatingButtonAction();
     }
 
-    private void setExtendedFloatingButtonAction(){
+    private void setExtendedFloatingButtonAction() {
         ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_category);
         addListFAB.setOnClickListener(view -> {
             Intent activityIntent = new Intent(getApplicationContext(), CreateCategoryActivity.class);

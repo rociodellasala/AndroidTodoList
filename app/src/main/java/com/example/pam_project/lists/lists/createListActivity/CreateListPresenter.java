@@ -25,36 +25,36 @@ public class CreateListPresenter {
     }
 
     public void onViewAttached() {
-        if(view.get() != null)
+        if (view.get() != null)
             fetchCategories();
     }
 
 
-    private void fetchCategories(){
+    private void fetchCategories() {
         disposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
-                    if(view.get() != null){
+                    if (view.get() != null) {
                         view.get().bindCategories(model);
                     }
                 });
     }
 
-    public void insertList(final String name, final Long categoryId){
+    public void insertList(final String name, final Long categoryId) {
         Completable.fromAction(() -> {
             long id = listsRepository.insertList(name, categoryId);
-            if(view.get() != null){
-                view.get().onSuccessfulInsert(id);
+            if (view.get() != null) {
+                view.get().onSuccessfulInsert();
             }
         }).onErrorComplete()
-            .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
     }
 
     public void onViewDetached() {
-        if(disposable != null)
+        if (disposable != null)
             disposable.dispose();
     }
 

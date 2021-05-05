@@ -24,7 +24,7 @@ public interface TaskDao {
     long insertTask(final TaskEntity task);
 
     @Insert
-    long[] insertAllTasks(final List<TaskEntity> tasks);
+    void insertAllTasks(final List<TaskEntity> tasks);
 
     @Update
     void updateTask(final TaskEntity task);

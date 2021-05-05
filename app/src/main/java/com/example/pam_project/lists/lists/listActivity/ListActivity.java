@@ -28,7 +28,7 @@ import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
-import com.example.pam_project.lists.categories.categoryactivity.CategoryActivity;
+import com.example.pam_project.lists.categories.categoryActivity.CategoryActivity;
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
@@ -38,6 +38,7 @@ import com.example.pam_project.lists.lists.createListActivity.CreateListActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String PAM_PREF = "app-pref";
@@ -127,7 +128,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         FragmentManager fm = getSupportFragmentManager();
         ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
         FilterDialogFragment filterDialog = FilterDialogFragment
-                .newInstance(adapter.getFilterSelections());
+                .newInstance(Objects.requireNonNull(adapter).getFilterSelections());
         showDialog(fm, filterDialog);
     }
 
@@ -136,7 +137,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         FragmentManager fm = getSupportFragmentManager();
         ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
         SortByDialogFragment sortByDialog = SortByDialogFragment
-                .newInstance(adapter.getSortIndex());
+                .newInstance(Objects.requireNonNull(adapter).getSortIndex());
         showDialog(fm, sortByDialog);
     }
 
@@ -184,12 +185,12 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
             final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
             value = vals[items.get(0)];
             ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-            adapter.setSortIndex(items.get(0));
+            Objects.requireNonNull(adapter).setSortIndex(items.get(0));
         } else {
             if (items.size() > 0)
                 value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
             ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-            adapter.setFilterSelections(items);
+            Objects.requireNonNull(adapter).setFilterSelections(items);
         }
         Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }

@@ -15,11 +15,10 @@ public class ListEntity {
 
     @ColumnInfo(name = "name")
     @NonNull
-    public String name;
+    public final String name;
 
     @ColumnInfo(name = "categoryId")
-    @NonNull
-    public long categoryId;
+    public final long categoryId;
 
     public ListEntity(long id, String name, long categoryId) {
         this.id = id;

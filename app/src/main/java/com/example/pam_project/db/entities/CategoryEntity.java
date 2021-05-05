@@ -15,10 +15,10 @@ public class CategoryEntity {
 
     @ColumnInfo(name = "name")
     @NonNull
-    public String name;
+    public final String name;
 
     @ColumnInfo(name = "color")
-    public String color;
+    public final String color;
 
     public CategoryEntity(long id, String name, String color) {
         this.id = id;

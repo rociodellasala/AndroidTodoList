@@ -2,7 +2,6 @@ package com.example.pam_project.lists.dialogs;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -15,9 +14,8 @@ public abstract class ListActivityDialogFragment extends DialogFragment {
         super.onAttach(context);
 
         try {
-            callback = (SelectedDialogItems)getActivity();
-        }
-        catch (ClassCastException e) {
+            callback = (SelectedDialogItems) getActivity();
+        } catch (ClassCastException e) {
             Log.d(this.getClass().getName(), "Activity doesn't implement the SelectedDialogItems interface");
         }
     }

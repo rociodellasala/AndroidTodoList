@@ -11,11 +11,13 @@
         android:layout_margin="5dp"
         android:gravity="start"
         android:paddingLeft="30dp"
+        android:paddingStart="30dp"
         android:paddingTop="15dp"
         android:textColor="#4A4746"
         android:textSize="20dp"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:ignore="RtlSymmetry,SpUsage" />
+        tools:ignore="RtlSymmetry,SpUsage"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

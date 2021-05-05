@@ -2,6 +2,7 @@ package com.example.pam_project.db.utils;
 
 import android.content.Context;
 
+import com.example.pam_project.R;
 import com.example.pam_project.db.entities.CategoryEntity;
 import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.entities.TaskEntity;
@@ -17,20 +18,25 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-import com.example.pam_project.R;
-
 public class DatabaseHelper {
 
+    public static long getRandomFromArray(long[] array) {
+        int rnd = new Random().nextInt(array.length);
+        return array[rnd];
+    }
+
+    public static int getRandom(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min) + min;
+    }
+
     public void createDB(Context context) {
-        Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                Context appContext = context.getApplicationContext();
-                AppDatabase db = AppDatabase.getInstance(appContext);
-                final long[] categoriesIds = db.categoryDao().insertAllCategories(createCategoriesDataSet(appContext));
-                final long[] listIds = db.listDao().insertAllLists(createListsDataSet(categoriesIds));
-                db.taskDao().insertAllTasks(createTasksDataSet(listIds));
-            }
+        Completable.fromAction(() -> {
+            Context appContext = context.getApplicationContext();
+            AppDatabase db = AppDatabase.getInstance(appContext);
+            final long[] categoriesIds = db.categoryDao().insertAllCategories(createCategoriesDataSet(appContext));
+            final long[] listIds = db.listDao().insertAllLists(createListsDataSet(categoriesIds));
+            db.taskDao().insertAllTasks(createTasksDataSet(listIds));
         }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
 
     }
@@ -38,7 +44,7 @@ public class DatabaseHelper {
     private List<CategoryEntity> createCategoriesDataSet(Context context) {
         List<CategoryEntity> listOfCategories = new ArrayList<>();
         String defaultCategory = context.getResources().getString(R.string.default_category);
-        String[] names = {defaultCategory, "Supermercado", "Verduleria", "PAM"};
+        String[] names = {defaultCategory, "Supermarket", "Grocery", "PAM"};
         final List<AppColor> colors = Arrays.asList(AppColor.values());
 
         for (int i = 0; i < names.length && i < colors.size(); i++) {
@@ -55,7 +61,7 @@ public class DatabaseHelper {
         for (int i = 0; i < 10; i++) {
             double indexId = Math.floor(Math.random() * categoriesIds.length) + 1;
             long categoryId = getRandomFromArray(categoriesIds);
-            ListEntity list = new ListEntity("Lista " + i, categoryId);
+            ListEntity list = new ListEntity("List " + i, categoryId);
             listofLists.add(list);
         }
 
@@ -65,28 +71,18 @@ public class DatabaseHelper {
     private List<TaskEntity> createTasksDataSet(final long[] listIds) {
         List<TaskEntity> listOfTasks = new ArrayList<>();
 
-        for(int i = 0; i < listIds.length; i++) {
+        for (long listId : listIds) {
             int numberOfTasks = getRandom(1, 15);
-            for(int j = 0; j < numberOfTasks; j++) {
+            for (int j = 0; j < numberOfTasks; j++) {
                 Random random = new Random();
                 boolean randomBoolean = random.nextBoolean();
                 String status = randomBoolean ? "pending" : "done";
-                TaskEntity task = new TaskEntity("Tarea " + j, "Descripcion " + j, randomBoolean,
-                        status, (int) listIds[i]);
+                TaskEntity task = new TaskEntity("Task " + j, "Description " + j, randomBoolean,
+                        status, (int) listId);
                 listOfTasks.add(task);
             }
         }
 
         return listOfTasks;
-    }
-
-    public static long getRandomFromArray(long[] array) {
-        int rnd = new Random().nextInt(array.length);
-        return array[rnd];
-    }
-
-    public static int getRandom(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max - min) + min;
     }
 }

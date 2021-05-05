@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder {
 

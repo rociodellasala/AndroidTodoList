@@ -52,9 +52,7 @@ public class ListPresenter {
                     if (view.get() != null) {
                         List<ListInformation> finalList = new ArrayList<>();
                         for (final List<ListInformation> list : model.values()) {
-                            for (final ListInformation listInformation : list) {
-                                finalList.add(listInformation);
-                            }
+                            finalList.addAll(list);
                         }
                         Collections.sort(finalList);
                         view.get().bindLists(finalList);
