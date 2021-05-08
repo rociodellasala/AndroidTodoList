@@ -18,6 +18,7 @@ import java.util.List;
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     private final List<ListInformation> dataSet;
     private final List<CategoryInformation> categories;
+    private final List<ListInformation> hiddenItems;
     private List<Integer> filterSelections;
     private OnListClickedListener listener;
     private int sortIndex = 0;
@@ -25,6 +26,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     public ListAdapter() {
         this.dataSet = new ArrayList<>();
         this.categories = new ArrayList<>();
+        this.hiddenItems = new ArrayList<>();
     }
 
     public void update(final List<ListInformation> newDataSet) {
@@ -87,8 +89,35 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         return Collections.unmodifiableList(categories);
     }
 
-    public void setFilterSelections(final List<Integer> filterSelections) {
-        this.filterSelections = filterSelections;
-        // TODO: filter dataset accordingly
+    public void setFilterSelections(final List<Integer> newFilterSelections) {
+        final List<Long> selectedCategoriesIds = new ArrayList<>(
+                newFilterSelections.size());
+        for (Integer index : newFilterSelections)
+            selectedCategoriesIds.add(categories.get(index).getId());
+
+        // hide items not in selected categories
+        for (ListInformation shownItem : dataSet) {
+            if (!selectedCategoriesIds.contains(shownItem.getCategoryId())) {
+                hiddenItems.add(shownItem);
+            }
+        }
+        // remove hidden items from dataSet
+        for (ListInformation li : hiddenItems)
+            dataSet.remove(li);
+
+        // show items in hidden categories
+        for (ListInformation hiddenItem : hiddenItems) {
+            if (selectedCategoriesIds.contains(hiddenItem.getCategoryId())) {
+                dataSet.add(hiddenItem);
+            }
+        }
+        // remove shown items from hidden elements
+        for (ListInformation li : dataSet)
+            hiddenItems.remove(li);
+        Collections.sort(dataSet);
+
+        notifyDataSetChanged();
+
+        this.filterSelections = newFilterSelections;
     }
 }
