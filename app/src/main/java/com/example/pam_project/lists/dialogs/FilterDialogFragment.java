@@ -7,33 +7,39 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FilterDialogFragment extends ListActivityDialogFragment {
-    public static final CharSequence[] FILTER_ITEMS = {
-            /*"select_all",*/
-            "Category 1",
-            "Category 2",
-            "Category 3"
-    };
     private static final String INITIAL_SELECTION_KEY = "selectedItems";
+    private static final String ITEMS_KEY = "items";
+    protected CharSequence[] filterItems;
+    private List<Integer> selectedItems;
 
-    public static FilterDialogFragment newInstance() {
-        return newInstance(null);
+    public static FilterDialogFragment newInstance(final List<CategoryInformation> items) {
+        return newInstance(items, null);
     }
 
-    public static FilterDialogFragment newInstance(List<Integer> initialSelection) {
+    public static FilterDialogFragment newInstance(final List<CategoryInformation> items,
+                                                   List<Integer> initialSelection) {
         final FilterDialogFragment frag = new FilterDialogFragment();
         final Bundle args = new Bundle();
+
+        final CharSequence[] itemsCharSeq = new CharSequence[items.size()];
+        for (int i = 0; i < items.size(); i++)
+            itemsCharSeq[i] = items.get(i).getTitle();
+
         if (initialSelection == null) {
-            initialSelection = new ArrayList<>(FILTER_ITEMS.length);
+            initialSelection = new ArrayList<>(items.size());
             // all items are selected initially
-            for (int i = 0; i < FILTER_ITEMS.length; i++) {
+            for (int i = 0; i < items.size(); i++) {
                 initialSelection.add(i);
             }
         }
+
+        args.putCharSequenceArray(ITEMS_KEY, itemsCharSeq);
         args.putIntegerArrayList(INITIAL_SELECTION_KEY, (ArrayList<Integer>) initialSelection);
         frag.setArguments(args);
         return frag;
@@ -43,10 +49,13 @@ public class FilterDialogFragment extends ListActivityDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        assert getArguments() != null;
-        final List<Integer> selectedItems = getArguments().getIntegerArrayList(INITIAL_SELECTION_KEY);
+        Bundle args = getArguments();
+        assert args != null;
+        filterItems = args.getCharSequenceArray(ITEMS_KEY);
+        selectedItems = args.getIntegerArrayList(INITIAL_SELECTION_KEY);
+
         builder.setTitle(R.string.filter)
-                .setMultiChoiceItems(FILTER_ITEMS, listToBooleanArray(selectedItems),
+                .setMultiChoiceItems(filterItems, listToBooleanArray(selectedItems),
                         (dialog, which, isChecked) ->
                         {
                             if (isChecked) {
@@ -66,7 +75,7 @@ public class FilterDialogFragment extends ListActivityDialogFragment {
     }
 
     private boolean[] listToBooleanArray(final List<Integer> selection) {
-        boolean[] result = new boolean[FILTER_ITEMS.length];
+        boolean[] result = new boolean[filterItems.length];
         for (Integer index : selection)
             result[index] = true;
         return result;
