@@ -8,19 +8,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     private final List<ListInformation> dataSet;
+    private final List<CategoryInformation> categories;
     private List<Integer> filterSelections;
     private OnListClickedListener listener;
     private int sortIndex = 0;
 
     public ListAdapter() {
         this.dataSet = new ArrayList<>();
+        this.categories = new ArrayList<>();
     }
 
     public void update(final List<ListInformation> newDataSet) {
@@ -30,6 +34,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         }
 
         notifyDataSetChanged();
+    }
+
+    public void updateCategories(final List<CategoryInformation> newCategories) {
+        categories.clear();
+        if (newCategories != null) {
+            categories.addAll(newCategories);
+        }
     }
 
     public void setOnClickedListener(final OnListClickedListener listener) {
@@ -70,6 +81,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public List<Integer> getFilterSelections() {
         return filterSelections;
+    }
+
+    public List<CategoryInformation> getCategories() {
+        return Collections.unmodifiableList(categories);
     }
 
     public void setFilterSelections(final List<Integer> filterSelections) {

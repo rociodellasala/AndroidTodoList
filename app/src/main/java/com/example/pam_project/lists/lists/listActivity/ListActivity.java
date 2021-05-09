@@ -29,6 +29,7 @@ import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.lists.categories.categoryActivity.CategoryActivity;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.dialogs.FilterDialogFragment;
 import com.example.pam_project.lists.dialogs.SelectedDialogItems;
 import com.example.pam_project.lists.dialogs.SortByDialogFragment;
@@ -91,6 +92,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
+    public void bindCategories(List<CategoryInformation> model) {
+        adapter.updateCategories(model);
+    }
+
+    @Override
     public void launchFtu() {
         startActivity(new Intent(this, WelcomeActivity.class));
     }
@@ -125,9 +131,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void showFilterDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
         FilterDialogFragment filterDialog = FilterDialogFragment
-                .newInstance(Objects.requireNonNull(adapter).getFilterSelections());
+                .newInstance(adapter.getCategories(), adapter.getFilterSelections());
         showDialog(fm, filterDialog);
     }
 
@@ -176,20 +181,18 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         return true;
     }
 
-    // Esta funcion falta refactorear porque no se como va a terminar
+    // TODO: remove toast
     @Override
     public void onSelectedItems(Class<?> klass, List<Integer> items) {
         CharSequence value = "No selection";
         if (klass.equals(SortByDialogFragment.class)) {
             final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
             value = vals[items.get(0)];
-            ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-            Objects.requireNonNull(adapter).setSortIndex(items.get(0));
+            adapter.setSortIndex(items.get(0));
         } else {
             if (items.size() > 0)
-                value = FilterDialogFragment.FILTER_ITEMS[items.get(0)];
-            ListAdapter adapter = (ListAdapter) recyclerView.getAdapter();
-            Objects.requireNonNull(adapter).setFilterSelections(items);
+                value = items.toString();
+            adapter.setFilterSelections(items);
         }
         Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
