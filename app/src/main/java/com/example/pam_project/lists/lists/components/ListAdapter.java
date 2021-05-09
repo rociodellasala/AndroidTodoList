@@ -13,6 +13,7 @@ import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
@@ -78,7 +79,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public void setSortIndex(int sortIndex) {
         this.sortIndex = sortIndex;
-        // TODO: sort dataset accordingly
+        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+
+        notifyDataSetChanged();
     }
 
     public List<Integer> getFilterSelections() {
@@ -114,7 +117,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         // remove shown items from hidden elements
         for (ListInformation li : dataSet)
             hiddenItems.remove(li);
-        Collections.sort(dataSet);
+        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
 
         notifyDataSetChanged();
 

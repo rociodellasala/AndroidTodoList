@@ -27,6 +27,7 @@
     <string name="category_color_label">Color</string>
     <string name="delete_category">Borrar</string>
     <!--Sort by options-->
+    <string name="sort_by_date_added">Fecha de creación</string>
     <string name="sort_by_category_alphabetically">Categorías alfabéticamente</string>
     <string name="sort_by_category_priority">Categorías por prioridad</string>
     <string name="sort_by_list_alphabetically">Listas alfabéticamente</string>
