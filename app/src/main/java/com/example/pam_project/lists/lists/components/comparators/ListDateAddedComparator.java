@@ -6,6 +6,9 @@ public class ListDateAddedComparator extends ListInformationComparator {
 
     @Override
     public int compare(ListInformation o1, ListInformation o2) {
+        if (o1 == o2)
+            return 0;
+
         int nullCmp = nullCompare(o1, o2);
         if (nullCmp != 0)
             return nullCmp;
