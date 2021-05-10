@@ -26,6 +26,7 @@
     <string name="category_color_label">Color</string>
     <string name="delete_category">Delete</string>
     <!--Sort by options-->
+    <string name="sort_by_date_added">Date added</string>
     <string name="sort_by_category_alphabetically">Category alphabetically</string>
     <string name="sort_by_category_priority">Category priority</string>
     <string name="sort_by_list_alphabetically">List alphabetically</string>
@@ -49,6 +50,7 @@
     <string name="activity_title_edit_category">Edit category</string>
     <!--Edit category activity-->
     <string-array name="sort_by_criteria">
+        <item>@string/sort_by_date_added</item>
         <item>@string/sort_by_category_alphabetically</item>
         <item>@string/sort_by_category_priority</item>
         <item>@string/sort_by_list_alphabetically</item>

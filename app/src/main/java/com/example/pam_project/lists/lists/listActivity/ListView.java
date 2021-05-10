@@ -1,5 +1,6 @@
 package com.example.pam_project.lists.lists.listActivity;
 
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.util.List;
@@ -9,6 +10,8 @@ public interface ListView {
     void launchFtu();
 
     void showLists();
+
+    void bindCategories(List<CategoryInformation> model);
 
     void bindLists(final List<ListInformation> model);
 

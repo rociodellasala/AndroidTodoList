@@ -3,6 +3,7 @@ package com.example.pam_project.lists.lists.listActivity;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.landing.FtuStorage;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 
 import java.lang.ref.WeakReference;
@@ -40,6 +41,7 @@ public class ListPresenter {
             if (view.get() != null) {
                 view.get().showLists();
                 fetchLists();
+                fetchCategories();
             }
         }
     }
@@ -56,6 +58,19 @@ public class ListPresenter {
                         }
                         Collections.sort(finalList);
                         view.get().bindLists(finalList);
+                    }
+                });
+    }
+
+    private void fetchCategories() {
+        disposable = categoriesRepository.getCategories()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(model -> {
+                    if (view.get() != null) {
+                        List<CategoryInformation> finalList = new ArrayList<>(model);
+                        Collections.sort(finalList);
+                        view.get().bindCategories(finalList);
                     }
                 });
     }
