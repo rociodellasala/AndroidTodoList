@@ -1,6 +1,7 @@
 package com.example.pam_project.lists.categories.categoryActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,13 +20,14 @@ import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.lists.categories.components.CategoryAdapter;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.categories.createCategoryActivity.CreateCategoryActivity;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class CategoryActivity extends AppCompatActivity implements CategoryView {
+public class CategoryActivity extends AppCompatActivity implements CategoryView, OnListClickedListener {
     private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 8;
     private RecyclerView recyclerView;
     private CategoryPresenter presenter;
@@ -58,6 +60,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
 
     @Override
     protected void onStop() {
+        Log.d("aca", "on view detached");
         super.onStop();
         presenter.onViewDetached();
     }
@@ -89,7 +92,18 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView 
     @Override
     public void showCategories() {
         adapter = new CategoryAdapter();
+        adapter.setOnClickedListener(this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onClick(final long id) {
+        presenter.onCategoryClicked(id);
+    }
+
+    @Override
+    public void showCategoryForm(final long id) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://edit/category?id=" + id)));
     }
 
     private ItemTouchHelper.SimpleCallback setDraggableItems() {

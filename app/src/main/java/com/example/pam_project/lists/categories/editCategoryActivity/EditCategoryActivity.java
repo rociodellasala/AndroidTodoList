@@ -3,6 +3,7 @@ package com.example.pam_project.lists.categories.editCategoryActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -23,28 +24,29 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
-    private final static String CATEGORY_ID_PARAMETER = "id";
     private EditCategoryPresenter presenter;
-    private int selectedColor = DEFAULT_COLOR.getARGBValue();
+    private int selectedColor;
     private long categoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String id = getIntent().getData().getQueryParameter("id");
+        this.categoryId = Long.parseLong(id);
+
         final Storage mainStorage = new Database(this.getApplicationContext());
         mainStorage.setUpStorage();
+
         final CategoryMapper mapper = new CategoryMapper();
         final CategoriesRepository repository = new RoomCategoriesRepository(
                 mainStorage.getStorage().categoryDao(), mapper);
 
-        presenter = new EditCategoryPresenter(categoryId, repository, this);
 
-        categoryId = getIntent().getLongExtra(CATEGORY_ID_PARAMETER, -1);
+        presenter = new EditCategoryPresenter(categoryId, repository, this);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
         setContentView(R.layout.activity_edit_category);
-
         setup();
     }
 
@@ -55,7 +57,6 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
             colors[i] = AppColor.values()[i].getARGBValue();
         }
         palette.setColors(colors);
-        palette.setSelectedColor(selectedColor);
         palette.setOnColorSelectedListener(color -> selectedColor = color);
     }
 
@@ -63,12 +64,6 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     public void onStart() {
         super.onStart();
         presenter.onViewAttached();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onViewDetached();
     }
 
     @Override
@@ -121,8 +116,9 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     @Override
     public void bindCategory(final CategoryInformation model) {
         EditText title = findViewById(R.id.edit_category_name_input);
-        long categoryId = model.getId();
+        SpectrumPalette palette = findViewById(R.id.edit_category_palette_color);
         title.setText(model.getTitle());
+        palette.setSelectedColor(model.getColor().getARGBValue());
     }
 
     @Override
@@ -139,4 +135,11 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
+    }
+
 }

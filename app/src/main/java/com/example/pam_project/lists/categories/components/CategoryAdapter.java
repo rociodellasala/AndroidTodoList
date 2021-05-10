@@ -1,5 +1,6 @@
 package com.example.pam_project.lists.categories.components;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.components.ListViewHolder;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private final List<CategoryInformation> dataSet;
+    private OnListClickedListener listener;
 
     public CategoryAdapter() {
         this.dataSet = new ArrayList<>();
@@ -26,6 +30,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         }
 
         notifyDataSetChanged();
+    }
+
+    public void setOnClickedListener(final OnListClickedListener listener) {
+        this.listener = listener;
+        this.listener = listener;
     }
 
     public List<CategoryInformation> getDataSet() {
@@ -43,10 +52,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         holder.bind(dataSet.get(position));
+        holder.setOnClickListener(listener);
     }
 
     @Override
     public int getItemCount() {
         return dataSet.size();
     }
+
 }

@@ -41,4 +41,9 @@ public class CategoryPresenter {
                     }
                 });
     }
+
+    public void onCategoryClicked(final long id) {
+        if (view.get() != null)
+            view.get().showCategoryForm(id);
+    }
 }
