@@ -40,6 +40,8 @@
     <string name="create_task_priority_label">Priority</string>
     <string name="create_task_priority_checkbox">Urgent</string>
     <string name="activity_title_edit_list">Edit list</string>
+    <!---Edit task activity-->
+    <string name="activity_title_edit_task">Edit task</string>
     <!---Edit list activity-->
     <string name="edit_list_name_label">Name</string>
     <string name="edit_list_category_label">Category</string>

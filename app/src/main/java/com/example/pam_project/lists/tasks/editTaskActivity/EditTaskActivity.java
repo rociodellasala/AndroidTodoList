@@ -39,7 +39,7 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
 
         editTaskPresenter = new EditTaskPresenter(taskId, taskRepository, this);
 
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_task);
         setContentView(R.layout.activity_edit_task);
     }
 
