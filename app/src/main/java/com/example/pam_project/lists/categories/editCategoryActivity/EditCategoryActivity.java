@@ -3,7 +3,6 @@ package com.example.pam_project.lists.categories.editCategoryActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -139,7 +138,6 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onViewDetached();
     }
 
 }

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 import com.example.pam_project.utils.TaskStatus;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TASK_PENDING = 0;
     private static final int TASK_DONE = 1;
+    private OnListClickedListener listener;
     private final List<TaskInformation> dataSet;
 
     public TaskAdapter() {
@@ -37,7 +39,10 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         dataSet.remove(index);
         notifyItemRemoved(index);
         notifyDataSetChanged();
+    }
 
+    public void setOnClickedListener(final OnListClickedListener listener) {
+        this.listener = listener;
     }
 
     public void addItem(TaskInformation newTask) {
@@ -70,8 +75,10 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (holder instanceof TaskViewHolderPending) {
             ((TaskViewHolderPending) holder).bind(item);
+            ((TaskViewHolderPending) holder).setOnClickListener(listener);
         } else {
             ((TaskViewHolderDone) holder).bind(item);
+            ((TaskViewHolderDone) holder).setOnClickListener(listener);
         }
     }
 

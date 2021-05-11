@@ -11,4 +11,7 @@ public interface TaskRepository {
 
     void updateTask(final long id, final String name, final String description,
                     final boolean priority, final TaskStatus status, final long listId);
+
+    void updateTask(final long id, final String name, final String description,
+                    final boolean priority);
 }

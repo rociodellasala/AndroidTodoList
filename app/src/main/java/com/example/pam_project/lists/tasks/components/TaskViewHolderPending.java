@@ -8,8 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 public class TaskViewHolderPending extends RecyclerView.ViewHolder {
+
+    private OnListClickedListener listener;
+
     public TaskViewHolderPending(@NonNull View itemView) {
         super(itemView);
     }
@@ -23,5 +27,15 @@ public class TaskViewHolderPending extends RecyclerView.ViewHolder {
             final ImageView urgency = itemView.findViewById(R.id.urgency);
             urgency.setVisibility(View.VISIBLE);
         }
+
+        itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(task.getId());
+            }
+        });
+    }
+
+    public void setOnClickListener(final OnListClickedListener listener) {
+        this.listener = listener;
     }
 }

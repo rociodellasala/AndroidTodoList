@@ -80,5 +80,8 @@ public class TaskPresenter {
             view.get().showAddTask();
     }
 
-
+    public void onTaskClicked(final long id) {
+        if (view.get() != null)
+            view.get().showTaskContent(id);
+    }
 }

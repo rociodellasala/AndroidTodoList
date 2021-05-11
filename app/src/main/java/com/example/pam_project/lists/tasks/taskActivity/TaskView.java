@@ -17,4 +17,6 @@ public interface TaskView {
     void showAddTask();
 
     void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition);
+
+    void showTaskContent(final long id);
 }

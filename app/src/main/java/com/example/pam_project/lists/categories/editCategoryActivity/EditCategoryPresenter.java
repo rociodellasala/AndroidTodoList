@@ -7,7 +7,6 @@ import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditCategoryPresenter {
@@ -15,7 +14,6 @@ public class EditCategoryPresenter {
     private final long categoryId;
     private final CategoriesRepository repository;
     private final WeakReference<EditCategoryView> view;
-    private Disposable disposable;
 
     public EditCategoryPresenter(final long categoryId, final CategoriesRepository repository,
                                  final EditCategoryView view) {
@@ -42,11 +40,6 @@ public class EditCategoryPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-    }
-
-    public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
     }
 
 }
