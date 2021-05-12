@@ -1,5 +1,6 @@
 package com.example.pam_project.lists.tasks.components;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,15 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public TaskInformation getItem(int adapterPosition) {
         return this.dataSet.get(adapterPosition);
+    }
+
+    public boolean areAllComplete(){
+        for(TaskInformation task: dataSet){
+            if(task.getStatus().equals(TaskStatus.PENDING))
+                return false;
+        }
+
+        return true;
     }
 
     @NonNull
