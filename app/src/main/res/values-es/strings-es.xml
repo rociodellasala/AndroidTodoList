@@ -8,6 +8,7 @@
     <string name="add_list">Nueva Lista</string>
     <string name="add_task">Nueva Tarea</string>
     <string name="list_task_quantity">Cantidad de tareas</string>
+    <string name="list_task_completed">Tareas completadas</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Crear lista</string>
     <string name="add_list_check_button">Crear lista</string>

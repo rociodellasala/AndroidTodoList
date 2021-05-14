@@ -7,6 +7,7 @@ import com.example.pam_project.lists.lists.components.comparators.ListInformatio
 import com.example.pam_project.lists.lists.components.comparators.ListTaskNumberComparator;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.utils.TaskStatus;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -79,6 +80,26 @@ public class ListInformation implements Serializable, Comparable<ListInformation
 
     public List<TaskInformation> getTasks() {
         return tasks;
+    }
+
+    public boolean hasUrgentTask(){
+        for(TaskInformation task: tasks){
+            if(task.getUrgency() && task.getStatus().equals(TaskStatus.PENDING))
+                return true;
+        }
+
+        return false;
+    }
+
+    public int getCompletedTasks(){
+        int completed = 0;
+
+        for(TaskInformation task: tasks){
+            if(task.getStatus().equals(TaskStatus.DONE))
+                completed++;
+        }
+
+        return completed;
     }
 
     @Override
