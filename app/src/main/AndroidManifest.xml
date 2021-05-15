@@ -58,6 +58,7 @@
                     android:pathPrefix="/category" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity
             android:name=".lists.tasks.editTaskActivity.EditTaskActivity"
             android:parentActivityName=".lists.tasks.taskActivity.TaskActivity">
@@ -73,6 +74,8 @@
                     android:pathPrefix="/task" />
             </intent-filter>
         </activity>
+=======
+>>>>>>> master
     </application>
 
 </manifest>

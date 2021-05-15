@@ -2,6 +2,8 @@ package com.example.pam_project.lists.lists.components;
 
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,13 +22,22 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final ListInformation list) {
         final TextView title = itemView.findViewById(R.id.title);
-        final TextView numberOfTasks = itemView.findViewById(R.id.number_of_tasks);
+        final TextView tasksInformation = itemView.findViewById(R.id.number_of_tasks);
         title.setText(list.getTitle());
         String numberOfTasksTitle = itemView.getContext().getResources().getString(R.string.list_task_quantity);
-        String text = numberOfTasksTitle + ": " + list.getTasks().size();
-        numberOfTasks.setText(text);
-        GradientDrawable drawable = (GradientDrawable) itemView.getBackground();
+        String numberOfTasksCompleted = itemView.getContext().getResources().getString(R.string.list_task_completed);
+        String tasksQuantityText = numberOfTasksTitle + ": " + list.getTasks().size();
+        String tasksCompleteText = numberOfTasksCompleted + ": " + list.getCompletedTasks();
+        String tasksInformationText = tasksQuantityText + " | " + tasksCompleteText;
+        tasksInformation.setText(tasksInformationText);
+        final LinearLayout linearView = itemView.findViewById(R.id.listLeftLayout);
+        GradientDrawable drawable = (GradientDrawable) linearView.getBackground();
         drawable.setColor(list.getColor().getARGBValue());
+
+        if (list.hasUrgentTask()) {
+            final ImageView urgency = itemView.findViewById(R.id.listUrgency);
+            urgency.setVisibility(View.VISIBLE);
+        }
 
         itemView.setOnClickListener(v -> {
             if (listener != null) {

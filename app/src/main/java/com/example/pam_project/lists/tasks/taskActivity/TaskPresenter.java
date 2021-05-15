@@ -49,7 +49,7 @@ public class TaskPresenter {
                 });
     }
 
-    public void onTaskComplete(final int position, final long id, final String name,
+    public void onTaskChange(final int position, final long id, final String name,
                                final String description, final boolean priority,
                                final TaskStatus status, final long listId) {
         Completable.fromAction(() -> {

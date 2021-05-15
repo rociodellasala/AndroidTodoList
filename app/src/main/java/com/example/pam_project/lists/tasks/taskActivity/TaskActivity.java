@@ -166,6 +166,8 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     public void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition) {
         adapter.update(model, adapterPosition);
+        if(adapter.areAllComplete())
+            finish();
     }
 
     private ItemTouchHelper.SimpleCallback setSwippableItems() {
@@ -183,11 +185,16 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
                 TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
 
                 if (taskInformation.getStatus().equals(TaskStatus.PENDING)) {
-                    taskPresenter.onTaskComplete(swippedItem.getAdapterPosition(),
+                    taskPresenter.onTaskChange(swippedItem.getAdapterPosition(),
                             taskInformation.getId(), taskInformation.getTitle(),
                             taskInformation.getDescription(), taskInformation.getUrgency(),
                             TaskStatus.DONE, listId);
-                } else
+                } else if (taskInformation.getStatus().equals(TaskStatus.DONE)){
+                    taskPresenter.onTaskChange(swippedItem.getAdapterPosition(),
+                            taskInformation.getId(), taskInformation.getTitle(),
+                            taskInformation.getDescription(), taskInformation.getUrgency(),
+                            TaskStatus.PENDING, listId);
+                }else
                     adapter.notifyDataSetChanged();
 
             }
@@ -202,13 +209,14 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
                                         @NonNull RecyclerView.ViewHolder swippedItem) {
 
                 final int dragFlags = 0;
+                final int leftSwipeFlag = ItemTouchHelper.LEFT;
+                final int rightSwipeFlag = ItemTouchHelper.RIGHT;
 
                 TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
                 if (taskInformation.getStatus().equals(TaskStatus.DONE))
-                    return makeMovementFlags(dragFlags, 0);
+                    return makeMovementFlags(dragFlags, rightSwipeFlag);
 
-                final int swipeFlags = ItemTouchHelper.LEFT;
-                return makeMovementFlags(dragFlags, swipeFlags);
+                return makeMovementFlags(dragFlags, leftSwipeFlag);
             }
         };
     }

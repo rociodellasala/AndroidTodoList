@@ -3,6 +3,7 @@ package com.example.pam_project.lists.categories.editCategoryActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -23,8 +24,8 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
+    private int selectedColor = DEFAULT_COLOR.getARGBValue();
     private EditCategoryPresenter presenter;
-    private int selectedColor;
     private long categoryId;
 
     @Override
@@ -138,6 +139,7 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     @Override
     public void onStop() {
         super.onStop();
+        presenter.onViewDetached();
     }
 
 }
