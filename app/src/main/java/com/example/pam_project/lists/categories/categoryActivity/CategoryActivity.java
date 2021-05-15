@@ -60,7 +60,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
 
     @Override
     protected void onStop() {
-        Log.d("aca", "on view detached");
         super.onStop();
         presenter.onViewDetached();
     }

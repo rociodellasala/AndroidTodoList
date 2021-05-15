@@ -24,8 +24,8 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
+    private int selectedColor = DEFAULT_COLOR.getARGBValue();
     private EditCategoryPresenter presenter;
-    private int selectedColor;
     private long categoryId;
 
     @Override
