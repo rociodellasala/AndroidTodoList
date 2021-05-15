@@ -8,16 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
-public class TaskViewHolderPending extends RecyclerView.ViewHolder {
+public class TaskViewHolderPending  extends TaskViewHolder {
+
     public TaskViewHolderPending(@NonNull View itemView) {
         super(itemView);
     }
 
     public void bind(final TaskInformation task) {
-        final TextView title = itemView.findViewById(R.id.title);
+        super.bind(task);
         final TextView description = itemView.findViewById(R.id.description);
-        title.setText(task.getTitle());
         description.setText(task.getDescription());
         if (task.getUrgency()) {
             final ImageView urgency = itemView.findViewById(R.id.urgency);

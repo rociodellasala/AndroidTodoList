@@ -2,6 +2,7 @@ package com.example.pam_project.lists.tasks.taskActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ import com.example.pam_project.db.repositories.TaskRepository;
 import com.example.pam_project.db.utils.Database;
 import com.example.pam_project.db.utils.Storage;
 import com.example.pam_project.lists.lists.editListActivity.EditListActivity;
+import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 import com.example.pam_project.lists.tasks.components.CustomItemDecorator;
 import com.example.pam_project.lists.tasks.components.TaskAdapter;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
@@ -32,7 +34,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import java.util.List;
 import java.util.Objects;
 
-public class TaskActivity extends AppCompatActivity implements TaskView {
+public class TaskActivity extends AppCompatActivity implements TaskView, OnListClickedListener {
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
     private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private RecyclerView recyclerView;
@@ -116,6 +118,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
     @Override
     public void showTasks() {
         adapter = new TaskAdapter();
+        adapter.setOnClickedListener(this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -153,6 +156,11 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
         Intent activityIntent = new Intent(getApplicationContext(), CreateTaskActivity.class);
         activityIntent.putExtra("id", listId);
         startActivityForResult(activityIntent, CREATE_TASK_ACTIVITY_REGISTRY);
+    }
+
+    @Override
+    public void showTaskContent(final long id) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://edit/task?id=" + id)));
     }
 
     @Override
@@ -217,5 +225,10 @@ public class TaskActivity extends AppCompatActivity implements TaskView {
     protected void onStop() {
         super.onStop();
         taskPresenter.onViewDetached();
+    }
+
+    @Override
+    public void onClick(final long id) {
+        taskPresenter.onTaskClicked(id);
     }
 }

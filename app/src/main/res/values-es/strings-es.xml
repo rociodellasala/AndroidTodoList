@@ -41,6 +41,8 @@
     <string name="done_tasks">Realizadas</string>
     <string name="create_task_priority_label">Prioridad</string>
     <string name="create_task_priority_checkbox">Urgente</string>
+    <!---Edit task activity-->
+    <string name="activity_title_edit_task">Editar tarea</string>
     <!---Edit list activity-->
     <string name="activity_title_edit_list">Editar lista</string>
     <string name="edit_list_name_label">Nombre</string>
