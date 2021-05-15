@@ -9,4 +9,6 @@ public interface CategoryView {
     void bindCategories(final List<CategoryInformation> model);
 
     void showCategories();
+
+    void showCategoryForm(final long id);
 }

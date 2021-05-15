@@ -45,7 +45,19 @@
             android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity" />
         <activity
             android:name=".lists.categories.editCategoryActivity.EditCategoryActivity"
-            android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity" />
+            android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="pam" />
+                <data
+                    android:host="edit"
+                    android:pathPrefix="/category" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
