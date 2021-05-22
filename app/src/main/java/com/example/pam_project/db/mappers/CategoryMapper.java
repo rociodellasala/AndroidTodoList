@@ -19,7 +19,7 @@ import java.util.Map;
 public class CategoryMapper {
 
     public CategoryInformation toModel(final CategoryEntity entity) {
-        return new CategoryInformation(entity.name, AppColor.fromName(entity.color));
+        return new CategoryInformation(entity.name, entity.color);
     }
 
     public Map<CategoryInformation, List<ListInformation>> toListWithCategoriesModel(final List<CategoriesWithLists> entities) {
@@ -35,8 +35,7 @@ public class CategoryMapper {
                     task.add(new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
                             taskEntity.priority, StatusMapper.toTaskStatusMapper(taskEntity.status)));
                 }
-                AppColor color = AppColor.fromName(categoryWithListEntity.category.color);
-                list.add(new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId, color, task));
+                list.add(new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId, categoryWithListEntity.category.color, task));
             }
 
             map.put(toModel(categoryWithListEntity.category), list);
@@ -49,8 +48,7 @@ public class CategoryMapper {
         final List<CategoryInformation> list = new ArrayList<>();
 
         for (CategoryEntity entity : categoryEntities) {
-            AppColor color = AppColor.fromName(entity.color);
-            list.add(new CategoryInformation(entity.id, entity.name, color));
+            list.add(new CategoryInformation(entity.id, entity.name, entity.color));
         }
 
         return list;

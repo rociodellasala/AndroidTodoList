@@ -2,10 +2,6 @@ package com.example.pam_project.utils;
 
 import android.graphics.Color;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 public enum AppColor {
     RED("#22DC1316"),
     BLUE("#2200A6FF"),

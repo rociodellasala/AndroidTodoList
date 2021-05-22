@@ -26,8 +26,8 @@ public class RoomListsRepository implements ListsRepository {
     public ListInformation getList(final long listId) {
         ListEntity listEntity = listDao.getListById(listId).blockingFirst();
         CategoryEntity categoryEntity = categoryDao.getCategoryById(listEntity.categoryId).blockingFirst();
-        AppColor color = AppColor.fromName(categoryEntity.color);
-        return new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId, color);
+        return new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId,
+                categoryEntity.color);
     }
 
     @Override
