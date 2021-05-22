@@ -9,7 +9,6 @@ import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
 import com.example.pam_project.utils.AppColor;
-import com.example.pam_project.utils.ColorFinder;
 import com.example.pam_project.utils.StatusMapper;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.Map;
 public class CategoryMapper {
 
     public CategoryInformation toModel(final CategoryEntity entity) {
-        return new CategoryInformation(entity.name, ColorFinder.findColor(entity.color));
+        return new CategoryInformation(entity.name, AppColor.fromName(entity.color));
     }
 
     public Map<CategoryInformation, List<ListInformation>> toListWithCategoriesModel(final List<CategoriesWithLists> entities) {
@@ -36,7 +35,7 @@ public class CategoryMapper {
                     task.add(new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
                             taskEntity.priority, StatusMapper.toTaskStatusMapper(taskEntity.status)));
                 }
-                AppColor color = ColorFinder.findColor(categoryWithListEntity.category.color);
+                AppColor color = AppColor.fromName(categoryWithListEntity.category.color);
                 list.add(new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId, color, task));
             }
 
@@ -50,7 +49,7 @@ public class CategoryMapper {
         final List<CategoryInformation> list = new ArrayList<>();
 
         for (CategoryEntity entity : categoryEntities) {
-            AppColor color = ColorFinder.findColor(entity.color);
+            AppColor color = AppColor.fromName(entity.color);
             list.add(new CategoryInformation(entity.id, entity.name, color));
         }
 
