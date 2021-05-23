@@ -16,22 +16,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="30dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/allTasks"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                tools:context=".lists.tasks.TaskActivity" />
-
-            <include layout="@layout/text_header" />
-
-        </LinearLayout>
+        <include layout="@layout/task_recycler_view" />
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
