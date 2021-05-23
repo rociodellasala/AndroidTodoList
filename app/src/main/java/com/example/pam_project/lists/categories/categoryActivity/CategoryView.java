@@ -11,4 +11,6 @@ public interface CategoryView {
     void showCategories();
 
     void showCategoryForm(final long id);
+
+    void showEmptyMessage();
 }

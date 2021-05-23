@@ -70,6 +70,11 @@ public class TaskPresenter {
             view.get().bindTask(model);
     }
 
+    public void onEmptyTask(){
+        if (view.get() != null)
+            view.get().showEmptyMessage();
+    }
+
     public void onViewDetached() {
         if (disposable != null)
             disposable.dispose();

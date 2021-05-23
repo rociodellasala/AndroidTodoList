@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".lists.tasks.taskActivity.TaskActivity">
 
+    <include android:layout_width="match_parent" layout="@layout/empty_data"
+        android:layout_height="match_parent" android:id="@+id/empty_task"/>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

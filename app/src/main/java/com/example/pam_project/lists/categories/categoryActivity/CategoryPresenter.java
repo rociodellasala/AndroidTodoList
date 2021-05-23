@@ -46,4 +46,9 @@ public class CategoryPresenter {
         if (view.get() != null)
             view.get().showCategoryForm(id);
     }
+
+    public void onEmptyCategory(){
+        if (view.get() != null)
+            view.get().showEmptyMessage();
+    }
 }

@@ -91,11 +91,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         adapter = new ListAdapter();
         adapter.setOnClickedListener(this);
         recyclerView.setAdapter(adapter);
-
-        if(adapter.getItemCount() == 0) {
-            TextView textView = findViewById(R.id.empty_list_message);
-            textView.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
@@ -111,7 +106,22 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
+        listPresenter.onEmptyList();
     }
+
+    @Override
+    public void showEmptyMessage() {
+        TextView text = findViewById(R.id.empty_list_message);
+        View emptyDataMessage = findViewById(R.id.empty_list);
+
+        if(adapter.getItemCount() == 0) {
+            text.setText(R.string.empty_list_message);
+            emptyDataMessage.setVisibility(View.VISIBLE);
+        } else {
+            emptyDataMessage.setVisibility(View.GONE);
+        }
+    }
+
 
     @Override
     public void bindList(final ListInformation model) {

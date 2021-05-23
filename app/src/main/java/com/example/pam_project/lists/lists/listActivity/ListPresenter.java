@@ -106,6 +106,11 @@ public class ListPresenter {
             view.get().showSortByDialog();
     }
 
+    public void onEmptyList(){
+        if (view.get() != null)
+            view.get().showEmptyMessage();
+    }
+
     public void onManageCategories() {
         if (view.get() != null)
             view.get().showManageCategories();
@@ -115,5 +120,4 @@ public class ListPresenter {
         if (disposable != null)
             disposable.dispose();
     }
-
 }
