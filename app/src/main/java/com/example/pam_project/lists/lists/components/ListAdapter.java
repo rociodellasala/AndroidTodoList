@@ -13,11 +13,14 @@ import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     private final List<ListInformation> dataSet;
-    private final List<CategoryInformation> categories;
+    private final Map<Long, CategoryInformation> categoriesWithIds;
+    private List<CategoryInformation> categories;
     private final List<ListInformation> hiddenItems;
     private List<Integer> filterSelections;
     private OnListClickedListener listener;
@@ -25,7 +28,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public ListAdapter() {
         this.dataSet = new ArrayList<>();
-        this.categories = new ArrayList<>();
+        this.categoriesWithIds = new HashMap<>();
+        this.categories = new ArrayList<>(categoriesWithIds.values());
         this.hiddenItems = new ArrayList<>();
     }
 
@@ -39,9 +43,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     }
 
     public void updateCategories(final List<CategoryInformation> newCategories) {
-        categories.clear();
+        categoriesWithIds.clear();
         if (newCategories != null) {
-            categories.addAll(newCategories);
+            for (CategoryInformation category : newCategories) {
+                categoriesWithIds.put(category.getId(), category);
+            }
+        }
+        categories = new ArrayList<>(categoriesWithIds.values());
+
+        for (ListInformation list : dataSet) {
+            list.setCategory(categoriesWithIds.get(list.getCategoryId()));
         }
     }
 
@@ -94,32 +105,37 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     public void setFilterSelections(final List<Integer> newFilterSelections) {
         final List<Long> selectedCategoriesIds = new ArrayList<>(
                 newFilterSelections.size());
+        // get ids from selected categories
         for (Integer index : newFilterSelections)
             selectedCategoriesIds.add(categories.get(index).getId());
 
-        // hide items not in selected categories
-        for (ListInformation shownItem : dataSet) {
-            if (!selectedCategoriesIds.contains(shownItem.getCategoryId())) {
-                hiddenItems.add(shownItem);
-            }
-        }
-        // remove hidden items from dataSet
-        for (ListInformation li : hiddenItems)
-            dataSet.remove(li);
+        // hide items not in selected categories and remove them from dataSet
+        moveToList(dataSet, hiddenItems, (id) -> !selectedCategoriesIds.contains(id));
 
-        // show items in hidden categories
-        for (ListInformation hiddenItem : hiddenItems) {
-            if (selectedCategoriesIds.contains(hiddenItem.getCategoryId())) {
-                dataSet.add(hiddenItem);
-            }
-        }
-        // remove shown items from hidden elements
-        for (ListInformation li : dataSet)
-            hiddenItems.remove(li);
+        // show items in selected categories and remove them from hidden items
+        moveToList(hiddenItems, dataSet, selectedCategoriesIds::contains);
+
         Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
 
         notifyDataSetChanged();
-
         this.filterSelections = newFilterSelections;
+    }
+
+    @FunctionalInterface
+    interface ListCheck {
+        boolean condition(long id);
+    }
+
+    private void moveToList(List<ListInformation> from, List<ListInformation> to,
+                           ListCheck function) {
+        // show items in dataSet or hidden categories
+        for (ListInformation item : from) {
+            if (function.condition(item.getCategoryId())) {
+                to.add(item);
+            }
+        }
+        // remove shown items from hidden elements or dataSet
+        for (ListInformation item : to)
+            from.remove(item);
     }
 }

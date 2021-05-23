@@ -1,7 +1,10 @@
 package com.example.pam_project.lists.lists.components;
 
-import com.example.pam_project.R;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
+import com.example.pam_project.lists.lists.components.comparators.CategoryAlphabeticalComparator;
+import com.example.pam_project.lists.lists.components.comparators.CategoryPriorityComparator;
 import com.example.pam_project.lists.lists.components.comparators.ListAlphabeticalComparator;
+import com.example.pam_project.lists.lists.components.comparators.ListCategoryComparator;
 import com.example.pam_project.lists.lists.components.comparators.ListDateAddedComparator;
 import com.example.pam_project.lists.lists.components.comparators.ListInformationComparator;
 import com.example.pam_project.lists.lists.components.comparators.ListTaskNumberComparator;
@@ -19,14 +22,15 @@ public class ListInformation implements Serializable, Comparable<ListInformation
     private long categoryId;
     private AppColor color;
     private List<TaskInformation> tasks;
+    private CategoryInformation category;
 
     // based on R.array.sort_by_criteria
     private static final ListInformationComparator NATURAL_COMPARATOR =
             new ListDateAddedComparator();
     private static final ListInformationComparator[] COMPARATORS = {
             NATURAL_COMPARATOR,
-            new ListAlphabeticalComparator(), // TODO: sort_by_category_alphabetically
-            new ListAlphabeticalComparator(), // TODO: sort_by_category_priority
+            new ListCategoryComparator(new CategoryAlphabeticalComparator()),
+            new ListCategoryComparator(new CategoryPriorityComparator()),
             new ListAlphabeticalComparator(),
             new ListTaskNumberComparator(),
     };
@@ -83,6 +87,14 @@ public class ListInformation implements Serializable, Comparable<ListInformation
 
     public List<TaskInformation> getTasks() {
         return tasks;
+    }
+
+    public CategoryInformation getCategory() {
+        return category;
+    }
+
+    public void setCategory(final CategoryInformation category) {
+        this.category = category;
     }
 
     public boolean hasUrgentTask(){
