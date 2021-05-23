@@ -37,23 +37,26 @@ public class ListInformation implements Serializable, Comparable<ListInformation
         this.categoryId = categoryId;
     }
 
-    public ListInformation(final long id, final String title, final long categoryId, AppColor color, List<TaskInformation> tasks) {
+    public ListInformation(final long id, final String title, final long categoryId,
+                           final AppColor color, final List<TaskInformation> tasks) {
         this(id, title, categoryId);
         this.color = color;
         this.tasks = tasks;
     }
 
-    public ListInformation(final long id, final String title, final long categoryId, AppColor color) {
-        this(id, title, categoryId, color, null);
+    public ListInformation(final long id, final String title, final long categoryId,
+                           final String color, final List<TaskInformation> tasks) {
+        this(id, title, categoryId, AppColor.fromName(color), tasks);
     }
 
-    public ListInformation(final long id, final String title, final long categoryId, List<TaskInformation> tasks) {
-        this(id, title, categoryId, null, tasks);
+    public ListInformation(final long id, final String title, final long categoryId,
+                           final String color) {
+        this(id, title, categoryId, AppColor.fromName(color), null);
     }
 
-    public ListInformation(final String title, AppColor color) {
-        this.title = title;
-        this.color = color;
+    public ListInformation(final long id, final String title, final long categoryId,
+                           final List<TaskInformation> tasks) {
+        this(id, title, categoryId, (AppColor) null, tasks);
     }
 
     public static Comparator<ListInformation> getComparator(int index) {

@@ -14,10 +14,22 @@ public enum AppColor {
         this.hexValue = hexValue;
     }
 
-    public static AppColor fromARGBValue(int value) {
+    public static AppColor fromARGBValue(final int value) {
         for (AppColor color : values()) {
             if (color.getARGBValue() == value)
                 return color;
+        }
+        return null;
+    }
+
+    public static AppColor fromName(final String colorName) {
+        if (colorName == null)
+            return null;
+
+        for (AppColor color : values()) {
+            if (color.toString().equals(colorName.toUpperCase())) {
+                return color;
+            }
         }
         return null;
     }

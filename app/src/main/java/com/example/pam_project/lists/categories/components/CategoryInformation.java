@@ -9,15 +9,22 @@ public class CategoryInformation implements Serializable, Comparable<CategoryInf
     private final AppColor color;
     private long id;
 
-    public CategoryInformation(final String title, AppColor color) {
+    public CategoryInformation(final String title, final AppColor color) {
         this.title = title;
         this.color = color;
     }
 
-    public CategoryInformation(final long id, final String title, AppColor color) {
-        this.title = title;
-        this.color = color;
+    public CategoryInformation(final String title, final String color) {
+        this(title, AppColor.fromName(color));
+    }
+
+    public CategoryInformation(final long id, final String title, final AppColor color) {
+        this(title, color);
         this.id = id;
+    }
+
+    public CategoryInformation(final long id, final String title, final String color) {
+        this(id, title, AppColor.fromName(color));
     }
 
     public long getId() {

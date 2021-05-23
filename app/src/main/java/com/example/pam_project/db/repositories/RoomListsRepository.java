@@ -7,7 +7,6 @@ import com.example.pam_project.db.entities.ListEntity;
 import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.utils.AppColor;
-import com.example.pam_project.utils.ColorFinder;
 
 import io.reactivex.Flowable;
 
@@ -27,8 +26,8 @@ public class RoomListsRepository implements ListsRepository {
     public ListInformation getList(final long listId) {
         ListEntity listEntity = listDao.getListById(listId).blockingFirst();
         CategoryEntity categoryEntity = categoryDao.getCategoryById(listEntity.categoryId).blockingFirst();
-        AppColor color = ColorFinder.findColor(categoryEntity.color);
-        return new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId, color);
+        return new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId,
+                categoryEntity.color);
     }
 
     @Override
