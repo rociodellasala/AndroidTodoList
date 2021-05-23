@@ -6,7 +6,5 @@ public interface Storage {
 
     AppDatabase getStorage();
 
-    void populateStorage();
-
     void clearStorage();
 }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,6 +91,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         adapter = new ListAdapter();
         adapter.setOnClickedListener(this);
         recyclerView.setAdapter(adapter);
+
+        if(adapter.getItemCount() == 0) {
+            TextView textView = findViewById(R.id.empty_list_message);
+            textView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

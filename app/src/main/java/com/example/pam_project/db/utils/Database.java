@@ -26,12 +26,6 @@ public class Database implements Storage {
     }
 
     @Override
-    public void populateStorage() {
-        DatabaseHelper helper = new DatabaseHelper();
-        helper.createDB(context);
-    }
-
-    @Override
     public void clearStorage() {
         Completable.fromAction(AppDatabase::nukeDatabase
         ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
