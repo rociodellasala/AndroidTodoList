@@ -19,4 +19,6 @@ public interface TaskView {
     void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition);
 
     void showTaskContent(final long id);
+
+    void showEmptyMessage();
 }

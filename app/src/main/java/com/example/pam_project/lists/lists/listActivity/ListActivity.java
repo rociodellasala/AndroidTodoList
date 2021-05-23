@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -104,7 +106,22 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
+        listPresenter.onEmptyList();
     }
+
+    @Override
+    public void showEmptyMessage() {
+        TextView text = findViewById(R.id.empty_list_message);
+        View emptyDataMessage = findViewById(R.id.empty_list);
+
+        if(adapter.getItemCount() == 0) {
+            text.setText(R.string.empty_list_message);
+            emptyDataMessage.setVisibility(View.VISIBLE);
+        } else {
+            emptyDataMessage.setVisibility(View.GONE);
+        }
+    }
+
 
     @Override
     public void bindList(final ListInformation model) {

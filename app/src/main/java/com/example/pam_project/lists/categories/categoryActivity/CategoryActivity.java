@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,7 +62,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
 
     @Override
     protected void onStop() {
-        Log.d("aca", "on view detached");
         super.onStop();
         presenter.onViewDetached();
     }
@@ -87,6 +88,20 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     @Override
     public void bindCategories(List<CategoryInformation> model) {
         adapter.update(model);
+        presenter.onEmptyCategory();
+    }
+
+    @Override
+    public void showEmptyMessage() {
+        TextView text = findViewById(R.id.empty_list_message);
+        View emptyDataMessage = findViewById(R.id.empty_category);
+
+        if(adapter.getItemCount() == 0) {
+            text.setText(R.string.empty_category_message);
+            emptyDataMessage.setVisibility(View.VISIBLE);
+        } else {
+            emptyDataMessage.setVisibility(View.GONE);
+        }
     }
 
     @Override

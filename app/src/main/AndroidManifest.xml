@@ -3,6 +3,7 @@
     package="com.example.pam_project">
 
     <application
+        android:name=".db.utils.MainApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

@@ -13,7 +13,6 @@ import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {

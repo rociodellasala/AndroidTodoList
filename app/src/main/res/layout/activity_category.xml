@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include android:layout_width="match_parent" layout="@layout/empty_data"
+        android:layout_height="match_parent" android:id="@+id/empty_category"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/category"
         android:layout_width="match_parent"

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -138,6 +140,20 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     public void bindTasks(List<TaskInformation> model) {
         adapter.update(model);
+        taskPresenter.onEmptyTask();
+    }
+
+    @Override
+    public void showEmptyMessage() {
+        TextView text = findViewById(R.id.empty_list_message);
+        View emptyDataMessage = findViewById(R.id.empty_task);
+
+        if(adapter.getItemCount() == 0) {
+            text.setText(R.string.empty_task_message);
+            emptyDataMessage.setVisibility(View.VISIBLE);
+        } else {
+            emptyDataMessage.setVisibility(View.GONE);
+        }
     }
 
     @Override

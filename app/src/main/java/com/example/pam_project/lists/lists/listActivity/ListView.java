@@ -28,4 +28,6 @@ public interface ListView {
     void showManageCategories();
 
     void showListContent(final long id);
+
+    void showEmptyMessage();
 }
