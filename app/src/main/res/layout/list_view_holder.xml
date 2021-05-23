@@ -51,8 +51,8 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/listLeftLayout"
         android:layout_toLeftOf="@+id/listLeftLayout"
-        android:paddingRight="40dp"
-        android:paddingLeft="40dp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/ic_exclamation_mark"
         android:contentDescription="@string/create_task_priority_checkbox" />
