@@ -29,12 +29,12 @@ public class TaskPresenter {
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
         this.listId = listId;
-        this.compositeDisposable = new CompositeDisposable();
         this.appendHeaders();
     }
 
     public void onViewAttached() {
         if (view.get() != null) {
+            compositeDisposable = new CompositeDisposable();
             view.get().showTasks();
             fetchTasks();
         }
