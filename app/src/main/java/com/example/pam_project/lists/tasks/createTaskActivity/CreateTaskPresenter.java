@@ -7,11 +7,13 @@ import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CreateTaskPresenter {
     private final TaskRepository taskRepository;
     private final WeakReference<CreateTaskView> view;
+    private Disposable disposable;
 
     public CreateTaskPresenter(final TaskRepository taskRepository, final CreateTaskView view) {
         this.taskRepository = taskRepository;
@@ -19,7 +21,7 @@ public class CreateTaskPresenter {
     }
 
     public void insertTask(final String name, final String description, final boolean priority, final long listId) {
-        Completable.fromAction(() -> {
+        disposable = Completable.fromAction(() -> {
             taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
             if (view.get() != null) {
                 view.get().onSuccessfulInsert();
@@ -28,6 +30,11 @@ public class CreateTaskPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    public void onViewDetached() {
+        if (disposable != null)
+            disposable.dispose();
     }
 
 }

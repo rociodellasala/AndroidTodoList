@@ -111,6 +111,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void onStop() {
         super.onStop();
+        createTaskPresenter.onViewDetached();
     }
 
     @Override

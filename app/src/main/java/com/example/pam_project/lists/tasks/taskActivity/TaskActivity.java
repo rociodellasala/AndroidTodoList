@@ -59,10 +59,10 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
                 mainStorage.getStorage().categoryDao(), listMapper);
 
-        taskPresenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
-
         setContentView(R.layout.activity_task);
         setup();
+        taskPresenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
+
     }
 
     @Override
@@ -82,8 +82,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         recyclerView = findViewById(R.id.allTasks);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        taskPresenter.appendHeaders();
 
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
         touchHelper.attachToRecyclerView(recyclerView);
