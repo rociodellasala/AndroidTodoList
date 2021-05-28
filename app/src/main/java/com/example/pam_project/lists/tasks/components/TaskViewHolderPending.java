@@ -20,9 +20,11 @@ public class TaskViewHolderPending  extends TaskViewHolder {
         super.bind(task);
         final TextView description = itemView.findViewById(R.id.description);
         description.setText(task.getDescription());
+        final ImageView urgency = itemView.findViewById(R.id.urgency);
         if (task.getUrgency()) {
-            final ImageView urgency = itemView.findViewById(R.id.urgency);
             urgency.setVisibility(View.VISIBLE);
+        } else {
+            urgency.setVisibility(View.GONE);
         }
     }
 }
