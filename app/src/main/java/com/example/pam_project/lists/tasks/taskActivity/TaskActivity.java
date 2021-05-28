@@ -83,9 +83,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        String[] headers = {getString(R.string.pending_tasks), getString(R.string.done_tasks)};
-        recyclerView.addItemDecoration(new CustomItemDecorator(this, R.layout.text_header, headers));
-
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
         touchHelper.attachToRecyclerView(recyclerView);
         setExtendedFloatingButtonAction();
@@ -104,16 +101,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
                 String taskId = data.getStringExtra("taskId");
                 taskPresenter.appendTask(Long.parseLong(taskId));
             }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
-//        } else if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                // Write
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
         }
     }
 
@@ -141,6 +128,12 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     public void bindTasks(List<TaskInformation> model) {
         adapter.update(model);
         taskPresenter.onEmptyTask();
+    }
+
+    @Override
+    public void bindHeaders(int[] headers) {
+        String[] titleHeaders = {getString(headers[0]), getString(headers[1])};
+        recyclerView.addItemDecoration(new CustomItemDecorator(this, R.layout.text_header, titleHeaders));
     }
 
     @Override

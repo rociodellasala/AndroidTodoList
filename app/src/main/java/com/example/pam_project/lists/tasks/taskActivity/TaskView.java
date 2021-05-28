@@ -12,6 +12,8 @@ public interface TaskView {
 
     void bindTask(TaskInformation model);
 
+    void bindHeaders(int[] headers);
+
     void bindListName(final String name);
 
     void showAddTask();

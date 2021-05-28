@@ -1,5 +1,6 @@
 package com.example.pam_project.lists.tasks.taskActivity;
 
+import com.example.pam_project.R;
 import com.example.pam_project.db.repositories.ListsRepository;
 import com.example.pam_project.db.repositories.TaskRepository;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
@@ -33,6 +34,8 @@ public class TaskPresenter {
         if (view.get() != null) {
             view.get().showTasks();
             fetchTasks();
+            int[] headers = {R.string.pending_tasks, R.string.done_tasks};
+            view.get().bindHeaders(headers);
         }
     }
 
@@ -88,5 +91,12 @@ public class TaskPresenter {
     public void onTaskClicked(final long id) {
         if (view.get() != null)
             view.get().showTaskContent(id);
+    }
+
+    public void appendHeaders() {
+        if (view.get() != null) {
+            int[] headers = {R.string.pending_tasks, R.string.done_tasks};
+            view.get().bindHeaders(headers);
+        }
     }
 }
