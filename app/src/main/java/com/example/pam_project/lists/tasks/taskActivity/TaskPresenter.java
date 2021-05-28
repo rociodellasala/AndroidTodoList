@@ -34,8 +34,6 @@ public class TaskPresenter {
         if (view.get() != null) {
             view.get().showTasks();
             fetchTasks();
-            int[] headers = {R.string.pending_tasks, R.string.done_tasks};
-            view.get().bindHeaders(headers);
         }
     }
 
@@ -76,6 +74,11 @@ public class TaskPresenter {
     public void onEmptyTask(){
         if (view.get() != null)
             view.get().showEmptyMessage();
+    }
+
+    public void onEditList(){
+        if (view.get() != null)
+            view.get().showEditList();
     }
 
     public void onViewDetached() {

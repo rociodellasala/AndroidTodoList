@@ -20,7 +20,7 @@ public class CreateTaskPresenter {
 
     public void insertTask(final String name, final String description, final boolean priority, final long listId) {
         Completable.fromAction(() -> {
-            long id = taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
+            taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
             if (view.get() != null) {
                 view.get().onSuccessfulInsert();
             }

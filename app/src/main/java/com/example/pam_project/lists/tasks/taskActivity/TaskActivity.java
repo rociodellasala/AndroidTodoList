@@ -83,6 +83,8 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
+        taskPresenter.appendHeaders();
+
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
         touchHelper.attachToRecyclerView(recyclerView);
         setExtendedFloatingButtonAction();
@@ -116,9 +118,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         long id = item.getItemId();
 
         if (id == R.id.edit_list_button) {
-            Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
-            activityIntent.putExtra("id", listId);
-            startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
+            taskPresenter.onEditList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -147,6 +147,13 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         } else {
             emptyDataMessage.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showEditList() {
+        Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
+        activityIntent.putExtra("id", listId);
+        startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
     }
 
     @Override

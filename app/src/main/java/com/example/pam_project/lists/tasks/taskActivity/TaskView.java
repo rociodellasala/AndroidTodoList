@@ -23,4 +23,6 @@ public interface TaskView {
     void showTaskContent(final long id);
 
     void showEmptyMessage();
+
+    void showEditList();
 }

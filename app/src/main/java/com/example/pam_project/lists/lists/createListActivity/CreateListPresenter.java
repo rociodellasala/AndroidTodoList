@@ -43,7 +43,7 @@ public class CreateListPresenter {
 
     public void insertList(final String name, final Long categoryId) {
         Completable.fromAction(() -> {
-            long id = listsRepository.insertList(name, categoryId);
+            listsRepository.insertList(name, categoryId);
             if (view.get() != null) {
                 view.get().onSuccessfulInsert();
             }
