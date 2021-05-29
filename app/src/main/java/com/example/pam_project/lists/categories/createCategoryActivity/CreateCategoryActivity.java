@@ -44,7 +44,7 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     }
 
     private void setup() {
-        SpectrumPalette palette = findViewById(R.id.edit_category_palette_color);
+        SpectrumPalette palette = findViewById(R.id.create_category_palette_color);
         final int[] colors = new int[AppColor.values().length];
         for (int i = 0; i < colors.length; i++) {
             colors[i] = AppColor.values()[i].getARGBValue();
@@ -73,7 +73,7 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
-        final EditText categoryNameInput = findViewById(R.id.edit_category_name_input);
+        final EditText categoryNameInput = findViewById(R.id.create_category_name_input);
 
         if (itemId == R.id.check_add_button) {
             final String categoryName = categoryNameInput.getText().toString();

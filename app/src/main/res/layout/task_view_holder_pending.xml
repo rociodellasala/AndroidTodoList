@@ -22,7 +22,7 @@
             android:paddingStart="30dp"
             android:paddingTop="10dp"
             android:paddingBottom="5dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry,SpUsage" />
 
@@ -41,11 +41,9 @@
         android:id="@+id/urgency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/leftLayout"
-        android:layout_toLeftOf="@+id/leftLayout"
         android:paddingRight="30dp"
         android:paddingLeft="30dp"
         android:visibility="gone"
