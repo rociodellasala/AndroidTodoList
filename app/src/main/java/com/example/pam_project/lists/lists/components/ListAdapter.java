@@ -18,13 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
+    private static List<Integer> filterSelections; // TODO: check what happens if category is deleted
+    private static int sortIndex = 0;
+
     private final List<ListInformation> dataSet;
+    private final List<ListInformation> hiddenItems;
     private final Map<Long, CategoryInformation> categoriesWithIds;
     private List<CategoryInformation> categories;
-    private final List<ListInformation> hiddenItems;
-    private List<Integer> filterSelections;
     private OnListClickedListener listener;
-    private int sortIndex = 0;
 
     public ListAdapter() {
         this.dataSet = new ArrayList<>();
@@ -39,6 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
             dataSet.addAll(newDataSet);
         }
 
+        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
         notifyDataSetChanged();
     }
 
@@ -89,7 +91,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     }
 
     public void setSortIndex(int sortIndex) {
-        this.sortIndex = sortIndex;
+        ListAdapter.sortIndex = sortIndex;
         Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
 
         notifyDataSetChanged();
@@ -119,7 +121,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
 
         notifyDataSetChanged();
-        this.filterSelections = newFilterSelections;
+        ListAdapter.filterSelections = newFilterSelections;
     }
 
     @FunctionalInterface

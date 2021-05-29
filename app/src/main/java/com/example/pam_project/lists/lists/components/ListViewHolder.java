@@ -24,11 +24,11 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         final TextView title = itemView.findViewById(R.id.title);
         final TextView tasksInformation = itemView.findViewById(R.id.number_of_tasks);
         title.setText(list.getTitle());
-        String numberOfTasksTitle = itemView.getContext().getResources().getString(R.string.list_task_quantity);
-        String numberOfTasksCompleted = itemView.getContext().getResources().getString(R.string.list_task_completed);
-        String tasksQuantityText = numberOfTasksTitle + ": " + list.getTasks().size();
-        String tasksCompleteText = numberOfTasksCompleted + ": " + list.getCompletedTasks();
-        String tasksInformationText = tasksQuantityText + " | " + tasksCompleteText;
+        String numberOfTasksPending = itemView.getContext().getResources().getString(R.string.list_task_pending);
+        String numberOfTasksUrgent = itemView.getContext().getResources().getString(R.string.list_task_urgent);
+        String tasksUrgentText = numberOfTasksUrgent + ": " + list.getUrgentTaskCount();
+        String tasksPendingText = numberOfTasksPending + ": " + list.getPendingTaskCount();
+        String tasksInformationText = tasksUrgentText + " | " + tasksPendingText;
         tasksInformation.setText(tasksInformationText);
         final RelativeLayout relativeLayout = itemView.findViewById(R.id.listLeftLayout);
         GradientDrawable drawable = (GradientDrawable) relativeLayout.getBackground();

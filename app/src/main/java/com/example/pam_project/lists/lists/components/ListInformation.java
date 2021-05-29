@@ -26,13 +26,13 @@ public class ListInformation implements Serializable, Comparable<ListInformation
 
     // based on R.array.sort_by_criteria
     private static final ListInformationComparator NATURAL_COMPARATOR =
-            new ListDateAddedComparator();
+            new ListTaskNumberComparator();
     private static final ListInformationComparator[] COMPARATORS = {
             NATURAL_COMPARATOR,
             new ListCategoryComparator(new CategoryAlphabeticalComparator()),
             new ListCategoryComparator(new CategoryPriorityComparator()),
             new ListAlphabeticalComparator(),
-            new ListTaskNumberComparator(),
+            new ListDateAddedComparator()
     };
 
     public ListInformation(final long id, final String title, final long categoryId) {
@@ -97,24 +97,34 @@ public class ListInformation implements Serializable, Comparable<ListInformation
         this.category = category;
     }
 
-    public boolean hasUrgentTask(){
-        for(TaskInformation task: tasks){
-            if(task.getUrgency() && task.getStatus().equals(TaskStatus.PENDING))
+    public boolean hasUrgentTask() {
+        for (TaskInformation task : tasks){
+            if (task.getUrgency() && task.getStatus().equals(TaskStatus.PENDING))
                 return true;
         }
 
         return false;
     }
 
-    public int getCompletedTasks(){
+    public int getPendingTaskCount() {
         int completed = 0;
 
-        for(TaskInformation task: tasks){
-            if(task.getStatus().equals(TaskStatus.DONE))
+        for (TaskInformation task : tasks) {
+            if (task.getStatus().equals(TaskStatus.PENDING))
                 completed++;
         }
 
         return completed;
+    }
+
+    public int getUrgentTaskCount() {
+        int urgent = 0;
+        for (TaskInformation task : tasks) {
+            if (task.getUrgency())
+                urgent++;
+        }
+
+        return urgent;
     }
 
     @Override
