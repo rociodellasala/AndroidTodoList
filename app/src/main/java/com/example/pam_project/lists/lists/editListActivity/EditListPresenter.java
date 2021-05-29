@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -16,7 +17,7 @@ public class EditListPresenter {
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
-    private Disposable disposable;
+    private final CompositeDisposable compositeDisposable;
 
 
     public EditListPresenter(final CategoriesRepository categoriesRepository,
@@ -25,6 +26,7 @@ public class EditListPresenter {
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     public void onViewAttached(final long id) {
@@ -35,7 +37,7 @@ public class EditListPresenter {
 
 
     private void fetchCategories(final long id) {
-        disposable = categoriesRepository.getCategories()
+        Disposable disposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -44,6 +46,8 @@ public class EditListPresenter {
                         fetchList(id);
                     }
                 });
+
+        compositeDisposable.add(disposable);
     }
 
     private void fetchList(final long id) {
@@ -53,7 +57,7 @@ public class EditListPresenter {
     }
 
     public void editList(final long id, final String name, final Long categoryId) {
-        Completable.fromAction(() -> {
+        Disposable disposable = Completable.fromAction(() -> {
             listsRepository.updateList(id, name, categoryId);
             if (view.get() != null) {
                 view.get().onSuccessfulUpdate(name, categoryId);
@@ -62,11 +66,12 @@ public class EditListPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+
+        compositeDisposable.add(disposable);
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        compositeDisposable.dispose();
     }
 
 }
