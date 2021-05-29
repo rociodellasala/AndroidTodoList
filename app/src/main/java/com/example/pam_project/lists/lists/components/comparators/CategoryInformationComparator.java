@@ -1,10 +1,10 @@
 package com.example.pam_project.lists.lists.components.comparators;
 
-import com.example.pam_project.lists.lists.components.ListInformation;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 import java.util.Comparator;
 
-public abstract class ListInformationComparator implements Comparator<ListInformation> {
+public abstract class CategoryInformationComparator implements Comparator<CategoryInformation> {
 
     public int nullCompare(Object o1, Object o2) {
         if (o2 == null)
