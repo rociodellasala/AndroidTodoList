@@ -14,49 +14,30 @@
 
     <TextView
         android:id="@+id/edit_category_color_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:text="@string/category_color_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_category_name_input" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_category_name_input"
+        style="@style/formTextViewStyle"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/delete_category_button"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:background="@drawable/delete_button"
-        android:text="@string/delete_category"
-        android:textColor="@android:color/white"
-        android:textSize="17sp"
         app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/deleteButtonStyle"/>
 
     <com.thebluealliance.spectrum.SpectrumPalette
         android:id="@+id/edit_category_palette_color"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_below="@id/edit_category_color_label"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/rectangle_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_category_color_label"
-        app:spectrum_colors="@array/demo_colors" />
+        app:spectrum_colors="@array/demo_colors"
+        style="@style/spectrumPalette"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

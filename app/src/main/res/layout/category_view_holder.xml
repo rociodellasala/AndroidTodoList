@@ -34,5 +34,4 @@
         android:contentDescription="@string/category_color_label"
         android:layout_marginStart="-50dp" />
 
-
 </LinearLayout>
