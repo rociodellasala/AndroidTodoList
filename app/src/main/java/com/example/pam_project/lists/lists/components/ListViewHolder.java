@@ -3,7 +3,7 @@ package com.example.pam_project.lists.lists.components;
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,8 +30,8 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         String tasksCompleteText = numberOfTasksCompleted + ": " + list.getCompletedTasks();
         String tasksInformationText = tasksQuantityText + " | " + tasksCompleteText;
         tasksInformation.setText(tasksInformationText);
-        final LinearLayout linearView = itemView.findViewById(R.id.listLeftLayout);
-        GradientDrawable drawable = (GradientDrawable) linearView.getBackground();
+        final RelativeLayout relativeLayout = itemView.findViewById(R.id.listLeftLayout);
+        GradientDrawable drawable = (GradientDrawable) relativeLayout.getBackground();
         drawable.setColor(list.getColor().getARGBValue());
 
         if (list.hasUrgentTask()) {
