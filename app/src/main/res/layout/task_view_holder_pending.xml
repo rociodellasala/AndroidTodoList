@@ -48,7 +48,7 @@
         android:layout_toLeftOf="@+id/leftLayout"
         android:paddingRight="30dp"
         android:paddingLeft="30dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_exclamation_mark"
         android:contentDescription="@string/create_task_priority_checkbox" />
 
