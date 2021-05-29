@@ -23,7 +23,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
 
     private final static String LIST_ID_PARAMETER = "id";
     private CreateTaskPresenter createTaskPresenter;
-    private long listId;
+    private Long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,6 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         setResult(Activity.RESULT_CANCELED, returnIntent);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
@@ -85,7 +84,11 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             if (errorMessage != null) {
                 taskNameInput.setError(errorMessage);
             } else {
-                createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
+                if (!taskName.isEmpty() && listId != null) {
+                    createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
+                } else {
+                    this.onFailedInsert();
+                }
                 finish();
             }
         } else if (itemId == android.R.id.home) {
@@ -108,6 +111,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void onStop() {
         super.onStop();
+        createTaskPresenter.onViewDetached();
     }
 
     @Override
