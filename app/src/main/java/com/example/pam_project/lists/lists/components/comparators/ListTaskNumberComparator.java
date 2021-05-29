@@ -13,8 +13,8 @@ public class ListTaskNumberComparator extends ListInformationComparator {
         if (nullCmp != 0)
             return nullCmp;
 
-        int urgentTasks = Integer.compare(o1.getUrgentTaskCount(),
-                o2.getUrgentTaskCount()) * 100;
+        int urgentTasks = Integer.compare(o1.getUrgentPendingTaskCount(),
+                o2.getUrgentPendingTaskCount()) * 100;
         return -1 * (urgentTasks +
                 Integer.compare(o1.getPendingTaskCount(), o2.getPendingTaskCount()));
     }

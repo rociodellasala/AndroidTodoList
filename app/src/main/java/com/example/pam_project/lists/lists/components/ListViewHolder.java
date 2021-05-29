@@ -26,7 +26,7 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         title.setText(list.getTitle());
         String numberOfTasksPending = itemView.getContext().getResources().getString(R.string.list_task_pending);
         String numberOfTasksUrgent = itemView.getContext().getResources().getString(R.string.list_task_urgent);
-        String tasksUrgentText = numberOfTasksUrgent + ": " + list.getUrgentTaskCount();
+        String tasksUrgentText = numberOfTasksUrgent + ": " + list.getUrgentPendingTaskCount();
         String tasksPendingText = numberOfTasksPending + ": " + list.getPendingTaskCount();
         String tasksInformationText = tasksUrgentText + " | " + tasksPendingText;
         tasksInformation.setText(tasksInformationText);

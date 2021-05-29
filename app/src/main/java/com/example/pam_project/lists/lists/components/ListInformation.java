@@ -117,10 +117,10 @@ public class ListInformation implements Serializable, Comparable<ListInformation
         return completed;
     }
 
-    public int getUrgentTaskCount() {
+    public int getUrgentPendingTaskCount() {
         int urgent = 0;
         for (TaskInformation task : tasks) {
-            if (task.getUrgency())
+            if (task.getUrgency() && task.getStatus().equals(TaskStatus.PENDING))
                 urgent++;
         }
 
