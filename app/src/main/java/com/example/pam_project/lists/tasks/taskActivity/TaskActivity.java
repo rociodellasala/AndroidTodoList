@@ -157,7 +157,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     public void bindTask(TaskInformation model) {
         adapter.addItem(model);
-        adapter.notifyDataSetChanged();
     }
 
     @Override

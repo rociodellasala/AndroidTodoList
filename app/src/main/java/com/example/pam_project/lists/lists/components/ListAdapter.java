@@ -51,6 +51,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public void addItem(ListInformation newList) {
         this.dataSet.add(newList);
+        notifyItemInserted(dataSet.indexOf(newList));
     }
 
     @NonNull

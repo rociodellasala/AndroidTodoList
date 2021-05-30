@@ -13,6 +13,7 @@ import com.example.pam_project.lists.lists.components.ListViewHolder;
 import com.example.pam_project.lists.lists.listActivity.OnListClickedListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
@@ -34,11 +35,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     public void setOnClickedListener(final OnListClickedListener listener) {
         this.listener = listener;
-        this.listener = listener;
+        this.listener = listener; // TODO: Hay alguna razon para que este esto duplicado ?
     }
 
     public List<CategoryInformation> getDataSet() {
         return dataSet;
+    }
+
+    public void swapItems(final int draggedPosition, final int targetPosition){
+        Collections.swap(dataSet, draggedPosition, targetPosition);
+        notifyItemMoved(draggedPosition, targetPosition);
     }
 
     @NonNull

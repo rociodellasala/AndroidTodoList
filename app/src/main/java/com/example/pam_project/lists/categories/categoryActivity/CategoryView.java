@@ -13,4 +13,6 @@ public interface CategoryView {
     void showCategoryForm(final long id);
 
     void showEmptyMessage();
+
+    void onCategoriesSwap(final int draggedPosition, final int targetPosition);
 }
