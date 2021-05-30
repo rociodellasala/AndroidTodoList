@@ -59,10 +59,10 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
                 mainStorage.getStorage().categoryDao(), listMapper);
 
-        taskPresenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
-
         setContentView(R.layout.activity_task);
         setup();
+        taskPresenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
+
     }
 
     @Override
@@ -83,9 +83,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        String[] headers = {getString(R.string.pending_tasks), getString(R.string.done_tasks)};
-        recyclerView.addItemDecoration(new CustomItemDecorator(this, R.layout.text_header, headers));
-
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
         touchHelper.attachToRecyclerView(recyclerView);
         setExtendedFloatingButtonAction();
@@ -104,16 +101,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
                 String taskId = data.getStringExtra("taskId");
                 taskPresenter.appendTask(Long.parseLong(taskId));
             }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
-//        } else if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                // Write
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
         }
     }
 
@@ -129,9 +116,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         long id = item.getItemId();
 
         if (id == R.id.edit_list_button) {
-            Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
-            activityIntent.putExtra("id", listId);
-            startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
+            taskPresenter.onEditList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -141,6 +126,12 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     public void bindTasks(List<TaskInformation> model) {
         adapter.update(model);
         taskPresenter.onEmptyTask();
+    }
+
+    @Override
+    public void bindHeaders(int[] headers) {
+        String[] titleHeaders = {getString(headers[0]), getString(headers[1])};
+        recyclerView.addItemDecoration(new CustomItemDecorator(this, R.layout.text_header, titleHeaders));
     }
 
     @Override
@@ -154,6 +145,13 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         } else {
             emptyDataMessage.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showEditList() {
+        Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
+        activityIntent.putExtra("id", listId);
+        startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
     }
 
     @Override

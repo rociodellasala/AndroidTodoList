@@ -123,6 +123,7 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     @Override
     protected void onStop() {
         super.onStop();
+        editTaskPresenter.onViewDetached();
     }
 
     @Override
