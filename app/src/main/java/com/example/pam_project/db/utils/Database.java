@@ -27,7 +27,10 @@ public class Database implements Storage {
 
     @Override
     public void clearStorage() {
-        Completable.fromAction(AppDatabase::nukeDatabase
-        ).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+        Completable.fromAction(AppDatabase::nukeDatabase)
+                .onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }

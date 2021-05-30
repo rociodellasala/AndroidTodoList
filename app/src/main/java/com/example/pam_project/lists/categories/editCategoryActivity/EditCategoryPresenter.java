@@ -34,7 +34,7 @@ public class EditCategoryPresenter {
     }
 
     public void editCategory(final String name, final String color) {
-        Completable.fromAction(() -> {
+        disposable = Completable.fromAction(() -> {
             repository.updateCategory(categoryId, name, color);
             if (view.get() != null) {
                 view.get().onSuccessfulUpdate(name, color);

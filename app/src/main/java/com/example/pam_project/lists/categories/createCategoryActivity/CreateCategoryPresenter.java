@@ -6,12 +6,15 @@ import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CreateCategoryPresenter {
 
     private final CategoriesRepository repository;
     private final WeakReference<CreateCategoryView> view;
+    private Disposable disposable;
 
     public CreateCategoryPresenter(final CategoriesRepository repository,
                                    final CreateCategoryView view) {
@@ -21,7 +24,7 @@ public class CreateCategoryPresenter {
     }
 
     public void insertCategory(final String name, final String color) {
-        Completable.fromAction(() -> {
+        disposable = Completable.fromAction(() -> {
             final long id = repository.insertCategory(name, color);
             if (view.get() != null) {
                 view.get().onSuccessfulInsert(id, name, color);
@@ -30,6 +33,11 @@ public class CreateCategoryPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    public void onViewDetached() {
+        if (disposable != null)
+            disposable.dispose();
     }
 
 }

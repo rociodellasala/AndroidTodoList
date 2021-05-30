@@ -35,7 +35,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     public void setOnClickedListener(final OnListClickedListener listener) {
         this.listener = listener;
-        this.listener = listener; // TODO: Hay alguna razon para que este esto duplicado ?
     }
 
     public List<CategoryInformation> getDataSet() {
