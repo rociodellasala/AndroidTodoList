@@ -27,18 +27,12 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/extended_fab_add_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:clickable="true"
         android:contentDescription="@string/add_task"
-        android:focusable="true"
         android:text="@string/add_task"
-        android:textColor="@color/white"
         app:backgroundTint="@color/dark_blue"
         app:icon="@drawable/ic_add"
-        app:iconTint="@color/white" />
+        app:iconTint="@color/white"
+        style="@style/floatingButtonStyle"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

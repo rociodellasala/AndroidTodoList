@@ -27,7 +27,8 @@
     <!--Create or modify Category activity-->
     <string name="category_name_label">Name</string>
     <string name="category_color_label">Color</string>
-    <string name="delete_category">Delete</string>
+    <!--Delete-->
+    <string name="delete">Delete</string>
     <!--Sort by options-->
     <string name="sort_by_date_added">Date added</string>
     <string name="sort_by_category_alphabetically">Category alphabetically</string>

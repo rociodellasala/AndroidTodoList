@@ -8,46 +8,25 @@
 
     <EditText
         android:id="@+id/create_list_title_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:ems="16"
-        android:hint="@string/category_name_label"
-        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/category_name_label"
+        style="@style/editTextStyle"/>
 
     <Spinner
         android:id="@+id/create_list_category_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:ems="16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_list_category_label" />
+        app:layout_constraintTop_toBottomOf="@+id/create_list_category_label"
+        style="@style/categorySpinnerStyle"/>
 
     <TextView
         android:id="@+id/create_list_category_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:text="@string/create_list_category_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_list_title_input" />
+        app:layout_constraintTop_toBottomOf="@+id/create_list_title_input"
+        style="@style/formTextViewStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
