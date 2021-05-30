@@ -1,8 +1,10 @@
 package com.example.pam_project.lists.categories.categoryActivity;
 
 import com.example.pam_project.db.repositories.CategoriesRepository;
+import com.example.pam_project.lists.categories.components.CategoryInformation;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -50,5 +52,10 @@ public class CategoryPresenter {
     public void onEmptyCategory(){
         if (view.get() != null)
             view.get().showEmptyMessage();
+    }
+
+    public void swapCategories(final int draggedPosition, final int targetPosition){
+        if (view.get() != null)
+            view.get().onCategoriesSwap(draggedPosition, targetPosition);
     }
 }

@@ -121,6 +121,11 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://edit/category?id=" + id)));
     }
 
+    @Override
+    public void onCategoriesSwap(final int draggedPosition, final int targetPosition){
+        adapter.swapItems(draggedPosition, targetPosition);
+    }
+
     private ItemTouchHelper.SimpleCallback setDraggableItems() {
         return new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
 
@@ -128,8 +133,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
             public boolean onMove(@NonNull RecyclerView recyclerView1, @NonNull RecyclerView.ViewHolder dragged, @NonNull RecyclerView.ViewHolder target) {
                 int draggedPosition = dragged.getAdapterPosition();
                 int targetPosition = target.getAdapterPosition();
-                Collections.swap(adapter.getDataSet(), draggedPosition, targetPosition);
-                adapter.notifyItemMoved(draggedPosition, targetPosition);
+                presenter.swapCategories(draggedPosition, targetPosition);
                 return true;
             }
 
@@ -140,16 +144,12 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
 
             @Override
             public boolean isItemViewSwipeEnabled() {
-                // Disable swipe (don't override this method or return true, if you want to have swipe)
                 return false;
             }
 
             @Override
             public int getMovementFlags(@NonNull RecyclerView recyclerView,
                                         @NonNull RecyclerView.ViewHolder viewHolder) {
-                // Set movement flags to specify the movement direction
-                // final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT;  <-- for all directions
-                // In this case only up and down is allowed
                 final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
                 final int swipeFlags = 0;
                 return makeMovementFlags(dragFlags, swipeFlags);

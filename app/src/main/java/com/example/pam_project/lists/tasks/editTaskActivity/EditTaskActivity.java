@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
@@ -38,6 +39,11 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
         final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao());
 
         editTaskPresenter = new EditTaskPresenter(taskId, taskRepository, this);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_task);
         setContentView(R.layout.activity_edit_task);

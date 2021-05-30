@@ -157,7 +157,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     public void bindTask(TaskInformation model) {
         adapter.addItem(model);
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -197,20 +196,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder swippedItem, int direction) {
                 TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
-
-                if (taskInformation.getStatus().equals(TaskStatus.PENDING)) {
-                    taskPresenter.onTaskChange(swippedItem.getAdapterPosition(),
-                            taskInformation.getId(), taskInformation.getTitle(),
-                            taskInformation.getDescription(), taskInformation.getUrgency(),
-                            TaskStatus.DONE, listId);
-                } else if (taskInformation.getStatus().equals(TaskStatus.DONE)){
-                    taskPresenter.onTaskChange(swippedItem.getAdapterPosition(),
-                            taskInformation.getId(), taskInformation.getTitle(),
-                            taskInformation.getDescription(), taskInformation.getUrgency(),
-                            TaskStatus.PENDING, listId);
-                }else
-                    adapter.notifyDataSetChanged();
-
+                taskPresenter.onTaskChange(taskInformation, swippedItem.getAdapterPosition());
             }
 
             @Override

@@ -126,7 +126,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindList(final ListInformation model) {
         adapter.addItem(model);
-        adapter.notifyDataSetChanged();
     }
 
     @Override

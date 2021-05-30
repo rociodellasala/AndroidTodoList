@@ -5,7 +5,7 @@ import com.example.pam_project.db.entities.TaskEntity;
 import com.example.pam_project.db.relationships.ListsWithTasks;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
-import com.example.pam_project.utils.StatusMapper;
+import com.example.pam_project.utils.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ListMapper {
 
         for (final TaskEntity taskEntity : entity.tasks) {
             listOfTasks.add(new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
-                    taskEntity.priority, StatusMapper.toTaskStatusMapper(taskEntity.status)));
+                    taskEntity.priority, TaskStatus.getStatus(taskEntity.status)));
         }
 
         return this.toModelWithTasks(entity.list, listOfTasks);

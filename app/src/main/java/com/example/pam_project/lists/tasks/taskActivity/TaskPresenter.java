@@ -54,9 +54,21 @@ public class TaskPresenter {
         compositeDisposable.add(disposable);
     }
 
-    public void onTaskChange(final int position, final long id, final String name,
-                               final String description, final boolean priority,
-                               final TaskStatus status, final long listId) {
+    public void onTaskChange(TaskInformation taskInformation, int position){
+        if (taskInformation.getStatus().equals(TaskStatus.PENDING)) {
+            changeTask(position, taskInformation.getId(), taskInformation.getTitle(),
+                    taskInformation.getDescription(), taskInformation.getUrgency(),
+                    TaskStatus.DONE, listId);
+        } else {
+            changeTask(position, taskInformation.getId(), taskInformation.getTitle(),
+                    taskInformation.getDescription(), taskInformation.getUrgency(),
+                    TaskStatus.PENDING, listId);
+        }
+    }
+
+    private void changeTask(final int position, final long id, final String name,
+        final String description, final boolean priority,
+        final TaskStatus status, final long listId) {
         Disposable disposable = Completable.fromAction(() -> {
             taskRepository.updateTask(id, name, description, priority, status, listId);
             if (view.get() != null) {

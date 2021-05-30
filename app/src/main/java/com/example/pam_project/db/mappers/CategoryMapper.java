@@ -8,8 +8,7 @@ import com.example.pam_project.db.relationships.ListsWithTasks;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.lists.tasks.components.TaskInformation;
-import com.example.pam_project.utils.AppColor;
-import com.example.pam_project.utils.StatusMapper;
+import com.example.pam_project.utils.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class CategoryMapper {
                 List<TaskInformation> task = new ArrayList<>();
                 for (final TaskEntity taskEntity : tasksEntity) {
                     task.add(new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
-                            taskEntity.priority, StatusMapper.toTaskStatusMapper(taskEntity.status)));
+                            taskEntity.priority, TaskStatus.getStatus(taskEntity.status)));
                 }
                 list.add(new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId, categoryWithListEntity.category.color, task));
             }

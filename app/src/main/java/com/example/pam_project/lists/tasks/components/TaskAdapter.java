@@ -48,6 +48,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addItem(TaskInformation newTask) {
         this.dataSet.add(newTask);
+        notifyItemInserted(dataSet.indexOf(newTask));
     }
 
     public TaskInformation getItem(int adapterPosition) {
