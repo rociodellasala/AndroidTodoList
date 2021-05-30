@@ -60,8 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".lists.tasks.editTaskActivity.EditTaskActivity"
-            android:parentActivityName=".lists.tasks.taskActivity.TaskActivity">
+            android:name=".lists.tasks.editTaskActivity.EditTaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
