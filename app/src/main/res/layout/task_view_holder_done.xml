@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:gravity="start"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:paddingStart="30dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
