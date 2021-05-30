@@ -40,7 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
             dataSet.addAll(newDataSet);
         }
 
-        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+        setFilterSelections(filterSelections); // sort and filter accordingly
         notifyDataSetChanged();
     }
 
@@ -92,7 +92,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     public void setSortIndex(int sortIndex) {
         ListAdapter.sortIndex = sortIndex;
-        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+        sort();
 
         notifyDataSetChanged();
     }
@@ -106,6 +106,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     }
 
     public void setFilterSelections(final List<Integer> newFilterSelections) {
+        if (newFilterSelections == null) {
+            sort();
+            return;
+        }
+
         final List<Long> selectedCategoriesIds = new ArrayList<>(
                 newFilterSelections.size());
         // get ids from selected categories
@@ -118,10 +123,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         // show items in selected categories and remove them from hidden items
         moveToList(hiddenItems, dataSet, selectedCategoriesIds::contains);
 
-        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+        sort();
 
         notifyDataSetChanged();
         ListAdapter.filterSelections = newFilterSelections;
+    }
+
+    private void sort() {
+        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
     }
 
     @FunctionalInterface

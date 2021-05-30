@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -21,7 +22,7 @@ public class ListPresenter {
     private final WeakReference<ListView> view;
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
-    private Disposable disposable;
+    private final CompositeDisposable compositeDisposable;
 
     public ListPresenter(final FtuStorage ftuStorage, final CategoriesRepository categoriesRepository,
                          final ListsRepository listsRepository, final ListView view) {
@@ -29,6 +30,7 @@ public class ListPresenter {
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     public void onViewAttached() {
@@ -41,13 +43,14 @@ public class ListPresenter {
             if (view.get() != null) {
                 view.get().showLists();
                 fetchLists();
-                fetchCategories();
             }
         }
     }
 
     private void fetchLists() {
-        disposable = categoriesRepository.getCategoriesWithLists()
+        fetchCategories();
+
+        Disposable disposable = categoriesRepository.getCategoriesWithLists()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -60,10 +63,12 @@ public class ListPresenter {
                         view.get().bindLists(finalList);
                     }
                 });
+
+        compositeDisposable.add(disposable);
     }
 
     private void fetchCategories() {
-        disposable = categoriesRepository.getCategories()
+        Disposable disposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -73,6 +78,8 @@ public class ListPresenter {
                         view.get().bindCategories(finalList);
                     }
                 });
+
+        compositeDisposable.add(disposable);
     }
 
     public void appendList(final long id) {
@@ -117,7 +124,6 @@ public class ListPresenter {
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        compositeDisposable.dispose();
     }
 }
