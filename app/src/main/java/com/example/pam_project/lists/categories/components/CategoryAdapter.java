@@ -34,7 +34,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     public void setOnClickedListener(final OnListClickedListener listener) {
         this.listener = listener;
-        this.listener = listener;
     }
 
     public List<CategoryInformation> getDataSet() {

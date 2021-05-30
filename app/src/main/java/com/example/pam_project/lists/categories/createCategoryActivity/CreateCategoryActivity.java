@@ -62,6 +62,7 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     @Override
     public void onStop() {
         super.onStop();
+        presenter.onViewDetached();
     }
 
     @Override
