@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
-    private static List<Integer> filterSelections; // TODO: check what happens if category is deleted
+    private static List<Integer> filterSelections;
     private static int sortIndex = 0;
 
     private final List<ListInformation> dataSet;
@@ -55,6 +55,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
         for (ListInformation list : dataSet) {
             list.setCategory(categoriesWithIds.get(list.getCategoryId()));
+        }
+
+        if (filterSelections == null)
+            return;
+
+        // reset category selections if one category has been deleted and was selected
+        for (int i = 0; i < filterSelections.size(); i++) {
+            if (!categoriesWithIds.containsKey(Long.valueOf(filterSelections.get(i)))) {
+                filterSelections = null;
+                return;
+            }
         }
     }
 
