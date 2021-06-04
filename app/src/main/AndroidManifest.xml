@@ -3,7 +3,7 @@
     package="com.example.pam_project">
 
     <application
-        android:name=".db.utils.MainApplication"
+        android:name=".database.utils.MainApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,17 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PAMProject">
         <activity
-            android:name=".lists.lists.createListActivity.CreateListActivity"
-            android:parentActivityName=".lists.lists.listActivity.ListActivity" />
-        <activity android:name=".lists.lists.listActivity.ListActivity">
+            android:name=".features.lists.create.CreateListActivity"
+            android:parentActivityName=".features.lists.list.ListActivity" />
+        <activity android:name=".features.lists.list.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".lists.tasks.taskActivity.TaskActivity"
-            android:parentActivityName=".lists.lists.listActivity.ListActivity">
+            android:name=".features.tasks.list.TaskActivity"
+            android:parentActivityName=".features.lists.list.ListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -35,18 +35,18 @@
                     android:pathPrefix="/list" />
             </intent-filter>
         </activity>
-        <activity android:name=".lists.tasks.createTaskActivity.CreateTaskActivity" />
+        <activity android:name=".features.tasks.create.CreateTaskActivity" />
         <activity
-            android:name=".lists.categories.categoryActivity.CategoryActivity"
-            android:parentActivityName=".lists.lists.listActivity.ListActivity" />
+            android:name=".features.categories.list.CategoryActivity"
+            android:parentActivityName=".features.lists.list.ListActivity" />
         <activity android:name=".landing.WelcomeActivity" />
-        <activity android:name=".lists.lists.editListActivity.EditListActivity" />
+        <activity android:name=".features.lists.edit.EditListActivity" />
         <activity
-            android:name=".lists.categories.createCategoryActivity.CreateCategoryActivity"
-            android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity" />
+            android:name=".features.categories.create.CreateCategoryActivity"
+            android:parentActivityName=".features.categories.list.CategoryActivity" />
         <activity
-            android:name=".lists.categories.editCategoryActivity.EditCategoryActivity"
-            android:parentActivityName=".lists.categories.categoryActivity.CategoryActivity">
+            android:name=".features.categories.edit.EditCategoryActivity"
+            android:parentActivityName=".features.categories.list.CategoryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".lists.tasks.editTaskActivity.EditTaskActivity">
+            android:name=".features.tasks.edit.EditTaskActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
