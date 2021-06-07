@@ -8,6 +8,8 @@
     <string name="add_task">New Task</string>
     <string name="list_task_quantity">Number of tasks</string>
     <string name="list_task_completed">Completed tasks</string>
+    <string name="list_task_pending">Pending tasks</string>
+    <string name="list_task_urgent">Urgent tasks</string>
     <string name="empty_list_message">Oops! You do not have lists created yet.\n\nClick on the button below to start your first list.</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Create list</string>
@@ -57,10 +59,10 @@
     <string name="activity_title_edit_category">Edit category</string>
     <!--Edit category activity-->
     <string-array name="sort_by_criteria">
-        <item>@string/sort_by_date_added</item>
+        <item>@string/sort_by_task_number</item>
         <item>@string/sort_by_category_alphabetically</item>
         <item>@string/sort_by_category_priority</item>
         <item>@string/sort_by_list_alphabetically</item>
-        <item>@string/sort_by_task_number</item>
+        <item>@string/sort_by_date_added</item>
     </string-array>
 </resources>
