@@ -2,12 +2,12 @@ package com.example.pam_project.db.utils;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.example.pam_project.R;
 import com.example.pam_project.db.entities.CategoryEntity;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.landing.FtuStorage;
-import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.utils.AppColor;
 
 import java.util.ArrayList;
@@ -19,14 +19,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainApplication extends Application {
-    private static final String PAM_PREF = "app-pref";
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
-        final FtuStorage ftuStorage = new SharedPreferencesFtuStorage(sharedPref);
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final FtuStorage ftuStorage = container.getFtuStorage();
 
         if (ftuStorage.isActive()) {
             Completable.fromAction(() -> {

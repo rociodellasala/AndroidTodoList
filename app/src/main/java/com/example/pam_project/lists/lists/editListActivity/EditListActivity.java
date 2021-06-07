@@ -12,14 +12,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
-import com.example.pam_project.db.mappers.CategoryMapper;
-import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
-import com.example.pam_project.db.repositories.RoomCategoriesRepository;
-import com.example.pam_project.db.repositories.RoomListsRepository;
-import com.example.pam_project.db.utils.Database;
-import com.example.pam_project.db.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
 import com.example.pam_project.lists.lists.components.ListInformation;
 import com.example.pam_project.lists.lists.components.SpinnerActivity;
@@ -40,13 +36,10 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
-        final CategoryMapper categoryMapper = new CategoryMapper();
-        final ListMapper listMapper = new ListMapper();
-        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(), categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
-                mainStorage.getStorage().categoryDao(), listMapper);
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+        final ListsRepository listsRepository = container.getListsRepository();
 
         editListPresenter = new EditListPresenter(categoriesRepository, listsRepository, this);
 
