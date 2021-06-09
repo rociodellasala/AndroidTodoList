@@ -2,10 +2,10 @@ package com.example.pam_project.di;
 
 import android.content.Context;
 
-import com.example.pam_project.db.repositories.CategoriesRepository;
-import com.example.pam_project.db.repositories.ListsRepository;
-import com.example.pam_project.db.repositories.TaskRepository;
 import com.example.pam_project.landing.FtuStorage;
+import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.repositories.tasks.TaskRepository;
 
 /**
  * Entidad encargada de contener las dependencias

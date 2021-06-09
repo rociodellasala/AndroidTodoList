@@ -2,15 +2,15 @@ package com.example.pam_project.di;
 
 import android.content.Context;
 
-import com.example.pam_project.db.daos.CategoryDao;
-import com.example.pam_project.db.daos.ListDao;
-import com.example.pam_project.db.daos.TaskDao;
-import com.example.pam_project.db.mappers.CategoryMapper;
-import com.example.pam_project.db.mappers.ListMapper;
-import com.example.pam_project.db.repositories.CategoriesRepository;
-import com.example.pam_project.db.repositories.ListsRepository;
-import com.example.pam_project.db.repositories.TaskRepository;
+import com.example.pam_project.database.categories.CategoryDao;
+import com.example.pam_project.database.categories.CategoryMapper;
+import com.example.pam_project.database.lists.ListDao;
+import com.example.pam_project.database.lists.ListMapper;
+import com.example.pam_project.database.tasks.TaskDao;
 import com.example.pam_project.landing.FtuStorage;
+import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.repositories.tasks.TaskRepository;
 
 public class ProductionApplicationContainer implements ApplicationContainer {
 

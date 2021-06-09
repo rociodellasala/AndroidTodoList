@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".lists.tasks.createTaskActivity.CreateTaskActivity">
+    tools:context=".features.tasks.create.CreateTaskActivity">
 
     <CheckBox
         android:id="@+id/create_task_priority_checkbox"
