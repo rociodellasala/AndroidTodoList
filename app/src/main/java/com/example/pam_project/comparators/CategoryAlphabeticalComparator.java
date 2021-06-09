@@ -6,13 +6,6 @@ public class CategoryAlphabeticalComparator extends CategoryInformationComparato
 
     @Override
     public int compare(CategoryInformation o1, CategoryInformation o2) {
-        if (o1 == o2)
-            return 0;
-
-        int nullCmp = nullCompare(o1, o2);
-        if (nullCmp != 0)
-            return nullCmp;
-
-        return o1.getTitle().compareTo(o2.getTitle());
+        return String.CASE_INSENSITIVE_ORDER.compare(o1.getTitle(), o2.getTitle());
     }
 }

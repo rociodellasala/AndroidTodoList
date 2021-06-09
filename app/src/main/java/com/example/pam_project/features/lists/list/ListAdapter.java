@@ -17,13 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
+    private static List<Integer> filterSelections;
+    private static int sortIndex = 0;
+
     private final List<ListInformation> dataSet;
+    private final List<ListInformation> hiddenItems;
     private final Map<Long, CategoryInformation> categoriesWithIds;
     private List<CategoryInformation> categories;
-    private final List<ListInformation> hiddenItems;
-    private List<Integer> filterSelections;
     private OnListClickedListener listener;
-    private int sortIndex = 0;
 
     public ListAdapter() {
         this.dataSet = new ArrayList<>();
@@ -38,6 +39,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
             dataSet.addAll(newDataSet);
         }
 
+        setFilterSelections(filterSelections); // sort and filter accordingly
         notifyDataSetChanged();
     }
 
@@ -52,6 +54,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
         for (ListInformation list : dataSet) {
             list.setCategory(categoriesWithIds.get(list.getCategoryId()));
+        }
+
+        if (filterSelections == null)
+            return;
+
+        // reset category selections if one category has been deleted and was selected
+        for (int i = 0; i < filterSelections.size(); i++) {
+            if (!categoriesWithIds.containsKey(Long.valueOf(filterSelections.get(i)))) {
+                filterSelections = null;
+                return;
+            }
         }
     }
 
@@ -88,8 +101,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     }
 
     public void setSortIndex(int sortIndex) {
-        this.sortIndex = sortIndex;
-        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+        ListAdapter.sortIndex = sortIndex;
+        sort();
 
         notifyDataSetChanged();
     }
@@ -103,6 +116,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
     }
 
     public void setFilterSelections(final List<Integer> newFilterSelections) {
+        if (newFilterSelections == null) {
+            sort();
+            return;
+        }
+
         final List<Long> selectedCategoriesIds = new ArrayList<>(
                 newFilterSelections.size());
         // get ids from selected categories
@@ -115,10 +133,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         // show items in selected categories and remove them from hidden items
         moveToList(hiddenItems, dataSet, selectedCategoriesIds::contains);
 
-        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+        sort();
 
         notifyDataSetChanged();
-        this.filterSelections = newFilterSelections;
+        ListAdapter.filterSelections = newFilterSelections;
+    }
+
+    private void sort() {
+        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
     }
 
     @FunctionalInterface

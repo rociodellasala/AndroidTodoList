@@ -3,7 +3,7 @@ package com.example.pam_project.features.lists.list;
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,14 +23,14 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         final TextView title = itemView.findViewById(R.id.title);
         final TextView tasksInformation = itemView.findViewById(R.id.number_of_tasks);
         title.setText(list.getTitle());
-        String numberOfTasksTitle = itemView.getContext().getResources().getString(R.string.list_task_quantity);
-        String numberOfTasksCompleted = itemView.getContext().getResources().getString(R.string.list_task_completed);
-        String tasksQuantityText = numberOfTasksTitle + ": " + list.getTasks().size();
-        String tasksCompleteText = numberOfTasksCompleted + ": " + list.getCompletedTasks();
-        String tasksInformationText = tasksQuantityText + " | " + tasksCompleteText;
+        String numberOfTasksPending = itemView.getContext().getResources().getString(R.string.list_task_pending);
+        String numberOfTasksUrgent = itemView.getContext().getResources().getString(R.string.list_task_urgent);
+        String tasksUrgentText = numberOfTasksUrgent + ": " + list.getUrgentPendingTaskCount();
+        String tasksPendingText = numberOfTasksPending + ": " + list.getPendingTaskCount();
+        String tasksInformationText = tasksUrgentText + " | " + tasksPendingText;
         tasksInformation.setText(tasksInformationText);
-        final RelativeLayout relativeLayout = itemView.findViewById(R.id.listLeftLayout);
-        GradientDrawable drawable = (GradientDrawable) relativeLayout.getBackground();
+        final LinearLayout linearLayout = itemView.findViewById(R.id.listLeftLayout);
+        GradientDrawable drawable = (GradientDrawable) linearLayout.getBackground();
         drawable.setColor(list.getColor().getARGBValue());
 
         if (list.hasUrgentTask()) {
