@@ -12,9 +12,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
-import com.example.pam_project.database.utils.Database;
-import com.example.pam_project.database.utils.Storage;
-import com.example.pam_project.repositories.tasks.RoomTaskRepository;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.tasks.TaskRepository;
 
 import java.util.Objects;
@@ -29,9 +28,9 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
-        final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao());
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final TaskRepository taskRepository = container.getTasksRepository();
 
         createTaskPresenter = new CreateTaskPresenter(taskRepository, this);
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);

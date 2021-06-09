@@ -14,6 +14,10 @@ import com.example.pam_project.database.lists.ListEntity;
 import com.example.pam_project.database.tasks.TaskDao;
 import com.example.pam_project.database.tasks.TaskEntity;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 @Database(entities = {ListEntity.class, CategoryEntity.class, TaskEntity.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -34,6 +38,14 @@ public abstract class AppDatabase extends RoomDatabase {
             Log.d("Database", "Clear all tables");
             instance.clearAllTables();
         }
+    }
+
+    public void clearStorage() {
+        Completable.fromAction(AppDatabase::nukeDatabase)
+                .onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     public abstract ListDao listDao();

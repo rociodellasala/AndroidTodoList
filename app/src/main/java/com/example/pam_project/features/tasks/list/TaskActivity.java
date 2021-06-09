@@ -17,15 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.database.lists.ListMapper;
-import com.example.pam_project.database.utils.Database;
-import com.example.pam_project.database.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.lists.edit.EditListActivity;
 import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.features.tasks.create.CreateTaskActivity;
 import com.example.pam_project.repositories.lists.ListsRepository;
-import com.example.pam_project.repositories.lists.RoomListsRepository;
-import com.example.pam_project.repositories.tasks.RoomTaskRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
 import com.example.pam_project.utils.TaskStatus;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -48,18 +45,15 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         String id = getIntent().getData().getQueryParameter("id");
         this.listId = Long.parseLong(id);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
 
-        final ListMapper listMapper = new ListMapper();
-        final TaskRepository taskRepository = new RoomTaskRepository(mainStorage.getStorage().taskDao());
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
-                mainStorage.getStorage().categoryDao(), listMapper);
+        final TaskRepository taskRepository = container.getTasksRepository();
+        final ListsRepository listsRepository = container.getListsRepository();
 
         setContentView(R.layout.activity_task);
         setup();
         taskPresenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
-
     }
 
     @Override

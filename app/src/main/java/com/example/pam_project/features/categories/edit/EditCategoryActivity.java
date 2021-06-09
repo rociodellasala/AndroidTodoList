@@ -10,12 +10,10 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
-import com.example.pam_project.database.categories.CategoryMapper;
-import com.example.pam_project.database.utils.Database;
-import com.example.pam_project.database.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.repositories.categories.RoomCategoriesRepository;
 import com.example.pam_project.utils.AppColor;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
@@ -34,13 +32,9 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         String id = getIntent().getData().getQueryParameter("id");
         this.categoryId = Long.parseLong(id);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
-
-        final CategoryMapper mapper = new CategoryMapper();
-        final CategoriesRepository repository = new RoomCategoriesRepository(
-                mainStorage.getStorage().categoryDao(), mapper);
-
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final CategoriesRepository repository = container.getCategoriesRepository();
 
         presenter = new EditCategoryPresenter(categoryId, repository, this);
 

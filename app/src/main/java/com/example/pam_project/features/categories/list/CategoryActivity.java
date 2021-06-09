@@ -14,13 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.database.categories.CategoryMapper;
-import com.example.pam_project.database.utils.Database;
-import com.example.pam_project.database.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.create.CreateCategoryActivity;
 import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.repositories.categories.RoomCategoriesRepository;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -36,12 +34,9 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
-
-        final CategoryMapper categoryMapper = new CategoryMapper();
-        final CategoriesRepository repository = new RoomCategoriesRepository(
-                mainStorage.getStorage().categoryDao(), categoryMapper);
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final CategoriesRepository repository = container.getCategoriesRepository();
 
         presenter = new CategoryPresenter(repository, this);
 

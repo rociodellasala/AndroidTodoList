@@ -11,17 +11,13 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
-import com.example.pam_project.database.categories.CategoryMapper;
-import com.example.pam_project.database.lists.ListMapper;
-import com.example.pam_project.database.utils.Database;
-import com.example.pam_project.database.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.features.categories.spinner.SpinnerActivity;
 import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapter;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.repositories.categories.RoomCategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
-import com.example.pam_project.repositories.lists.RoomListsRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,13 +31,10 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
-        final CategoryMapper categoryMapper = new CategoryMapper();
-        final ListMapper listMapper = new ListMapper();
-        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(), categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
-                mainStorage.getStorage().categoryDao(), listMapper);
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+        final ListsRepository listsRepository = container.getListsRepository();
 
         createListPresenter = new CreateListPresenter(categoriesRepository, listsRepository, this);
 
