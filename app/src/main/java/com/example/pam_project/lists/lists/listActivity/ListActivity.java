@@ -2,7 +2,6 @@ package com.example.pam_project.lists.lists.listActivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,16 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
-import com.example.pam_project.db.mappers.CategoryMapper;
-import com.example.pam_project.db.mappers.ListMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
 import com.example.pam_project.db.repositories.ListsRepository;
-import com.example.pam_project.db.repositories.RoomCategoriesRepository;
-import com.example.pam_project.db.repositories.RoomListsRepository;
-import com.example.pam_project.db.utils.Database;
-import com.example.pam_project.db.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.landing.FtuStorage;
-import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.lists.categories.categoryActivity.CategoryActivity;
 import com.example.pam_project.lists.categories.components.CategoryInformation;
@@ -44,7 +38,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
-    private static final String PAM_PREF = "app-pref";
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
     private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
     private RecyclerView recyclerView;
@@ -55,17 +48,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
 
-        final SharedPreferences sharedPref = getSharedPreferences(PAM_PREF, MODE_PRIVATE);
-        final FtuStorage storage = new SharedPreferencesFtuStorage(sharedPref);
-        final CategoryMapper categoryMapper = new CategoryMapper();
-        final ListMapper listMapper = new ListMapper();
-        final CategoriesRepository categoriesRepository = new RoomCategoriesRepository(mainStorage.getStorage().categoryDao(),
-                categoryMapper);
-        final ListsRepository listsRepository = new RoomListsRepository(mainStorage.getStorage().listDao(),
-                mainStorage.getStorage().categoryDao(), listMapper);
+        final FtuStorage storage = container.getFtuStorage();
+        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+        final ListsRepository listsRepository = container.getListsRepository();
 
         listPresenter = new ListPresenter(storage, categoriesRepository, listsRepository, this);
 

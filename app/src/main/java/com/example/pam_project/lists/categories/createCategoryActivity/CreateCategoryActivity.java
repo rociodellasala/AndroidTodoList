@@ -10,11 +10,9 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
-import com.example.pam_project.db.mappers.CategoryMapper;
 import com.example.pam_project.db.repositories.CategoriesRepository;
-import com.example.pam_project.db.repositories.RoomCategoriesRepository;
-import com.example.pam_project.db.utils.Database;
-import com.example.pam_project.db.utils.Storage;
+import com.example.pam_project.di.ApplicationContainer;
+import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.utils.AppColor;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
@@ -29,11 +27,9 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Storage mainStorage = new Database(this.getApplicationContext());
-        mainStorage.setUpStorage();
-        final CategoryMapper mapper = new CategoryMapper();
-        final CategoriesRepository repository = new RoomCategoriesRepository(
-                mainStorage.getStorage().categoryDao(), mapper);
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final CategoriesRepository repository = container.getCategoriesRepository();
 
         presenter = new CreateCategoryPresenter(repository, this);
 
