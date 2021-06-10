@@ -10,7 +10,6 @@ import java.util.Collections;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -19,7 +18,8 @@ public class TaskPresenter {
     private final TaskRepository taskRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<TaskView> view;
-    private CompositeDisposable compositeDisposable;
+    private Disposable fetchTasksDisposable;
+    private Disposable changeTaskDisposable;
     private final long listId;
 
     public TaskPresenter(final TaskRepository taskRepository, final ListsRepository listsRepository,
@@ -33,14 +33,13 @@ public class TaskPresenter {
 
     public void onViewAttached() {
         if (view.get() != null) {
-            compositeDisposable = new CompositeDisposable();
             view.get().showTasks();
             fetchTasks();
         }
     }
 
     private void fetchTasks() {
-        Disposable disposable = listsRepository.getListWithTasks(listId)
+        fetchTasksDisposable = listsRepository.getListWithTasks(listId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -50,7 +49,6 @@ public class TaskPresenter {
                         view.get().bindTasks(model.getTasks());
                     }
                 });
-        compositeDisposable.add(disposable);
     }
 
     public void onTaskChange(TaskInformation taskInformation, int position){
@@ -68,7 +66,7 @@ public class TaskPresenter {
     private void changeTask(final int position, final long id, final String name,
         final String description, final boolean priority,
         final TaskStatus status, final long listId) {
-        Disposable disposable = Completable.fromAction(() -> {
+        changeTaskDisposable = Completable.fromAction(() -> {
             taskRepository.updateTask(id, name, description, priority, status, listId);
             if (view.get() != null) {
                 TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
@@ -78,7 +76,6 @@ public class TaskPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-        compositeDisposable.add(disposable);
     }
 
     public void appendTask(final long id) {
@@ -97,11 +94,6 @@ public class TaskPresenter {
             view.get().showEditList();
     }
 
-    public void onViewDetached() {
-        if (compositeDisposable != null)
-            compositeDisposable.dispose();
-    }
-
     public void onButtonAddClicked() {
         if (view.get() != null)
             view.get().showAddTask();
@@ -117,5 +109,12 @@ public class TaskPresenter {
             int[] headers = {R.string.pending_tasks, R.string.done_tasks};
             view.get().bindHeaders(headers);
         }
+    }
+
+    public void onViewDetached() {
+        if (fetchTasksDisposable != null)
+            fetchTasksDisposable.dispose();
+        if (changeTaskDisposable != null)
+            changeTaskDisposable.dispose();
     }
 }
