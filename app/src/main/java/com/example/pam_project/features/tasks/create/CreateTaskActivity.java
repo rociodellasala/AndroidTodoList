@@ -15,11 +15,11 @@ import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.Objects;
 
 public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
-
     private final static String LIST_ID_PARAMETER = "id";
     private CreateTaskPresenter createTaskPresenter;
     private Long listId;
@@ -56,15 +56,10 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     @Override
-    public void onSuccessfulInsert() {
+    public void onTaskCreate() {
         Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedInsert() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
+        setResult(ActivityResultCode.CREATE_TASK_CODE.ordinal(), returnIntent);
+        finish();
     }
 
     @Override
@@ -83,12 +78,8 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             if (errorMessage != null) {
                 taskNameInput.setError(errorMessage);
             } else {
-                if (!taskName.isEmpty() && listId != null) {
+                if (!taskName.isEmpty() && listId != null)
                     createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
-                } else {
-                    this.onFailedInsert();
-                }
-                finish();
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();

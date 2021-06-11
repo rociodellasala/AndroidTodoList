@@ -18,6 +18,7 @@ import com.example.pam_project.features.categories.spinner.SpinnerActivity;
 import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapter;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.List;
 import java.util.Objects;
@@ -65,15 +66,10 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     }
 
     @Override
-    public void onSuccessfulInsert() {
+    public void onListCreate() {
         Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedInsert() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
+        setResult(ActivityResultCode.CREATE_LIST_CODE.ordinal(), returnIntent);
+        finish();
     }
 
     @Override
@@ -96,12 +92,8 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
             if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                if (categoryId != null) {
+                if (categoryId != null)
                     createListPresenter.insertList(listName, categoryId);
-                } else {
-                    this.onFailedInsert();
-                }
-                finish();
             }
         }
 

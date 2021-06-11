@@ -11,7 +11,7 @@ public interface EditListView {
 
     void bindList(final ListInformation model);
 
-    void onListChange();
+    void onListEdit();
 
     void onListDelete();
 }

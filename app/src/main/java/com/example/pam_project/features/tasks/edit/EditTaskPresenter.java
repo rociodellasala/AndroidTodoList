@@ -36,7 +36,7 @@ public class EditTaskPresenter {
         Disposable disposable = Completable.fromAction(() -> {
             repository.updateTask(taskId, name, description, priority);
             if (view.get() != null) {
-                view.get().onTaskChange();
+                view.get().onTaskEdit();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +50,7 @@ public class EditTaskPresenter {
         Disposable disposable = Completable.fromAction(() -> {
             repository.deleteTask(taskId);
             if (view.get() != null) {
-                view.get().onTaskChange();
+                view.get().onTaskDelete();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

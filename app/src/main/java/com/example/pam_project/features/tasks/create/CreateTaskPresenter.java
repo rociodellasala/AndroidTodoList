@@ -24,7 +24,7 @@ public class CreateTaskPresenter {
         disposable = Completable.fromAction(() -> {
             taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
             if (view.get() != null) {
-                view.get().onSuccessfulInsert();
+                view.get().onTaskCreate();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

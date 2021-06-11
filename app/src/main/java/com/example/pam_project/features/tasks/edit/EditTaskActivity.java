@@ -1,5 +1,6 @@
 package com.example.pam_project.features.tasks.edit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,11 +18,11 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.Objects;
 
 public class EditTaskActivity extends AppCompatActivity implements EditTaskView {
-
     private final static String TASK_ID_PARAMETER = "id";
     private EditTaskPresenter editTaskPresenter;
     private long taskId;
@@ -84,9 +85,8 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
             if (errorMessage != null) {
                 taskNameInput.setError(errorMessage);
             } else {
-                if (!taskName.isEmpty()) {
+                if (!taskName.isEmpty())
                     editTaskPresenter.editTask(taskName, taskDescription, taskUrgency);
-                }
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();
@@ -111,7 +111,16 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     }
 
     @Override
-    public void onTaskChange(){
+    public void onTaskEdit(){
+        Intent returnIntent = new Intent();
+        setResult(ActivityResultCode.EDIT_TASK_CODE.ordinal(), returnIntent);
+        finish();
+    }
+
+    @Override
+    public void onTaskDelete(){
+        Intent returnIntent = new Intent();
+        setResult(ActivityResultCode.DELETE_TASK_CODE.ordinal(), returnIntent);
         finish();
     }
 

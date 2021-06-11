@@ -1,6 +1,5 @@
 package com.example.pam_project.features.tasks.list;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +23,8 @@ import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.features.tasks.create.CreateTaskActivity;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.ActivityRegistry;
+import com.example.pam_project.utils.ActivityResultCode;
 import com.example.pam_project.utils.TaskStatus;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -31,9 +32,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class TaskActivity extends AppCompatActivity implements TaskView, OnListClickedListener {
-    private static final int DELETE_LIST = -2;
-    private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
-    private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
     private TaskPresenter taskPresenter;
@@ -88,9 +86,22 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
-            if (resultCode == DELETE_LIST)
+        if (requestCode == ActivityRegistry.CREATE_TASK_ACTIVITY.ordinal()) {
+            if(resultCode == ActivityResultCode.CREATE_LIST_CODE.ordinal()){
+                // Code for create task
+            }
+        } else if(requestCode == ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal()) {
+            if (resultCode == ActivityResultCode.EDIT_LIST_CODE.ordinal()) {
+                // Code for edit list
+            } else if (resultCode == ActivityResultCode.DELETE_LIST_CODE.ordinal()) {
                 finish();
+            }
+        } else if(requestCode == ActivityRegistry.EDIT_TASK_ACTIVITY.ordinal()){
+            if (resultCode == ActivityResultCode.EDIT_TASK_CODE.ordinal()) {
+                // Code for edit task
+            } else if (resultCode == ActivityResultCode.DELETE_LIST_CODE.ordinal()) {
+                // Code for delete task
+            }
         }
     }
 
@@ -141,7 +152,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     public void showEditList() {
         Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
         activityIntent.putExtra("id", listId);
-        startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY_REGISTRY);
+        startActivityForResult(activityIntent, ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal());
     }
 
     @Override
@@ -158,16 +169,18 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     public void showAddTask() {
         Intent activityIntent = new Intent(getApplicationContext(), CreateTaskActivity.class);
         activityIntent.putExtra("id", listId);
-        startActivityForResult(activityIntent, CREATE_TASK_ACTIVITY_REGISTRY);
+        startActivityForResult(activityIntent, ActivityRegistry.CREATE_TASK_ACTIVITY.ordinal());
     }
 
     @Override
     public void showTaskContent(final long id) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://edit/task?id=" + id)));
+        String uri = "pam://edit/task?id=";
+        Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
+        startActivityForResult(activityIntent, ActivityRegistry.EDIT_TASK_ACTIVITY.ordinal());
     }
 
     @Override
-    public void onSuccessfulUpdate(final TaskInformation model, final int adapterPosition) {
+    public void onTaskStatusEdit(final TaskInformation model, final int adapterPosition) {
         adapter.update(model, adapterPosition);
         if(adapter.areAllComplete())
             finish();

@@ -60,7 +60,7 @@ public class EditListPresenter {
         Disposable disposable = Completable.fromAction(() -> {
             listsRepository.updateList(id, name, categoryId);
             if (view.get() != null) {
-                view.get().onListChange();
+                view.get().onListEdit();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

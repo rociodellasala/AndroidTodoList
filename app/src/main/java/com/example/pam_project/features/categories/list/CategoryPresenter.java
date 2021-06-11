@@ -52,6 +52,11 @@ public class CategoryPresenter {
             view.get().showEmptyMessage();
     }
 
+    public void onButtonAddClicked() {
+        if (view.get() != null)
+            view.get().showAddCategory();
+    }
+
     public void swapCategories(final int draggedPosition, final int targetPosition){
         if (view.get() != null)
             view.get().onCategoriesSwap(draggedPosition, targetPosition);

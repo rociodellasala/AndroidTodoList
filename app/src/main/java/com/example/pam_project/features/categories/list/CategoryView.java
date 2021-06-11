@@ -6,6 +6,8 @@ public interface CategoryView {
 
     void bindCategories(final List<CategoryInformation> model);
 
+    void showAddCategory();
+
     void showCategories();
 
     void showCategoryForm(final long id);

@@ -50,7 +50,7 @@ public class CreateListPresenter {
         Disposable disposable = Completable.fromAction(() -> {
             listsRepository.insertList(name, categoryId);
             if (view.get() != null) {
-                view.get().onSuccessfulInsert();
+                view.get().onListCreate();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

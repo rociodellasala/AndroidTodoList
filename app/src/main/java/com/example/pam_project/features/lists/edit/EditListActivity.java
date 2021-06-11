@@ -20,6 +20,7 @@ import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapte
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,8 +28,6 @@ import java.util.Objects;
 public class EditListActivity extends AppCompatActivity implements EditListView {
 
     private static final String LIST_ID_PARAMETER = "id";
-    private static final int LIST_CHANGE = -3;
-    private static final int DELETE_LIST = -2;
     private EditListPresenter presenter;
     private SpinnerCategoryAdapter adapter;
     private Spinner spinner;
@@ -100,16 +99,16 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onListChange(){
+    public void onListEdit(){
         Intent returnIntent = new Intent();
-        setResult(LIST_CHANGE, returnIntent);
+        setResult(ActivityResultCode.EDIT_LIST_CODE.ordinal(), returnIntent);
         finish();
     }
 
     @Override
     public void onListDelete(){
         Intent returnIntent = new Intent();
-        setResult(DELETE_LIST, returnIntent);
+        setResult(ActivityResultCode.DELETE_LIST_CODE.ordinal(), returnIntent);
         finish();
     }
 
