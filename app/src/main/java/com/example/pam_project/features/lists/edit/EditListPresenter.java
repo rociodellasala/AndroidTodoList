@@ -13,13 +13,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditListPresenter {
-
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
     private Disposable fetchCategoriesDisposable;
     private Disposable editListDisposable;
-
 
     public EditListPresenter(final CategoriesRepository categoriesRepository, final ListsRepository listsRepository,
                              final EditListView view) {
@@ -79,5 +77,4 @@ public class EditListPresenter {
         if (editListDisposable != null)
             editListDisposable.dispose();
     }
-
 }

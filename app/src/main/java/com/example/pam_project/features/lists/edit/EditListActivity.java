@@ -45,19 +45,17 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        setup();
+        setUpView();
     }
 
     private void createPresenter() {
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
         final ListsRepository listsRepository = container.getListsRepository();
-
         presenter = new EditListPresenter(categoriesRepository, listsRepository, this);
     }
 
-    private void setup() {
+    private void setUpView() {
         spinner = findViewById(R.id.edit_list_category_spinner);
         adapter = new SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item);
         adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

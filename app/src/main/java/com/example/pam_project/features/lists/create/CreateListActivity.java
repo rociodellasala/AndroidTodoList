@@ -31,19 +31,17 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         setContentView(R.layout.activity_create_list);
         createPresenter();
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_list);
-        setup();
+        setUpView();
     }
 
     private void createPresenter() {
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
         final ListsRepository listsRepository = container.getListsRepository();
-
         presenter = new CreateListPresenter(categoriesRepository, listsRepository, this);
     }
 
-    private void setup() {
+    private void setUpView() {
         Spinner spinner = findViewById(R.id.create_list_category_spinner);
         adapter = new SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item);
         adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
