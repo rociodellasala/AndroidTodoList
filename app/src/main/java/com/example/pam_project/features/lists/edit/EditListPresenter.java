@@ -28,32 +28,30 @@ public class EditListPresenter {
 
     public void onViewAttached(final long id) {
         if (view.get() != null) {
-            fetchCategories();
-            fetchList(id);
+            fetchCategories(id);
         }
     }
 
-    private void fetchCategories() {
+    private void fetchCategories(final long id) {
         fetchCategoriesDisposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onCategoriesReceived, this::onCategoriesReceivedError);
-    }
-
-    private void onCategoriesReceived(final List<CategoryInformation> model) {
-        if (view.get() != null) {
-            view.get().bindCategories(model);
-        }
-    }
-
-    private void onCategoriesReceivedError(final Throwable throwable) {
-        // TODO
+                .subscribe(model -> {
+                    if (view.get() != null) {
+                        view.get().bindCategories(model);
+                        fetchList(id);
+                    }
+                }, this::onCategoriesReceivedError);
     }
 
     private void fetchList(final long id) {
         ListInformation model = listsRepository.getList(id);
         if (view.get() != null)
             view.get().bindList(model);
+    }
+
+    private void onCategoriesReceivedError(final Throwable throwable) {
+        // TODO
     }
 
     public void editList(final long id, final String name, final Long categoryId) {
