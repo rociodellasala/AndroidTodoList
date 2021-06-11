@@ -37,7 +37,19 @@ public class EditCategoryPresenter {
         disposable = Completable.fromAction(() -> {
             repository.updateCategory(categoryId, name, color);
             if (view.get() != null) {
-                view.get().onSuccessfulUpdate(name, color);
+                view.get().onCategoryEdit();
+            }
+        }).onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    public void deleteCategory(final long id) {
+        disposable = Completable.fromAction(() -> {
+            repository.deleteCategory(id);
+            if (view.get() != null) {
+                view.get().onCategoryDelete();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

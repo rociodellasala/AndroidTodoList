@@ -19,4 +19,6 @@ public interface CategoriesRepository {
     long insertCategory(String name, String color);
 
     void updateCategory(long id, String name, String color);
+
+    void deleteCategory(long id);
 }

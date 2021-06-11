@@ -47,4 +47,10 @@ public class RoomCategoriesRepository implements CategoriesRepository {
         CategoryEntity entity = new CategoryEntity(id, name, color);
         categoryDao.updateCategory(entity);
     }
+
+    @Override
+    public void deleteCategory(final long id) {
+        CategoryEntity entity = categoryDao.getCategoryById(id).blockingFirst();
+        categoryDao.deleteCategory(entity);
+    }
 }

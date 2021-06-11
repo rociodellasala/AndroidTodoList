@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
+    private static final int CATEGORY_CHANGED = -4;
+    private static final int CATEGORY_DELETE = -5;
     private int selectedColor = DEFAULT_COLOR.getARGBValue();
     private EditCategoryPresenter presenter;
     private long categoryId;
@@ -40,7 +43,13 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
         setContentView(R.layout.activity_edit_category);
+        setDeleteButton();
         setup();
+    }
+
+    private void setDeleteButton(){
+        Button deleteButton = (Button) (Button)findViewById(R.id.delete_category_button);
+        deleteButton.setOnClickListener(v -> presenter.deleteCategory(categoryId));
     }
 
     private void setup() {
@@ -83,12 +92,8 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
             if (errorMessage != null) {
                 categoryNameInput.setError(errorMessage);
             } else {
-                if (!categoryName.isEmpty()) {
+                if (!categoryName.isEmpty())
                     presenter.editCategory(categoryName, colorName);
-                } else {
-                    this.onFailedUpdate();
-                }
-                finish();
             }
         }
 
@@ -115,18 +120,17 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     }
 
     @Override
-    public void onSuccessfulUpdate(final String name, final String color) {
+    public void onCategoryEdit() {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("categoryName", name);
-        returnIntent.putExtra("color", color);
-        returnIntent.putExtra("id", categoryId);
-        setResult(Activity.RESULT_OK, returnIntent);
+        setResult(CATEGORY_CHANGED, returnIntent);
+        finish();
     }
 
     @Override
-    public void onFailedUpdate() {
+    public void onCategoryDelete() {
         Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
+        setResult(CATEGORY_DELETE, returnIntent);
+        finish();
     }
 
     @Override
