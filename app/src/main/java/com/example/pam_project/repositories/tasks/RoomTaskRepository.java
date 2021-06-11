@@ -40,4 +40,10 @@ public class RoomTaskRepository implements TaskRepository {
         TaskEntity updatedTaskEntity = new TaskEntity(id, name, description, priority, taskEntity.status, taskEntity.listId);
         taskDao.updateTask(updatedTaskEntity);
     }
+
+    @Override
+    public void deleteTask(long id) {
+        TaskEntity taskEntity = taskDao.getTaskById(id).blockingFirst();
+        taskDao.deleteTask(taskEntity);
+    }
 }

@@ -1,10 +1,10 @@
 package com.example.pam_project.features.tasks.edit;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -46,7 +46,9 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_task);
         setContentView(R.layout.activity_edit_task);
+        setDeleteButton();
     }
+
 
     @Override
     protected void onStart() {
@@ -71,6 +73,8 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
         final EditText taskDescriptionInput = findViewById(R.id.edit_task_description_input);
         final CheckBox checkboxUrgencyInput = findViewById(R.id.edit_task_priority_checkbox);
 
+        Log.e("msg:", String.valueOf(itemId));
+
         if (itemId == R.id.check_add_button) {
             String taskName = taskNameInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
@@ -82,16 +86,18 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
             } else {
                 if (!taskName.isEmpty()) {
                     editTaskPresenter.editTask(taskName, taskDescription, taskUrgency);
-                } else {
-                    this.onFailedUpdate();
                 }
-                finish();
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setDeleteButton(){
+        Button deleteButton = (Button) (Button)findViewById(R.id.delete_task_button);
+        deleteButton.setOnClickListener(v -> editTaskPresenter.deleteTask(taskId));
     }
 
     private String checkForm(String categoryName) {
@@ -105,24 +111,14 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     }
 
     @Override
+    public void onTaskChange(){
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.check_action_bar, menu);
         return true;
-    }
-
-    @Override
-    public void onSuccessfulUpdate(final String name, final String description, final boolean priority) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("taskName", name);
-        returnIntent.putExtra("taskDescription", description);
-        returnIntent.putExtra("priority", priority);
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedUpdate() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
     }
 
     @Override
