@@ -1,7 +1,5 @@
 package com.example.pam_project.features.lists.edit;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +25,7 @@ import java.util.Objects;
 public class EditListActivity extends AppCompatActivity implements EditListView {
 
     private static final String LIST_ID_PARAMETER = "id";
-    private EditListPresenter editListPresenter;
+    private EditListPresenter presenter;
     private SpinnerCategoryAdapter adapter;
     private Spinner spinner;
     private long listId;
@@ -35,13 +33,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
-        final ListsRepository listsRepository = container.getListsRepository();
-
-        editListPresenter = new EditListPresenter(categoriesRepository, listsRepository, this);
+        setContentView(R.layout.activity_edit_list);
+        createPresenter();
 
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
 
@@ -52,8 +45,16 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        setContentView(R.layout.activity_edit_list);
         setup();
+    }
+
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator
+                .locateComponent(this);
+        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+        final ListsRepository listsRepository = container.getListsRepository();
+
+        presenter = new EditListPresenter(categoriesRepository, listsRepository, this);
     }
 
     private void setup() {
@@ -68,7 +69,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     @Override
     public void onStart() {
         super.onStart();
-        editListPresenter.onViewAttached(listId);
+        presenter.onViewAttached(listId);
     }
 
     @Override
@@ -83,21 +84,6 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         int spinnerPosition = adapter.getCategories().getPosition(adapter.getCategoryById(categoryId));
         title.setText(model.getTitle());
         spinner.setSelection(spinnerPosition);
-    }
-
-    @Override
-    public void onSuccessfulUpdate(final String name, final long categoryId) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("listTitle", name);
-        returnIntent.putExtra("categoryId", String.valueOf(categoryId));
-        returnIntent.putExtra("id", listId);
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedUpdate() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
     }
 
     @Override
@@ -116,14 +102,11 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
             String errorMessage = checkForm(listName);
+
             if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                if (categoryId != null) {
-                    editListPresenter.editList(listId, listName, categoryId);
-                } else {
-                    this.onFailedUpdate();
-                }
+                presenter.editList(listId, listName, categoryId);
                 finish();
             }
         } else if (itemId == android.R.id.home) {
@@ -144,13 +127,14 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        editListPresenter.onViewDetached();
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
+    }
+
 }

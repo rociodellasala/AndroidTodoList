@@ -1,6 +1,5 @@
 package com.example.pam_project.features.lists.list;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import com.example.pam_project.features.lists.create.CreateListActivity;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.repositories.lists.ListsRepository;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -37,49 +35,56 @@ import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
-    private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
+    private static final int CREATE_LIST_ACTIVITY_REGISTRY = 0;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
-    private ListPresenter listPresenter;
+    private ListPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
-
-        final FtuStorage storage = container.getFtuStorage();
-        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
-        final ListsRepository listsRepository = container.getListsRepository();
-
-        listPresenter = new ListPresenter(storage, categoriesRepository, listsRepository, this);
-
         setContentView(R.layout.activity_list);
-        setup();
+        createPresenter();
+        setUpView();
     }
 
-    private void setup() {
+    private void createPresenter() {
+        presenter = (ListPresenter) getLastNonConfigurationInstance();
+
+        if (presenter == null) {
+            final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+
+            final FtuStorage storage = container.getFtuStorage();
+            final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+
+            presenter = new ListPresenter(storage, categoriesRepository, this);
+        }
+    }
+
+    private void setUpView() {
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        listPresenter.onViewAttached();
-    }
-
-    @Override
-    public void showLists() {
         adapter = new ListAdapter();
         adapter.setOnClickedListener(this);
         recyclerView.setAdapter(adapter);
     }
 
+    private void setExtendedFloatingButtonAction() {
+        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
+        addListFAB.setOnClickListener(view -> presenter.onButtonClicked());
+    }
+
     @Override
-    public void bindCategories(List<CategoryInformation> model) {
+    protected void onStart() {
+        super.onStart();
+        presenter.onViewAttached();
+    }
+
+    @Override
+    public void bindCategories(final List<CategoryInformation> model) {
         adapter.updateCategories(model);
     }
 
@@ -91,7 +96,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
-        listPresenter.onEmptyList();
+        presenter.onEmptyList();
     }
 
     @Override
@@ -99,18 +104,12 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         TextView text = findViewById(R.id.empty_list_message);
         View emptyDataMessage = findViewById(R.id.empty_list);
 
-        if(adapter.getItemCount() == 0) {
+        if (adapter.getItemCount() == 0) {
             text.setText(R.string.empty_list_message);
             emptyDataMessage.setVisibility(View.VISIBLE);
         } else {
             emptyDataMessage.setVisibility(View.GONE);
         }
-    }
-
-
-    @Override
-    public void bindList(final ListInformation model) {
-        adapter.addItem(model);
     }
 
     @Override
@@ -146,6 +145,10 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         showDialog(fm, sortByDialog);
     }
 
+    private void showDialog(FragmentManager fm, DialogFragment dialog) {
+        dialog.show(fm, DIALOG_FRAGMENT_SHOW_TAG);
+    }
+
     @Override
     public void showManageCategories() {
         Intent categoriesIntent = new Intent(getApplicationContext(), CategoryActivity.class);
@@ -159,22 +162,18 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         return true;
     }
 
-    private void showDialog(FragmentManager fm, DialogFragment dialog) {
-        dialog.show(fm, DIALOG_FRAGMENT_SHOW_TAG);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
         if (itemId == R.id.list_action_bar_search) {
-            listPresenter.onSearchBar();
+            presenter.onSearchBar();
         } else if (itemId == R.id.list_action_bar_filter) {
-            listPresenter.onFilterDialog();
+            presenter.onFilterDialog();
         } else if (itemId == R.id.list_action_bar_sort_by) {
-            listPresenter.onSortByDialog();
+            presenter.onSortByDialog();
         } else if (itemId == R.id.list_action_bar_manage_categories) {
-            listPresenter.onManageCategories();
+            presenter.onManageCategories();
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -199,31 +198,13 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
-            if (resultCode == Activity.RESULT_OK) {
-                String listId = data.getStringExtra("listId");
-                listPresenter.appendList(Long.parseLong(listId));
-            }
-        }
+    public void onClick(final long id) {
+        presenter.onListClicked(id);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        listPresenter.onViewDetached();
-    }
-
-    @Override
-    public void onClick(final long id) {
-        listPresenter.onListClicked(id);
-    }
-
-
-    private void setExtendedFloatingButtonAction() {
-        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
-        addListFAB.setOnClickListener(view -> listPresenter.onButtonClicked());
+        presenter.onViewDetached();
     }
 }

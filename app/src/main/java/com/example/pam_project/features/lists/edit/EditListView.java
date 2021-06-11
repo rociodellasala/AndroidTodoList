@@ -10,8 +10,4 @@ public interface EditListView {
     void bindCategories(final List<CategoryInformation> model);
 
     void bindList(final ListInformation model);
-
-    void onSuccessfulUpdate(final String name, final long categoryId);
-
-    void onFailedUpdate();
 }

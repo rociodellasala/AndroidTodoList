@@ -1,7 +1,5 @@
 package com.example.pam_project.features.lists.create;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,23 +22,25 @@ import java.util.Objects;
 
 public class CreateListActivity extends AppCompatActivity implements CreateListView {
 
-    private CreateListPresenter createListPresenter;
+    private CreateListPresenter presenter;
     private SpinnerCategoryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_list);
+        createPresenter();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_list);
+        setup();
+    }
 
+    private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator
                 .locateComponent(this);
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
         final ListsRepository listsRepository = container.getListsRepository();
 
-        createListPresenter = new CreateListPresenter(categoriesRepository, listsRepository, this);
-
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_list);
-        setContentView(R.layout.activity_create_list);
-        setup();
+        presenter = new CreateListPresenter(categoriesRepository, listsRepository, this);
     }
 
     private void setup() {
@@ -52,28 +52,15 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         spinner.setOnItemSelectedListener(spinnerActivity);
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-        createListPresenter.onViewAttached();
+        presenter.onViewAttached();
     }
 
     @Override
     public void bindCategories(final List<CategoryInformation> model) {
         adapter.update(model);
-    }
-
-    @Override
-    public void onSuccessfulInsert() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedInsert() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
     }
 
     @Override
@@ -91,16 +78,13 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         if (itemId == R.id.check_add_button) {
             String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
+
             String errorMessage = checkForm(listName);
 
             if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                if (categoryId != null) {
-                    createListPresenter.insertList(listName, categoryId);
-                } else {
-                    this.onFailedInsert();
-                }
+                presenter.insertList(listName, categoryId);
                 finish();
             }
         }
@@ -121,6 +105,6 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     @Override
     public void onStop() {
         super.onStop();
-        createListPresenter.onViewDetached();
+        presenter.onViewDetached();
     }
 }

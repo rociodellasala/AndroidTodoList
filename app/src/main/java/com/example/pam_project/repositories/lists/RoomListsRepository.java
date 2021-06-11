@@ -7,6 +7,7 @@ import com.example.pam_project.database.lists.ListEntity;
 import com.example.pam_project.database.lists.ListMapper;
 import com.example.pam_project.features.lists.list.ListInformation;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public class RoomListsRepository implements ListsRepository {
@@ -35,15 +36,20 @@ public class RoomListsRepository implements ListsRepository {
     }
 
     @Override
-    public long insertList(final String name, final long categoryId) {
+    public Completable insertList(final String name, final long categoryId) {
         ListEntity listEntity = new ListEntity(name, categoryId);
-        return listDao.insertList(listEntity);
+        return Completable.fromAction(() -> {
+            listDao.insertList(listEntity);
+        });
     }
 
     @Override
-    public void updateList(final long id, final String name, final long categoryId) {
+    public Completable updateList(final long id, final String name, final long categoryId) {
         ListEntity listEntity = new ListEntity(id, name, categoryId);
-        listDao.updateList(listEntity);
+        return Completable.fromAction(() -> {
+            listDao.updateList(listEntity);
+        });
+
     }
 }
 

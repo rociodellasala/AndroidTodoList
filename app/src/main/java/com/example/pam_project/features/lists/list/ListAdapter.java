@@ -72,30 +72,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         this.listener = listener;
     }
 
-    public void addItem(ListInformation newList) {
-        this.dataSet.add(newList);
-        notifyItemInserted(dataSet.indexOf(newList));
-    }
-
-    @NonNull
-    @Override
-    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_view_holder, parent, false);
-        return new ListViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-        holder.bind(dataSet.get(position));
-        holder.setOnClickListener(listener);
-    }
-
-    @Override
-    public int getItemCount() {
-        return dataSet.size();
-    }
-
     public int getSortIndex() {
         return sortIndex;
     }
@@ -139,17 +115,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         ListAdapter.filterSelections = newFilterSelections;
     }
 
-    private void sort() {
-        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
-    }
-
-    @FunctionalInterface
-    interface ListCheck {
-        boolean condition(long id);
-    }
-
     private void moveToList(List<ListInformation> from, List<ListInformation> to,
-                           ListCheck function) {
+                            ListCheck function) {
         // show items in dataSet or hidden categories
         for (ListInformation item : from) {
             if (function.condition(item.getCategoryId())) {
@@ -159,5 +126,32 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         // remove shown items from hidden elements or dataSet
         for (ListInformation item : to)
             from.remove(item);
+    }
+
+    private void sort() {
+        Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+    }
+
+    @NonNull
+    @Override
+    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_view_holder, parent, false);
+        return new ListViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+        holder.bind(dataSet.get(position));
+        holder.setOnClickListener(listener);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataSet.size();
+    }
+
+    @FunctionalInterface
+    interface ListCheck {
+        boolean condition(long id);
     }
 }
