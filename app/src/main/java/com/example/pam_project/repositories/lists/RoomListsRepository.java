@@ -45,6 +45,12 @@ public class RoomListsRepository implements ListsRepository {
         ListEntity listEntity = new ListEntity(id, name, categoryId);
         listDao.updateList(listEntity);
     }
+
+    @Override
+    public void deleteList(long id) {
+        ListEntity listEntity = listDao.getListById(id).blockingFirst();
+        listDao.deleteList(listEntity);
+    }
 }
 
 

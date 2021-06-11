@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TaskActivity extends AppCompatActivity implements TaskView, OnListClickedListener {
+    private static final int DELETE_LIST = -2;
     private final int CREATE_TASK_ACTIVITY_REGISTRY = 2;
     private final int EDIT_LIST_ACTIVITY_REGISTRY = 3;
     private RecyclerView recyclerView;
@@ -87,11 +88,9 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CREATE_TASK_ACTIVITY_REGISTRY) {
-            if (resultCode == Activity.RESULT_OK) {
-                String taskId = data.getStringExtra("taskId");
-                taskPresenter.appendTask(Long.parseLong(taskId));
-            }
+        if (requestCode == EDIT_LIST_ACTIVITY_REGISTRY) {
+            if (resultCode == DELETE_LIST)
+                finish();
         }
     }
 

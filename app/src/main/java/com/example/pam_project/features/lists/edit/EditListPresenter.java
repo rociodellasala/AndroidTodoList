@@ -60,7 +60,21 @@ public class EditListPresenter {
         Disposable disposable = Completable.fromAction(() -> {
             listsRepository.updateList(id, name, categoryId);
             if (view.get() != null) {
-                view.get().onSuccessfulUpdate(name, categoryId);
+                view.get().onListChange();
+            }
+        }).onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
+        compositeDisposable.add(disposable);
+    }
+
+    public void deleteList(final long id){
+        Disposable disposable = Completable.fromAction(() -> {
+            listsRepository.deleteList(id);
+            if (view.get() != null) {
+                view.get().onListDelete();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())
