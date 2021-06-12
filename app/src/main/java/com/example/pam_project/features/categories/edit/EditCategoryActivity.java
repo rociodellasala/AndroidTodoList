@@ -121,8 +121,6 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
 
     @Override
     public void onCategoryDelete() {
-        Intent returnIntent = new Intent();
-        setResult(CATEGORY_DELETE, returnIntent);
         finish();
     }
 
