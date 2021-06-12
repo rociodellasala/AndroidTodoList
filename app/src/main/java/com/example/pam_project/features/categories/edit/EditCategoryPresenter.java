@@ -16,7 +16,8 @@ public class EditCategoryPresenter {
     private final long categoryId;
     private final CategoriesRepository repository;
     private final WeakReference<EditCategoryView> view;
-    private Disposable disposable;
+    private Disposable editCategoryDisposable;
+    private Disposable deleteCategoryDisposable;
 
     public EditCategoryPresenter(final long categoryId, final CategoriesRepository repository,
                                  final EditCategoryView view) {
@@ -34,10 +35,22 @@ public class EditCategoryPresenter {
     }
 
     public void editCategory(final String name, final String color) {
-        disposable = Completable.fromAction(() -> {
+        editCategoryDisposable = Completable.fromAction(() -> {
             repository.updateCategory(categoryId, name, color);
             if (view.get() != null) {
-                view.get().onSuccessfulUpdate(name, color);
+                view.get().onCategoryEdit();
+            }
+        }).onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    public void deleteCategory(final long id) {
+        deleteCategoryDisposable = Completable.fromAction(() -> {
+            repository.deleteCategory(id);
+            if (view.get() != null) {
+                view.get().onCategoryDelete();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -46,8 +59,10 @@ public class EditCategoryPresenter {
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        if (editCategoryDisposable != null)
+            editCategoryDisposable.dispose();
+        if (deleteCategoryDisposable != null)
+            deleteCategoryDisposable.dispose();
     }
 
 }

@@ -12,7 +12,7 @@ public class CategoryPresenter {
 
     private final CategoriesRepository repository;
     private final WeakReference<CategoryView> view;
-    private Disposable disposable;
+    private Disposable fetchCategoriesDisposable;
 
     public CategoryPresenter(final CategoriesRepository repository, final CategoryView view) {
         this.repository = repository;
@@ -27,12 +27,12 @@ public class CategoryPresenter {
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        if (fetchCategoriesDisposable != null)
+            fetchCategoriesDisposable.dispose();
     }
 
     private void fetchCategories() {
-        disposable = repository.getCategories()
+        fetchCategoriesDisposable = repository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -50,6 +50,11 @@ public class CategoryPresenter {
     public void onEmptyCategory(){
         if (view.get() != null)
             view.get().showEmptyMessage();
+    }
+
+    public void onButtonAddClicked() {
+        if (view.get() != null)
+            view.get().showAddCategory();
     }
 
     public void swapCategories(final int draggedPosition, final int targetPosition){

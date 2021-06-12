@@ -46,7 +46,7 @@ public class CreateListPresenter {
         insertListDisposable = Completable.fromAction(() -> {
             listsRepository.insertList(name, categoryId);
             if (view.get() != null) {
-                view.get().onSuccessfulInsert();
+                view.get().onListCreate();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

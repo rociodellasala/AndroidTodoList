@@ -13,7 +13,7 @@ public class CreateCategoryPresenter {
 
     private final CategoriesRepository repository;
     private final WeakReference<CreateCategoryView> view;
-    private Disposable disposable;
+    private Disposable insertCategoryDisposable;
 
     public CreateCategoryPresenter(final CategoriesRepository repository,
                                    final CreateCategoryView view) {
@@ -23,7 +23,7 @@ public class CreateCategoryPresenter {
     }
 
     public void insertCategory(final String name, final String color) {
-        disposable = Completable.fromAction(() -> {
+        insertCategoryDisposable = Completable.fromAction(() -> {
             final long id = repository.insertCategory(name, color);
             if (view.get() != null) {
                 view.get().onSuccessfulInsert(id, name, color);
@@ -35,8 +35,8 @@ public class CreateCategoryPresenter {
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        if (insertCategoryDisposable != null)
+            insertCategoryDisposable.dispose();
     }
 
 }

@@ -11,7 +11,7 @@ public interface EditListView {
 
     void bindList(final ListInformation model);
 
-    void onSuccessfulUpdate(final String name, final long categoryId);
+    void onListEdit();
 
-    void onFailedUpdate();
+    void onListDelete();
 }

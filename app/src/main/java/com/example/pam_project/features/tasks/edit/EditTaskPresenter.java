@@ -15,7 +15,8 @@ public class EditTaskPresenter {
     private final long taskId;
     private final TaskRepository repository;
     private final WeakReference<EditTaskView> view;
-    private Disposable disposable;
+    private Disposable editTaskDisposable;
+    private Disposable deleteTaskDisposable;
 
     public EditTaskPresenter(final long taskId, final TaskRepository repository, final EditTaskView view) {
         this.taskId = taskId;
@@ -31,10 +32,22 @@ public class EditTaskPresenter {
     }
 
     public void editTask(final String name, final String description, final boolean priority) {
-        disposable = Completable.fromAction(() -> {
+        editTaskDisposable = Completable.fromAction(() -> {
             repository.updateTask(taskId, name, description, priority);
             if (view.get() != null) {
-                view.get().onSuccessfulUpdate(name, description, priority);
+                view.get().onTaskEdit();
+            }
+        }).onErrorComplete()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    public void deleteTask(long taskId) {
+        deleteTaskDisposable = Completable.fromAction(() -> {
+            repository.deleteTask(taskId);
+            if (view.get() != null) {
+                view.get().onTaskDelete();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -43,7 +56,10 @@ public class EditTaskPresenter {
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        if(editTaskDisposable != null)
+            editTaskDisposable.dispose();
+        if(deleteTaskDisposable != null)
+            deleteTaskDisposable.dispose();
     }
+
 }

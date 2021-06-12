@@ -30,6 +30,8 @@ import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.ActivityRegistry;
+import com.example.pam_project.utils.ActivityResultCode;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -37,7 +39,6 @@ import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
-    private final int CREATE_LIST_ACTIVITY_REGISTRY = 1;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private ListPresenter listPresenter;
@@ -115,13 +116,15 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
     @Override
     public void showListContent(final long id) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://detail/list?id=" + id)));
+        String uri = "pam://detail/list?id=";
+        Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
+        startActivityForResult(activityIntent, ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal());
     }
 
     @Override
     public void showAddList() {
         Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
-        startActivityForResult(activityIntent, CREATE_LIST_ACTIVITY_REGISTRY);
+        startActivityForResult(activityIntent, ActivityRegistry.CREATE_LIST_ACTIVITY.ordinal());
     }
 
     @Override
@@ -202,10 +205,9 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CREATE_LIST_ACTIVITY_REGISTRY) {
-            if (resultCode == Activity.RESULT_OK) {
-                String listId = data.getStringExtra("listId");
-                listPresenter.appendList(Long.parseLong(listId));
+        if (requestCode == ActivityRegistry.CREATE_LIST_ACTIVITY.ordinal()) {
+            if (resultCode == ActivityResultCode.CREATE_LIST_CODE.ordinal()) {
+                // Code for create list
             }
         }
     }

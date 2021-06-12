@@ -12,6 +12,8 @@ public interface ListsRepository {
 
     void updateList(final long id, final String name, final long categoryId);
 
+    void deleteList(final long id);
+
     Flowable<ListInformation> getListWithTasks(final long listId);
 
 }

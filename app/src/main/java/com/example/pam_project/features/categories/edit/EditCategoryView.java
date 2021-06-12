@@ -6,7 +6,7 @@ public interface EditCategoryView {
 
     void bindCategory(CategoryInformation model);
 
-    void onSuccessfulUpdate(String name, String color);
+    void onCategoryEdit();
 
-    void onFailedUpdate();
+    void onCategoryDelete();
 }

@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers;
 public class CreateTaskPresenter {
     private final TaskRepository taskRepository;
     private final WeakReference<CreateTaskView> view;
-    private Disposable disposable;
+    private Disposable insertTaskDisposable;
 
     public CreateTaskPresenter(final TaskRepository taskRepository, final CreateTaskView view) {
         this.taskRepository = taskRepository;
@@ -21,10 +21,10 @@ public class CreateTaskPresenter {
     }
 
     public void insertTask(final String name, final String description, final boolean priority, final long listId) {
-        disposable = Completable.fromAction(() -> {
+        insertTaskDisposable = Completable.fromAction(() -> {
             taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
             if (view.get() != null) {
-                view.get().onSuccessfulInsert();
+                view.get().onTaskCreate();
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,8 +33,8 @@ public class CreateTaskPresenter {
     }
 
     public void onViewDetached() {
-        if (disposable != null)
-            disposable.dispose();
+        if (insertTaskDisposable != null)
+            insertTaskDisposable.dispose();
     }
 
 }

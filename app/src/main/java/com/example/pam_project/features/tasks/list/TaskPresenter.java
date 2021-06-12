@@ -70,7 +70,7 @@ public class TaskPresenter {
             taskRepository.updateTask(id, name, description, priority, status, listId);
             if (view.get() != null) {
                 TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
-                view.get().onSuccessfulUpdate(taskInformation, position);
+                view.get().onTaskStatusEdit(taskInformation, position);
             }
         }).onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())

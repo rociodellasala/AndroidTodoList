@@ -1,10 +1,10 @@
 package com.example.pam_project.features.lists.edit;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -20,6 +20,7 @@ import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapte
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +28,7 @@ import java.util.Objects;
 public class EditListActivity extends AppCompatActivity implements EditListView {
 
     private static final String LIST_ID_PARAMETER = "id";
-    private EditListPresenter editListPresenter;
+    private EditListPresenter presenter;
     private SpinnerCategoryAdapter adapter;
     private Spinner spinner;
     private long listId;
@@ -41,7 +42,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
         final ListsRepository listsRepository = container.getListsRepository();
 
-        editListPresenter = new EditListPresenter(categoriesRepository, listsRepository, this);
+        presenter = new EditListPresenter(categoriesRepository, listsRepository, this);
 
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
 
@@ -53,7 +54,13 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         }
 
         setContentView(R.layout.activity_edit_list);
+        setDeleteButton();
         setup();
+    }
+
+    private void setDeleteButton(){
+        Button deleteButton = (Button) (Button)findViewById(R.id.delete_list_button);
+        deleteButton.setOnClickListener(v -> presenter.deleteList(listId));
     }
 
     private void setup() {
@@ -68,7 +75,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     @Override
     public void onStart() {
         super.onStart();
-        editListPresenter.onViewAttached(listId);
+        presenter.onViewAttached(listId);
     }
 
     @Override
@@ -86,24 +93,23 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onSuccessfulUpdate(final String name, final long categoryId) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("listTitle", name);
-        returnIntent.putExtra("categoryId", String.valueOf(categoryId));
-        returnIntent.putExtra("id", listId);
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedUpdate() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.check_action_bar, menu);
         return true;
+    }
+
+    @Override
+    public void onListEdit(){
+        Intent returnIntent = new Intent();
+        setResult(ActivityResultCode.EDIT_LIST_CODE.ordinal(), returnIntent);
+        finish();
+    }
+
+    @Override
+    public void onListDelete(){
+        Intent returnIntent = new Intent();
+        setResult(ActivityResultCode.DELETE_LIST_CODE.ordinal(), returnIntent);
+        finish();
     }
 
     @Override
@@ -119,12 +125,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                if (categoryId != null) {
-                    editListPresenter.editList(listId, listName, categoryId);
-                } else {
-                    this.onFailedUpdate();
-                }
-                finish();
+                if (categoryId != null)
+                    presenter.editList(listId, listName, categoryId);
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();
@@ -146,7 +148,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     @Override
     public void onStop() {
         super.onStop();
-        editListPresenter.onViewDetached();
+        presenter.onViewDetached();
     }
 
     @Override

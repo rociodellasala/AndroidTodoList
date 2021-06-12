@@ -6,7 +6,7 @@ public interface EditTaskView {
 
     void bindTask(TaskInformation model);
 
-    void onSuccessfulUpdate(String name, String description, boolean priority);
+    void onTaskEdit();
 
-    void onFailedUpdate();
+    void onTaskDelete();
 }

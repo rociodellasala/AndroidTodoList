@@ -19,13 +19,14 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.create.CreateCategoryActivity;
 import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.utils.ActivityRegistry;
+import com.example.pam_project.utils.ActivityResultCode;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
 import java.util.Objects;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryView, OnListClickedListener {
-    private static final int CREATE_CATEGORY_ACTIVITY_REGISTRY = 8;
     private RecyclerView recyclerView;
     private CategoryPresenter presenter;
     private CategoryAdapter adapter;
@@ -70,12 +71,16 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     }
 
     private void setExtendedFloatingButtonAction() {
-        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_category);
-        addListFAB.setOnClickListener(view -> {
-            Intent activityIntent = new Intent(getApplicationContext(), CreateCategoryActivity.class);
-            startActivityForResult(activityIntent, CREATE_CATEGORY_ACTIVITY_REGISTRY);
-        });
+        ExtendedFloatingActionButton addTaskFAB = findViewById(R.id.extended_fab_add_category);
+        addTaskFAB.setOnClickListener(view -> presenter.onButtonAddClicked());
     }
+
+    @Override
+    public void showAddCategory() {
+        Intent activityIntent = new Intent(getApplicationContext(), CreateCategoryActivity.class);
+        startActivityForResult(activityIntent, ActivityRegistry.CREATE_CATEGORY_ACTIVITY.ordinal());
+    }
+
 
     @Override
     public void bindCategories(List<CategoryInformation> model) {
@@ -110,7 +115,25 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
 
     @Override
     public void showCategoryForm(final long id) {
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("pam://edit/category?id=" + id)));
+        String uri = "pam://edit/category?id=";
+        Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
+        startActivityForResult(activityIntent, ActivityRegistry.EDIT_CATEGORY_ACTIVITY.ordinal());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityRegistry.CREATE_CATEGORY_ACTIVITY.ordinal()) {
+            if(resultCode == ActivityResultCode.CREATE_CATEGORY_CODE.ordinal()){
+                // Code for create category
+            }
+        } else if(requestCode == ActivityRegistry.EDIT_CATEGORY_ACTIVITY.ordinal()) {
+            if (resultCode == ActivityResultCode.EDIT_CATEGORY_CODE.ordinal()) {
+                // Code for edit category
+            } else if (resultCode == ActivityResultCode.DELETE_CATEGORY_CODE.ordinal()) {
+                // Code for delete category
+            }
+        }
     }
 
     @Override
