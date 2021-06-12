@@ -11,7 +11,6 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public class RoomListsRepository implements ListsRepository {
-
     private final ListDao listDao;
     private final CategoryDao categoryDao;
     private final ListMapper mapper;

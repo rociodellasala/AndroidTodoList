@@ -9,10 +9,10 @@ import com.example.pam_project.features.lists.list.ListInformation;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public class RoomCategoriesRepository implements CategoriesRepository {
-
     private final CategoryDao categoryDao;
     private final CategoryMapper mapper;
 
@@ -37,20 +37,26 @@ public class RoomCategoriesRepository implements CategoriesRepository {
     }
 
     @Override
-    public long insertCategory(final String name, final String color) {
+    public Completable insertCategory(final String name, final String color) {
         CategoryEntity entity = new CategoryEntity(name, color);
-        return categoryDao.insertCategory(entity);
+        return Completable.fromAction(() -> {
+            categoryDao.insertCategory(entity);
+        });
     }
 
     @Override
-    public void updateCategory(final long id, final String name, final String color) {
+    public Completable updateCategory(final long id, final String name, final String color) {
         CategoryEntity entity = new CategoryEntity(id, name, color);
-        categoryDao.updateCategory(entity);
+        return Completable.fromAction(() -> {
+            categoryDao.updateCategory(entity);
+        });
     }
 
     @Override
-    public void deleteCategory(final long id) {
+    public Completable deleteCategory(final long id) {
         CategoryEntity entity = categoryDao.getCategoryById(id).blockingFirst();
-        categoryDao.deleteCategory(entity);
+        return Completable.fromAction(() -> {
+            categoryDao.deleteCategory(entity);
+        });
     }
 }

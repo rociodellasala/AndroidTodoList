@@ -20,7 +20,6 @@ import com.example.pam_project.features.categories.create.CreateCategoryActivity
 import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.ActivityRegistry;
-import com.example.pam_project.utils.ActivityResultCode;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -118,22 +117,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         String uri = "pam://edit/category?id=";
         Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
         startActivityForResult(activityIntent, ActivityRegistry.EDIT_CATEGORY_ACTIVITY.ordinal());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ActivityRegistry.CREATE_CATEGORY_ACTIVITY.ordinal()) {
-            if(resultCode == ActivityResultCode.CREATE_CATEGORY_CODE.ordinal()){
-                // Code for create category
-            }
-        } else if(requestCode == ActivityRegistry.EDIT_CATEGORY_ACTIVITY.ordinal()) {
-            if (resultCode == ActivityResultCode.EDIT_CATEGORY_CODE.ordinal()) {
-                // Code for edit category
-            } else if (resultCode == ActivityResultCode.DELETE_CATEGORY_CODE.ordinal()) {
-                // Code for delete category
-            }
-        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.example.pam_project.features.lists.list.ListInformation;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public interface CategoriesRepository {
@@ -16,9 +17,9 @@ public interface CategoriesRepository {
 
     Flowable<List<CategoryInformation>> getCategories();
 
-    long insertCategory(String name, String color);
+    Completable insertCategory(String name, String color);
 
-    void updateCategory(long id, String name, String color);
+    Completable updateCategory(long id, String name, String color);
 
-    void deleteCategory(long id);
+    Completable deleteCategory(long id);
 }

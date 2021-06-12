@@ -11,7 +11,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditListPresenter {
-
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
