@@ -2,7 +2,6 @@ package com.example.pam_project.features.tasks.edit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -24,21 +23,16 @@ import java.util.Objects;
 
 public class EditTaskActivity extends AppCompatActivity implements EditTaskView {
     private final static String TASK_ID_PARAMETER = "id";
-    private EditTaskPresenter editTaskPresenter;
+    private EditTaskPresenter presenter;
     private long taskId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_edit_task);
         String id = getIntent().getData().getQueryParameter(TASK_ID_PARAMETER);
-        this.taskId = Long.parseLong(id);
-
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-        final TaskRepository taskRepository = container.getTasksRepository();
-
-        editTaskPresenter = new EditTaskPresenter(taskId, taskRepository, this);
+        taskId = Long.parseLong(id);
+        createPresenter();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -46,15 +40,19 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
         }
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_task);
-        setContentView(R.layout.activity_edit_task);
         setDeleteButton();
     }
 
-
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final TaskRepository taskRepository = container.getTasksRepository();
+        presenter = new EditTaskPresenter(taskId, taskRepository, this);
+    }
+    
     @Override
     protected void onStart() {
         super.onStart();
-        editTaskPresenter.onViewAttached();
+        presenter.onViewAttached();
     }
 
     @Override
@@ -74,8 +72,6 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
         final EditText taskDescriptionInput = findViewById(R.id.edit_task_description_input);
         final CheckBox checkboxUrgencyInput = findViewById(R.id.edit_task_priority_checkbox);
 
-        Log.e("msg:", String.valueOf(itemId));
-
         if (itemId == R.id.check_add_button) {
             String taskName = taskNameInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
@@ -85,8 +81,8 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
             if (errorMessage != null) {
                 taskNameInput.setError(errorMessage);
             } else {
-                if (!taskName.isEmpty())
-                    editTaskPresenter.editTask(taskName, taskDescription, taskUrgency);
+                presenter.updateTask(taskName, taskDescription, taskUrgency);
+                finish();
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();
@@ -97,7 +93,7 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
 
     private void setDeleteButton(){
         Button deleteButton = (Button) (Button)findViewById(R.id.delete_task_button);
-        deleteButton.setOnClickListener(v -> editTaskPresenter.deleteTask(taskId));
+        deleteButton.setOnClickListener(v -> presenter.deleteTask(taskId));
     }
 
     private String checkForm(String categoryName) {
@@ -111,16 +107,7 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     }
 
     @Override
-    public void onTaskEdit(){
-        Intent returnIntent = new Intent();
-        setResult(ActivityResultCode.EDIT_TASK_CODE.ordinal(), returnIntent);
-        finish();
-    }
-
-    @Override
     public void onTaskDelete(){
-        Intent returnIntent = new Intent();
-        setResult(ActivityResultCode.DELETE_TASK_CODE.ordinal(), returnIntent);
         finish();
     }
 
@@ -131,13 +118,13 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        editTaskPresenter.onViewDetached();
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    protected void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.pam_project.features.tasks.create;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,24 +13,20 @@ import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.tasks.TaskRepository;
-import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.Objects;
 
 public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
     private final static String LIST_ID_PARAMETER = "id";
-    private CreateTaskPresenter createTaskPresenter;
+    private CreateTaskPresenter presenter;
     private Long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_task);
+        createPresenter();
 
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-        final TaskRepository taskRepository = container.getTasksRepository();
-
-        createTaskPresenter = new CreateTaskPresenter(taskRepository, this);
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
 
         ActionBar actionBar = getSupportActionBar();
@@ -40,7 +35,12 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         }
 
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_task);
-        setContentView(R.layout.activity_create_task);
+    }
+
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final TaskRepository taskRepository = container.getTasksRepository();
+        presenter = new CreateTaskPresenter(taskRepository, this);
     }
 
     @Override
@@ -52,13 +52,6 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.check_action_bar, menu);
         return true;
-    }
-
-    @Override
-    public void onTaskCreate() {
-        Intent returnIntent = new Intent();
-        setResult(ActivityResultCode.CREATE_TASK_CODE.ordinal(), returnIntent);
-        finish();
     }
 
     @Override
@@ -77,8 +70,8 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             if (errorMessage != null) {
                 taskNameInput.setError(errorMessage);
             } else {
-                if (!taskName.isEmpty() && listId != null)
-                    createTaskPresenter.insertTask(taskName, taskDescription, taskUrgency, listId);
+                presenter.insertTask(taskName, taskDescription, taskUrgency, listId);
+                finish();
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();
@@ -98,13 +91,13 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        createTaskPresenter.onViewDetached();
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
     }
 }

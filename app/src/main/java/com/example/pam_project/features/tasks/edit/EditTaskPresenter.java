@@ -5,17 +5,15 @@ import com.example.pam_project.repositories.tasks.TaskRepository;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditTaskPresenter {
-
     private final long taskId;
     private final TaskRepository repository;
     private final WeakReference<EditTaskView> view;
-    private Disposable editTaskDisposable;
+    private Disposable updateTaskDisposable;
     private Disposable deleteTaskDisposable;
 
     public EditTaskPresenter(final long taskId, final TaskRepository repository, final EditTaskView view) {
@@ -31,35 +29,42 @@ public class EditTaskPresenter {
         }
     }
 
-    public void editTask(final String name, final String description, final boolean priority) {
-        editTaskDisposable = Completable.fromAction(() -> {
-            repository.updateTask(taskId, name, description, priority);
-            if (view.get() != null) {
-                view.get().onTaskEdit();
-            }
-        }).onErrorComplete()
+    public void updateTask(final String name, final String description, final boolean priority) {
+        updateTaskDisposable = repository.updateTask(taskId, name, description, priority)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onTaskUpdated, this::onTaskUpdatedError);
+    }
+
+    private void onTaskUpdated() {
+        // TODO
+    }
+
+    private void onTaskUpdatedError(final Throwable throwable) {
+        // TODO
     }
 
     public void deleteTask(long taskId) {
-        deleteTaskDisposable = Completable.fromAction(() -> {
-            repository.deleteTask(taskId);
-            if (view.get() != null) {
-                view.get().onTaskDelete();
-            }
-        }).onErrorComplete()
+        deleteTaskDisposable =  repository.deleteTask(taskId)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onTaskDeleted, this::onTaskDeletedError);
+    }
+
+    private void onTaskDeleted() {
+        if (view.get() != null) {
+            view.get().onTaskDelete();
+        }
+    }
+
+    private void onTaskDeletedError(final Throwable throwable) {
+        // TODO
     }
 
     public void onViewDetached() {
-        if(editTaskDisposable != null)
-            editTaskDisposable.dispose();
+        if(updateTaskDisposable != null)
+            updateTaskDisposable.dispose();
         if(deleteTaskDisposable != null)
             deleteTaskDisposable.dispose();
     }
-
 }
