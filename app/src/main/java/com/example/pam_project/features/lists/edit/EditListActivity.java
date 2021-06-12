@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class EditListActivity extends AppCompatActivity implements EditListView {
-
     private static final String LIST_ID_PARAMETER = "id";
     private EditListPresenter presenter;
     private SpinnerCategoryAdapter adapter;
@@ -36,13 +35,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
-        final ListsRepository listsRepository = container.getListsRepository();
-
-        presenter = new EditListPresenter(categoriesRepository, listsRepository, this);
+        setContentView(R.layout.activity_edit_list);
+        createPresenter();
 
         listId = getIntent().getLongExtra(LIST_ID_PARAMETER, -1);
 
@@ -53,17 +47,18 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        setContentView(R.layout.activity_edit_list);
         setDeleteButton();
-        setup();
+        setUpView();
     }
 
-    private void setDeleteButton(){
-        Button deleteButton = (Button) (Button)findViewById(R.id.delete_list_button);
-        deleteButton.setOnClickListener(v -> presenter.deleteList(listId));
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+        final ListsRepository listsRepository = container.getListsRepository();
+        presenter = new EditListPresenter(categoriesRepository, listsRepository, this);
     }
 
-    private void setup() {
+    private void setUpView() {
         spinner = findViewById(R.id.edit_list_category_spinner);
         adapter = new SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item);
         adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,6 +71,11 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     public void onStart() {
         super.onStart();
         presenter.onViewAttached(listId);
+    }
+
+    private void setDeleteButton(){
+        Button deleteButton = (Button) (Button)findViewById(R.id.delete_list_button);
+        deleteButton.setOnClickListener(v -> presenter.deleteList(listId));
     }
 
     @Override
@@ -99,13 +99,6 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
-    public void onListEdit(){
-        Intent returnIntent = new Intent();
-        setResult(ActivityResultCode.EDIT_LIST_CODE.ordinal(), returnIntent);
-        finish();
-    }
-
-    @Override
     public void onListDelete(){
         Intent returnIntent = new Intent();
         setResult(ActivityResultCode.DELETE_LIST_CODE.ordinal(), returnIntent);
@@ -125,8 +118,8 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                if (categoryId != null)
-                    presenter.editList(listId, listName, categoryId);
+                presenter.updateList(listId, listName, categoryId);
+                finish();
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();

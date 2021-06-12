@@ -6,7 +6,6 @@ import com.example.pam_project.repositories.lists.ListsRepository;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -17,7 +16,7 @@ public class EditListPresenter {
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
     private Disposable fetchCategoriesDisposable;
-    private Disposable editListDisposable;
+    private Disposable updateListDisposable;
     private Disposable deleteListDisposable;
 
 
@@ -35,7 +34,6 @@ public class EditListPresenter {
         }
     }
 
-
     private void fetchCategories(final long id) {
         fetchCategoriesDisposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
@@ -45,7 +43,7 @@ public class EditListPresenter {
                         view.get().bindCategories(model);
                         fetchList(id);
                     }
-                });
+                }, this::onCategoriesReceivedError);
     }
 
     private void fetchList(final long id) {
@@ -54,35 +52,47 @@ public class EditListPresenter {
             view.get().bindList(model);
     }
 
-    public void editList(final long id, final String name, final Long categoryId) {
-        editListDisposable = Completable.fromAction(() -> {
-            listsRepository.updateList(id, name, categoryId);
-            if (view.get() != null) {
-                view.get().onListEdit();
-            }
-        }).onErrorComplete()
+    private void onCategoriesReceivedError(final Throwable throwable) {
+        // TODO
+    }
+
+    public void updateList(final long id, final String name, final Long categoryId) {
+        updateListDisposable = listsRepository.updateList(id, name, categoryId)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onListUpdated, this::onListUpdatedError);
+    }
+
+    private void onListUpdated() {
+        // TODO
+    }
+
+    private void onListUpdatedError(final Throwable throwable) {
+        // TODO
     }
 
     public void deleteList(final long id){
-        deleteListDisposable = Completable.fromAction(() -> {
-            listsRepository.deleteList(id);
-            if (view.get() != null) {
-                view.get().onListDelete();
-            }
-        }).onErrorComplete()
+        deleteListDisposable = listsRepository.deleteList(id)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onListDeleted, this::onListDeletedError);
+    }
+
+    private void onListDeleted() {
+        if (view.get() != null) {
+            view.get().onListDelete();
+        }
+    }
+
+    private void onListDeletedError(final Throwable throwable) {
+        // TODO
     }
 
     public void onViewDetached() {
         if(fetchCategoriesDisposable != null)
             fetchCategoriesDisposable.dispose();
-        if(editListDisposable != null)
-            editListDisposable.dispose();
+        if(updateListDisposable != null)
+            updateListDisposable.dispose();
         if(deleteListDisposable != null)
             deleteListDisposable.dispose();
     }

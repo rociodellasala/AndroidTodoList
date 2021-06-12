@@ -8,13 +8,9 @@ public interface ListView {
 
     void launchFtu();
 
-    void showLists();
-
     void bindCategories(List<CategoryInformation> model);
 
     void bindLists(final List<ListInformation> model);
-
-    void bindList(final ListInformation model);
 
     void showAddList();
 

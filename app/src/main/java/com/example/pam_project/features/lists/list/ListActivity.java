@@ -1,6 +1,5 @@
 package com.example.pam_project.features.lists.list;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,9 +28,7 @@ import com.example.pam_project.features.lists.create.CreateListActivity;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.utils.ActivityRegistry;
-import com.example.pam_project.utils.ActivityResultCode;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -41,42 +38,49 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
     private RecyclerView recyclerView;
     private ListAdapter adapter;
-    private ListPresenter listPresenter;
+    private ListPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
-
-        final FtuStorage storage = container.getFtuStorage();
-        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
-        final ListsRepository listsRepository = container.getListsRepository();
-
-        listPresenter = new ListPresenter(storage, categoriesRepository, listsRepository, this);
-
         setContentView(R.layout.activity_list);
-        setup();
+        createPresenter();
+        setUpView();
     }
 
-    private void setup() {
+    private void createPresenter() {
+        presenter = (ListPresenter) getLastNonConfigurationInstance();
+
+        if (presenter == null) {
+            final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+
+            final FtuStorage storage = container.getFtuStorage();
+            final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+
+            presenter = new ListPresenter(storage, categoriesRepository, this);
+        }
+    }
+
+    private void setUpView() {
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
+
+        adapter = new ListAdapter();
+        adapter.setOnClickedListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setExtendedFloatingButtonAction() {
+        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
+        addListFAB.setOnClickListener(view -> presenter.onButtonClicked());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        listPresenter.onViewAttached();
-    }
-
-    @Override
-    public void showLists() {
-        adapter = new ListAdapter();
-        adapter.setOnClickedListener(this);
-        recyclerView.setAdapter(adapter);
+        presenter.onViewAttached();
     }
 
     @Override
@@ -92,7 +96,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
-        listPresenter.onEmptyList();
+        presenter.onEmptyList();
     }
 
     @Override
@@ -100,18 +104,12 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         TextView text = findViewById(R.id.empty_list_message);
         View emptyDataMessage = findViewById(R.id.empty_list);
 
-        if(adapter.getItemCount() == 0) {
+        if (adapter.getItemCount() == 0) {
             text.setText(R.string.empty_list_message);
             emptyDataMessage.setVisibility(View.VISIBLE);
         } else {
             emptyDataMessage.setVisibility(View.GONE);
         }
-    }
-
-
-    @Override
-    public void bindList(final ListInformation model) {
-        adapter.addItem(model);
     }
 
     @Override
@@ -149,6 +147,10 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         showDialog(fm, sortByDialog);
     }
 
+    private void showDialog(FragmentManager fm, DialogFragment dialog) {
+        dialog.show(fm, DIALOG_FRAGMENT_SHOW_TAG);
+    }
+
     @Override
     public void showManageCategories() {
         Intent categoriesIntent = new Intent(getApplicationContext(), CategoryActivity.class);
@@ -162,22 +164,18 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
         return true;
     }
 
-    private void showDialog(FragmentManager fm, DialogFragment dialog) {
-        dialog.show(fm, DIALOG_FRAGMENT_SHOW_TAG);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
         if (itemId == R.id.list_action_bar_search) {
-            listPresenter.onSearchBar();
+            presenter.onSearchBar();
         } else if (itemId == R.id.list_action_bar_filter) {
-            listPresenter.onFilterDialog();
+            presenter.onFilterDialog();
         } else if (itemId == R.id.list_action_bar_sort_by) {
-            listPresenter.onSortByDialog();
+            presenter.onSortByDialog();
         } else if (itemId == R.id.list_action_bar_manage_categories) {
-            listPresenter.onManageCategories();
+            presenter.onManageCategories();
         } else {
             return super.onOptionsItemSelected(item);
         }
@@ -189,6 +187,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void onSelectedItems(Class<?> klass, List<Integer> items) {
         CharSequence value = "No selection";
+
         if (klass.equals(SortByDialogFragment.class)) {
             final CharSequence[] vals = getResources().getStringArray(R.array.sort_by_criteria);
             value = vals[items.get(0)];
@@ -198,34 +197,18 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
                 value = items.toString();
             adapter.setFilterSelections(items);
         }
+
         Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ActivityRegistry.CREATE_LIST_ACTIVITY.ordinal()) {
-            if (resultCode == ActivityResultCode.CREATE_LIST_CODE.ordinal()) {
-                // Code for create list
-            }
-        }
+    public void onClick(final long id) {
+        presenter.onListClicked(id);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        listPresenter.onViewDetached();
-    }
-
-    @Override
-    public void onClick(final long id) {
-        listPresenter.onListClicked(id);
-    }
-
-
-    private void setExtendedFloatingButtonAction() {
-        ExtendedFloatingActionButton addListFAB = findViewById(R.id.extended_fab_add_list);
-        addListFAB.setOnClickListener(view -> listPresenter.onButtonClicked());
+        presenter.onViewDetached();
     }
 }

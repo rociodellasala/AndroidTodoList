@@ -8,6 +8,4 @@ public interface CreateListView {
 
     void bindCategories(final List<CategoryInformation> model);
 
-    void onListCreate();
-
 }

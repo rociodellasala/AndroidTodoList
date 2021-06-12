@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pam_project.R;
 
 public class ListViewHolder extends RecyclerView.ViewHolder {
-
     private OnListClickedListener listener;
 
     public ListViewHolder(@NonNull View itemView) {
