@@ -34,41 +34,28 @@ import java.util.Objects;
 public class TaskActivity extends AppCompatActivity implements TaskView, OnListClickedListener {
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
-    private TaskPresenter taskPresenter;
+    private TaskPresenter presenter;
     private long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_task);
 
         String id = getIntent().getData().getQueryParameter("id");
-        this.listId = Long.parseLong(id);
+        listId = Long.parseLong(id);
+        setUpView();
+        createPresenter();
+    }
 
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final TaskRepository taskRepository = container.getTasksRepository();
         final ListsRepository listsRepository = container.getListsRepository();
-
-        setContentView(R.layout.activity_task);
-        setup();
-        taskPresenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
+        presenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_action_bar, menu);
-        return true;
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        taskPresenter.onViewAttached();
-    }
-
-    private void setup() {
+    private void setUpView() {
         recyclerView = findViewById(R.id.allTasks);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -78,29 +65,30 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         setExtendedFloatingButtonAction();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.onViewAttached();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_action_bar, menu);
+        return true;
+    }
+
     private void setExtendedFloatingButtonAction() {
         ExtendedFloatingActionButton addTaskFAB = findViewById(R.id.extended_fab_add_task);
-        addTaskFAB.setOnClickListener(view -> taskPresenter.onButtonAddClicked());
+        addTaskFAB.setOnClickListener(view -> presenter.onButtonAddClicked());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ActivityRegistry.CREATE_TASK_ACTIVITY.ordinal()) {
-            if(resultCode == ActivityResultCode.CREATE_LIST_CODE.ordinal()){
-                // Code for create task
-            }
-        } else if(requestCode == ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal()) {
-            if (resultCode == ActivityResultCode.EDIT_LIST_CODE.ordinal()) {
-                // Code for edit list
-            } else if (resultCode == ActivityResultCode.DELETE_LIST_CODE.ordinal()) {
+        if(requestCode == ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal()) {
+            if (resultCode == ActivityResultCode.DELETE_LIST_CODE.ordinal()) {
                 finish();
-            }
-        } else if(requestCode == ActivityRegistry.EDIT_TASK_ACTIVITY.ordinal()){
-            if (resultCode == ActivityResultCode.EDIT_TASK_CODE.ordinal()) {
-                // Code for edit task
-            } else if (resultCode == ActivityResultCode.DELETE_LIST_CODE.ordinal()) {
-                // Code for delete task
             }
         }
     }
@@ -117,7 +105,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         long id = item.getItemId();
 
         if (id == R.id.edit_list_button) {
-            taskPresenter.onEditList();
+            presenter.onEditList();
         }
 
         return super.onOptionsItemSelected(item);
@@ -126,7 +114,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     public void bindTasks(List<TaskInformation> model) {
         adapter.update(model);
-        taskPresenter.onEmptyTask();
+        presenter.onEmptyTask();
     }
 
     @Override
@@ -156,11 +144,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     }
 
     @Override
-    public void bindTask(TaskInformation model) {
-        adapter.addItem(model);
-    }
-
-    @Override
     public void bindListName(final String listName) {
         Objects.requireNonNull(getSupportActionBar()).setTitle(listName);
     }
@@ -169,14 +152,14 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     public void showAddTask() {
         Intent activityIntent = new Intent(getApplicationContext(), CreateTaskActivity.class);
         activityIntent.putExtra("id", listId);
-        startActivityForResult(activityIntent, ActivityRegistry.CREATE_TASK_ACTIVITY.ordinal());
+        startActivity(activityIntent);
     }
 
     @Override
     public void showTaskContent(final long id) {
         String uri = "pam://edit/task?id=";
         Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
-        startActivityForResult(activityIntent, ActivityRegistry.EDIT_TASK_ACTIVITY.ordinal());
+        startActivity(activityIntent);
     }
 
     @Override
@@ -199,7 +182,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder swippedItem, int direction) {
                 TaskInformation taskInformation = adapter.getItem(swippedItem.getAdapterPosition());
-                taskPresenter.onTaskChange(taskInformation, swippedItem.getAdapterPosition());
+                presenter.onTaskChange(taskInformation, swippedItem.getAdapterPosition());
             }
 
             @Override
@@ -225,13 +208,13 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        taskPresenter.onViewDetached();
+    public void onClick(final long id) {
+        presenter.onTaskClicked(id);
     }
 
     @Override
-    public void onClick(final long id) {
-        taskPresenter.onTaskClicked(id);
+    protected void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
     }
 }

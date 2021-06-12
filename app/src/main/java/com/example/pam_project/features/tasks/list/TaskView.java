@@ -8,8 +8,6 @@ public interface TaskView {
 
     void bindTasks(final List<TaskInformation> model);
 
-    void bindTask(TaskInformation model);
-
     void bindHeaders(int[] headers);
 
     void bindListName(final String name);

@@ -15,7 +15,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class TaskPresenter {
-
     private final TaskRepository taskRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<TaskView> view;
@@ -23,8 +22,8 @@ public class TaskPresenter {
     private Disposable updateTaskDisposable;
     private final long listId;
 
-    public TaskPresenter(final TaskRepository taskRepository, final ListsRepository listsRepository,
-                         final TaskView view, final long listId) {
+    public TaskPresenter(final TaskRepository taskRepository, final ListsRepository listsRepository, final TaskView view,
+                         final long listId) {
         this.taskRepository = taskRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
@@ -73,22 +72,19 @@ public class TaskPresenter {
     private void updateTask(final int position, final long id, final String name,
         final String description, final boolean priority,
         final TaskStatus status, final long listId) {
-        updateTaskDisposable = Completable.fromAction(() -> {
-            taskRepository.updateTask(id, name, description, priority, status, listId);
-            if (view.get() != null) {
-                TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
-                view.get().onTaskStatusEdit(taskInformation, position);
-            }
-        }).onErrorComplete()
+        updateTaskDisposable = taskRepository.updateTask(id, name, description, priority, status, listId)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(() -> {
+                    if (view.get() != null) {
+                        TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
+                        view.get().onTaskStatusEdit(taskInformation, position);
+                    }
+                }, this::onTaskUpdatedError);
     }
 
-    public void appendTask(final long id) {
-        TaskInformation model = taskRepository.getTask(id);
-        if (view.get() != null)
-            view.get().bindTask(model);
+    private void onTaskUpdatedError(final Throwable throwable) {
+        // TODO
     }
 
     public void onEmptyTask(){
