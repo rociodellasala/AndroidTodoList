@@ -27,9 +27,7 @@ public class CreateTaskPresenter {
     }
 
     private void onTaskInserted() {
-        if (view.get() != null) {
-            view.get().onTaskCreate();
-        }
+       // TODO
     }
 
     private void onTaskInsertedError(final Throwable throwable) {
