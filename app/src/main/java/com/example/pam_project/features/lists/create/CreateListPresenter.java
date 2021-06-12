@@ -7,7 +7,6 @@ import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -16,15 +15,14 @@ public class CreateListPresenter {
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<CreateListView> view;
-    private final CompositeDisposable compositeDisposable;
-
+    private Disposable fetchListsDisposable;
+    private Disposable insertListDisposable;
 
     public CreateListPresenter(final CategoriesRepository categoriesRepository,
                                final ListsRepository listsRepository, final CreateListView view) {
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
-        this.compositeDisposable = new CompositeDisposable();
     }
 
     public void onViewAttached() {
@@ -34,7 +32,7 @@ public class CreateListPresenter {
 
 
     private void fetchCategories() {
-        Disposable disposable = categoriesRepository.getCategories()
+        fetchListsDisposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -42,12 +40,10 @@ public class CreateListPresenter {
                         view.get().bindCategories(model);
                     }
                 });
-
-        compositeDisposable.add(disposable);
     }
 
     public void insertList(final String name, final Long categoryId) {
-        Disposable disposable = Completable.fromAction(() -> {
+        insertListDisposable = Completable.fromAction(() -> {
             listsRepository.insertList(name, categoryId);
             if (view.get() != null) {
                 view.get().onListCreate();
@@ -56,12 +52,13 @@ public class CreateListPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-
-        compositeDisposable.add(disposable);
     }
 
     public void onViewDetached() {
-        compositeDisposable.dispose();
+        if (fetchListsDisposable != null)
+            fetchListsDisposable.dispose();
+        if (insertListDisposable != null)
+            insertListDisposable.dispose();
     }
 
 

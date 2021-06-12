@@ -20,8 +20,8 @@ public class ListPresenter {
     private final WeakReference<ListView> view;
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
-    private Disposable listDisposable;
-    private Disposable categoryDisposable;
+    private Disposable fetchListsDisposable;
+    private Disposable fetchCategoriesDisposable;
 
     public ListPresenter(final FtuStorage ftuStorage, final CategoriesRepository categoriesRepository,
                          final ListsRepository listsRepository, final ListView view) {
@@ -47,7 +47,7 @@ public class ListPresenter {
     }
 
     private void fetchLists() {
-        listDisposable = categoriesRepository.getCategoriesWithLists()
+        fetchListsDisposable = categoriesRepository.getCategoriesWithLists()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -63,7 +63,7 @@ public class ListPresenter {
     }
 
     private void fetchCategories() {
-        categoryDisposable = categoriesRepository.getCategories()
+        fetchCategoriesDisposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> {
@@ -117,9 +117,9 @@ public class ListPresenter {
     }
 
     public void onViewDetached() {
-        if (listDisposable != null)
-            listDisposable.dispose();
-        if (categoryDisposable != null)
-            categoryDisposable.dispose();
+        if (fetchListsDisposable != null)
+            fetchListsDisposable.dispose();
+        if (fetchCategoriesDisposable != null)
+            fetchCategoriesDisposable.dispose();
     }
 }
