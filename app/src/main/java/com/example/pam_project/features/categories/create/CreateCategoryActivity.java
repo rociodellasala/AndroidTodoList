@@ -1,7 +1,5 @@
 package com.example.pam_project.features.categories.create;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,20 +24,19 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-        final CategoriesRepository repository = container.getCategoriesRepository();
-
-        presenter = new CreateCategoryPresenter(repository, this);
-
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_category);
         setContentView(R.layout.activity_create_category);
-
-        setup();
+        createPresenter();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_create_category);
+        setUpView();
     }
 
-    private void setup() {
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final CategoriesRepository repository = container.getCategoriesRepository();
+        presenter = new CreateCategoryPresenter(repository);
+    }
+
+    private void setUpView() {
         SpectrumPalette palette = findViewById(R.id.create_category_palette_color);
         final int[] colors = new int[AppColor.values().length];
         for (int i = 0; i < colors.length; i++) {
@@ -53,12 +50,6 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     @Override
     public void onStart() {
         super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        presenter.onViewDetached();
     }
 
     @Override
@@ -85,11 +76,7 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
             if (errorMessage != null) {
                 categoryNameInput.setError(errorMessage);
             } else {
-                if (!categoryName.isEmpty()) {
-                    presenter.insertCategory(categoryName, colorName);
-                } else {
-                    this.onFailedInsert();
-                }
+                presenter.insertCategory(categoryName, colorName);
                 finish();
             }
         }
@@ -108,17 +95,8 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     }
 
     @Override
-    public void onSuccessfulInsert(final long id, final String name, final String color) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("categoryName", name);
-        returnIntent.putExtra("color", color);
-        returnIntent.putExtra("id", id);
-        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    @Override
-    public void onFailedInsert() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
+    public void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
     }
 }

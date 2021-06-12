@@ -21,7 +21,6 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
-    private static final int CATEGORY_CHANGED = -4;
     private static final int CATEGORY_DELETE = -5;
     private int selectedColor = DEFAULT_COLOR.getARGBValue();
     private EditCategoryPresenter presenter;
@@ -30,20 +29,23 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_category);
 
         String id = getIntent().getData().getQueryParameter("id");
-        this.categoryId = Long.parseLong(id);
+        categoryId = Long.parseLong(id);
 
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
+        createPresenter();
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
+        setDeleteButton();
+        setUpView();
+    }
+
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final CategoriesRepository repository = container.getCategoriesRepository();
 
         presenter = new EditCategoryPresenter(categoryId, repository, this);
-
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_edit_category);
-        setContentView(R.layout.activity_edit_category);
-        setDeleteButton();
-        setup();
     }
 
     private void setDeleteButton(){
@@ -51,7 +53,7 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         deleteButton.setOnClickListener(v -> presenter.deleteCategory(categoryId));
     }
 
-    private void setup() {
+    private void setUpView() {
         SpectrumPalette palette = findViewById(R.id.edit_category_palette_color);
         final int[] colors = new int[AppColor.values().length];
         for (int i = 0; i < colors.length; i++) {
@@ -91,8 +93,8 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
             if (errorMessage != null) {
                 categoryNameInput.setError(errorMessage);
             } else {
-                if (!categoryName.isEmpty())
-                    presenter.editCategory(categoryName, colorName);
+                presenter.updateCategory(categoryName, colorName);
+                finish();
             }
         }
 
@@ -109,7 +111,6 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         return errorMessage;
     }
 
-
     @Override
     public void bindCategory(final CategoryInformation model) {
         EditText title = findViewById(R.id.edit_category_name_input);
@@ -119,16 +120,7 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     }
 
     @Override
-    public void onCategoryEdit() {
-        Intent returnIntent = new Intent();
-        setResult(CATEGORY_CHANGED, returnIntent);
-        finish();
-    }
-
-    @Override
     public void onCategoryDelete() {
-        Intent returnIntent = new Intent();
-        setResult(CATEGORY_DELETE, returnIntent);
         finish();
     }
 

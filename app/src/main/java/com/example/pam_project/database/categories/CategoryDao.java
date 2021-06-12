@@ -22,23 +22,16 @@ public interface CategoryDao {
     Flowable<CategoryEntity> getCategoryById(long id);
 
     @Insert
-    long insertCategory(final CategoryEntity category);
+    void insertCategory(final CategoryEntity category);
 
     @Insert
-    long[] insertAllCategories(final List<CategoryEntity> categories);
+    void insertAllCategories(final List<CategoryEntity> categories);
 
     @Update
     void updateCategory(final CategoryEntity category);
 
     @Delete
     void deleteCategory(final CategoryEntity category);
-
-    @Query("DELETE FROM Categories")
-    void deleteAllCategories();
-
-    @Transaction
-    @Query("SELECT * FROM Categories WHERE id =:id")
-    Flowable<List<CategoriesWithLists>> getCategoriesWithLists(long id);
 
     @Transaction
     @Query("SELECT * FROM Categories")

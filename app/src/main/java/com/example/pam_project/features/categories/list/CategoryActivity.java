@@ -19,8 +19,6 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.create.CreateCategoryActivity;
 import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.utils.ActivityRegistry;
-import com.example.pam_project.utils.ActivityResultCode;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -34,17 +32,16 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
-        final CategoriesRepository repository = container.getCategoriesRepository();
-
-        presenter = new CategoryPresenter(repository, this);
-
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_category);
-
         setContentView(R.layout.activity_category);
-        setup();
+        createPresenter();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.activity_title_category);
+        setUpView();
+    }
+
+    private void createPresenter() {
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final CategoriesRepository repository = container.getCategoriesRepository();
+        presenter = new CategoryPresenter(repository, this);
     }
 
     @Override
@@ -53,20 +50,12 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         presenter.onViewAttached();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.onViewDetached();
-    }
-
-    private void setup() {
+    private void setUpView() {
         recyclerView = findViewById(R.id.category);
         recyclerView.setHasFixedSize(true);
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setDraggableItems());
         touchHelper.attachToRecyclerView(recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(
-                this, LinearLayoutManager.VERTICAL, false
-        ));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
     }
 
@@ -78,7 +67,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     @Override
     public void showAddCategory() {
         Intent activityIntent = new Intent(getApplicationContext(), CreateCategoryActivity.class);
-        startActivityForResult(activityIntent, ActivityRegistry.CREATE_CATEGORY_ACTIVITY.ordinal());
+        startActivity(activityIntent);
     }
 
 
@@ -117,23 +106,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     public void showCategoryForm(final long id) {
         String uri = "pam://edit/category?id=";
         Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
-        startActivityForResult(activityIntent, ActivityRegistry.EDIT_CATEGORY_ACTIVITY.ordinal());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ActivityRegistry.CREATE_CATEGORY_ACTIVITY.ordinal()) {
-            if(resultCode == ActivityResultCode.CREATE_CATEGORY_CODE.ordinal()){
-                // Code for create category
-            }
-        } else if(requestCode == ActivityRegistry.EDIT_CATEGORY_ACTIVITY.ordinal()) {
-            if (resultCode == ActivityResultCode.EDIT_CATEGORY_CODE.ordinal()) {
-                // Code for edit category
-            } else if (resultCode == ActivityResultCode.DELETE_CATEGORY_CODE.ordinal()) {
-                // Code for delete category
-            }
-        }
+        startActivity(activityIntent);
     }
 
     @Override
@@ -170,5 +143,11 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
                 return makeMovementFlags(dragFlags, swipeFlags);
             }
         };
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.onViewDetached();
     }
 }

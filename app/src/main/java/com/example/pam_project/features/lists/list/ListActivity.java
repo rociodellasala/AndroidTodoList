@@ -28,7 +28,6 @@ import com.example.pam_project.features.lists.create.CreateListActivity;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.utils.ActivityRegistry;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -49,16 +48,10 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     private void createPresenter() {
-        presenter = (ListPresenter) getLastNonConfigurationInstance();
-
-        if (presenter == null) {
-            final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
-
-            final FtuStorage storage = container.getFtuStorage();
-            final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
-
-            presenter = new ListPresenter(storage, categoriesRepository, this);
-        }
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final FtuStorage storage = container.getFtuStorage();
+        final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
+        presenter = new ListPresenter(storage, categoriesRepository, this);
     }
 
     private void setUpView() {
@@ -116,13 +109,13 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public void showListContent(final long id) {
         String uri = "pam://detail/list?id=";
         Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
-        startActivityForResult(activityIntent, ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal());
+        startActivity(activityIntent);
     }
 
     @Override
     public void showAddList() {
         Intent activityIntent = new Intent(getApplicationContext(), CreateListActivity.class);
-        startActivityForResult(activityIntent, ActivityRegistry.CREATE_LIST_ACTIVITY.ordinal());
+        startActivity(activityIntent);
     }
 
     @Override

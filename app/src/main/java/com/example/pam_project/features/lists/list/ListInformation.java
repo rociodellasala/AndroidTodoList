@@ -18,8 +18,8 @@ import java.util.List;
 
 public class ListInformation implements Serializable, Comparable<ListInformation> {
     private final String title;
-    private long id;
-    private long categoryId;
+    private final long id;
+    private final long categoryId;
     private AppColor color;
     private List<TaskInformation> tasks;
     private CategoryInformation category;

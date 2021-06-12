@@ -35,10 +35,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         this.listener = listener;
     }
 
-    public List<CategoryInformation> getDataSet() {
-        return dataSet;
-    }
-
     public void swapItems(final int draggedPosition, final int targetPosition){
         Collections.swap(dataSet, draggedPosition, targetPosition);
         notifyItemMoved(draggedPosition, targetPosition);

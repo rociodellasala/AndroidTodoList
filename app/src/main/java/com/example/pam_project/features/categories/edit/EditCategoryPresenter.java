@@ -1,4 +1,3 @@
-
 package com.example.pam_project.features.categories.edit;
 
 import com.example.pam_project.features.categories.list.CategoryInformation;
@@ -6,22 +5,19 @@ import com.example.pam_project.repositories.categories.CategoriesRepository;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditCategoryPresenter {
-
     private final long categoryId;
     private final CategoriesRepository repository;
     private final WeakReference<EditCategoryView> view;
-    private Disposable editCategoryDisposable;
+    private Disposable updateCategoryDisposable;
     private Disposable deleteCategoryDisposable;
 
     public EditCategoryPresenter(final long categoryId, final CategoriesRepository repository,
                                  final EditCategoryView view) {
-
         this.categoryId = categoryId;
         this.repository = repository;
         this.view = new WeakReference<>(view);
@@ -34,33 +30,41 @@ public class EditCategoryPresenter {
         }
     }
 
-    public void editCategory(final String name, final String color) {
-        editCategoryDisposable = Completable.fromAction(() -> {
-            repository.updateCategory(categoryId, name, color);
-            if (view.get() != null) {
-                view.get().onCategoryEdit();
-            }
-        }).onErrorComplete()
+    public void updateCategory(final String name, final String color) {
+        updateCategoryDisposable = repository.updateCategory(categoryId, name, color)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onCategoryUpdate, this::onCategoryUpdateError);
+    }
+
+    private void onCategoryUpdate() {
+       // TODO
+    }
+
+    private void onCategoryUpdateError(final Throwable throwable) {
+        // TODO
     }
 
     public void deleteCategory(final long id) {
-        deleteCategoryDisposable = Completable.fromAction(() -> {
-            repository.deleteCategory(id);
-            if (view.get() != null) {
-                view.get().onCategoryDelete();
-            }
-        }).onErrorComplete()
+        deleteCategoryDisposable = repository.deleteCategory(id)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onCategoryDeleted, this::onCategoryDeletedError);
+    }
+
+    private void onCategoryDeleted() {
+        if (view.get() != null) {
+            view.get().onCategoryDelete();
+        }
+    }
+
+    private void onCategoryDeletedError(final Throwable throwable) {
+        // TODO
     }
 
     public void onViewDetached() {
-        if (editCategoryDisposable != null)
-            editCategoryDisposable.dispose();
+        if (updateCategoryDisposable != null)
+            updateCategoryDisposable.dispose();
         if (deleteCategoryDisposable != null)
             deleteCategoryDisposable.dispose();
     }
