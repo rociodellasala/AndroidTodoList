@@ -44,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
     public void update(final List<ListInformation> newDataSet) {
         this.dataSet.clear();
 
-        if(completeDataset.size() == 0)
+        if(completeDataset.size() == 0 && newDataSet != null)
             completeDataset.addAll(newDataSet);
 
         if (newDataSet != null)
