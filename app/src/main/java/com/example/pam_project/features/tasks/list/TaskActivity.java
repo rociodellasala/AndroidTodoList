@@ -63,6 +63,10 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setSwippableItems());
         touchHelper.attachToRecyclerView(recyclerView);
         setExtendedFloatingButtonAction();
+
+        adapter = new TaskAdapter();
+        adapter.setOnClickedListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -91,13 +95,6 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
                 finish();
             }
         }
-    }
-
-    @Override
-    public void showTasks() {
-        adapter = new TaskAdapter();
-        adapter.setOnClickedListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override

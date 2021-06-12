@@ -32,9 +32,11 @@ public class ListViewHolder extends RecyclerView.ViewHolder {
         GradientDrawable drawable = (GradientDrawable) linearLayout.getBackground();
         drawable.setColor(list.getColor().getARGBValue());
 
+        final ImageView urgency = itemView.findViewById(R.id.listUrgency);
         if (list.hasUrgentTask()) {
-            final ImageView urgency = itemView.findViewById(R.id.listUrgency);
             urgency.setVisibility(View.VISIBLE);
+        } else {
+            urgency.setVisibility(View.GONE);
         }
 
         itemView.setOnClickListener(v -> {

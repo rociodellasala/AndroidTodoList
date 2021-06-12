@@ -33,7 +33,6 @@ public class TaskPresenter {
 
     public void onViewAttached() {
         if (view.get() != null) {
-            view.get().showTasks();
             fetchTasks();
         }
     }

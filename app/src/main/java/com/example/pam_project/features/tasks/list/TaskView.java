@@ -4,8 +4,6 @@ import java.util.List;
 
 public interface TaskView {
 
-    void showTasks();
-
     void bindTasks(final List<TaskInformation> model);
 
     void bindHeaders(int[] headers);
