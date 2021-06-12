@@ -1,6 +1,6 @@
 package com.example.pam_project.utils;
 
-public enum ActivityRegistry {
+public enum ActivityRegistry { // todo: after task refactor, delete this
     CREATE_LIST_ACTIVITY,
     EDIT_LIST_ACTIVITY,
     CREATE_CATEGORY_ACTIVITY,

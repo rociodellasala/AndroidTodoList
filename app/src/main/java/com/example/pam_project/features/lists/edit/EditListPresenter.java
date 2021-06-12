@@ -18,10 +18,8 @@ public class EditListPresenter {
     private Disposable updateListDisposable;
     private Disposable deleteListDisposable;
 
-
-    public EditListPresenter(final CategoriesRepository categoriesRepository,
-                             final ListsRepository listsRepository, final EditListView view) {
-
+    public EditListPresenter(final CategoriesRepository categoriesRepository, final ListsRepository listsRepository,
+                             final EditListView view) {
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);

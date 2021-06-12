@@ -21,7 +21,6 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
-    private static final int CATEGORY_CHANGED = -4;
     private static final int CATEGORY_DELETE = -5;
     private int selectedColor = DEFAULT_COLOR.getARGBValue();
     private EditCategoryPresenter presenter;
@@ -43,8 +42,7 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     }
 
     private void createPresenter() {
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final CategoriesRepository repository = container.getCategoriesRepository();
 
         presenter = new EditCategoryPresenter(categoryId, repository, this);
@@ -112,7 +110,6 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
 
         return errorMessage;
     }
-
 
     @Override
     public void bindCategory(final CategoryInformation model) {

@@ -72,11 +72,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         this.listener = listener;
     }
 
-    public void addItem(ListInformation newList) {
-        this.dataSet.add(newList);
-        notifyItemInserted(dataSet.indexOf(newList));
-    }
-
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
