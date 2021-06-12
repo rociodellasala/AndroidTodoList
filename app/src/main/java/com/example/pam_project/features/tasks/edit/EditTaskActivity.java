@@ -86,7 +86,7 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
                 taskNameInput.setError(errorMessage);
             } else {
                 if (!taskName.isEmpty())
-                    editTaskPresenter.editTask(taskName, taskDescription, taskUrgency);
+                    editTaskPresenter.updateTask(taskName, taskDescription, taskUrgency);
             }
         } else if (itemId == android.R.id.home) {
             onBackPressed();

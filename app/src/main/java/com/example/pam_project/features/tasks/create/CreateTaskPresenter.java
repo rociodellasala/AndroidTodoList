@@ -5,7 +5,6 @@ import com.example.pam_project.utils.TaskStatus;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -21,20 +20,24 @@ public class CreateTaskPresenter {
     }
 
     public void insertTask(final String name, final String description, final boolean priority, final long listId) {
-        insertTaskDisposable = Completable.fromAction(() -> {
-            taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId);
-            if (view.get() != null) {
-                view.get().onTaskCreate();
-            }
-        }).onErrorComplete()
+        insertTaskDisposable = taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onTaskInserted, this::onTaskInsertedError);
+    }
+
+    private void onTaskInserted() {
+        if (view.get() != null) {
+            view.get().onTaskCreate();
+        }
+    }
+
+    private void onTaskInsertedError(final Throwable throwable) {
+        // TODO
     }
 
     public void onViewDetached() {
         if (insertTaskDisposable != null)
             insertTaskDisposable.dispose();
     }
-
 }

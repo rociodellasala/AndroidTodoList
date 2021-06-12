@@ -1,6 +1,7 @@
 package com.example.pam_project.features.tasks.list;
 
 import com.example.pam_project.R;
+import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
 import com.example.pam_project.utils.TaskStatus;
@@ -19,7 +20,7 @@ public class TaskPresenter {
     private final ListsRepository listsRepository;
     private final WeakReference<TaskView> view;
     private Disposable fetchTasksDisposable;
-    private Disposable changeTaskDisposable;
+    private Disposable updateTaskDisposable;
     private final long listId;
 
     public TaskPresenter(final TaskRepository taskRepository, final ListsRepository listsRepository,
@@ -42,31 +43,37 @@ public class TaskPresenter {
         fetchTasksDisposable = listsRepository.getListWithTasks(listId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(model -> {
-                    Collections.sort(model.getTasks(), Collections.reverseOrder());
-                    if (view.get() != null) {
-                        view.get().bindListName(model.getTitle());
-                        view.get().bindTasks(model.getTasks());
-                    }
-                });
+                .subscribe(this::onTasksReceived, this::onTasksReceivedError);
+    }
+
+    private void onTasksReceived(final ListInformation model) {
+        Collections.sort(model.getTasks(), Collections.reverseOrder());
+        if (view.get() != null) {
+            view.get().bindListName(model.getTitle());
+            view.get().bindTasks(model.getTasks());
+        }
+    }
+
+    private void onTasksReceivedError(final Throwable throwable) {
+        // TODO
     }
 
     public void onTaskChange(TaskInformation taskInformation, int position){
         if (taskInformation.getStatus().equals(TaskStatus.PENDING)) {
-            changeTask(position, taskInformation.getId(), taskInformation.getTitle(),
+            updateTask(position, taskInformation.getId(), taskInformation.getTitle(),
                     taskInformation.getDescription(), taskInformation.getUrgency(),
                     TaskStatus.DONE, listId);
         } else {
-            changeTask(position, taskInformation.getId(), taskInformation.getTitle(),
+            updateTask(position, taskInformation.getId(), taskInformation.getTitle(),
                     taskInformation.getDescription(), taskInformation.getUrgency(),
                     TaskStatus.PENDING, listId);
         }
     }
 
-    private void changeTask(final int position, final long id, final String name,
+    private void updateTask(final int position, final long id, final String name,
         final String description, final boolean priority,
         final TaskStatus status, final long listId) {
-        changeTaskDisposable = Completable.fromAction(() -> {
+        updateTaskDisposable = Completable.fromAction(() -> {
             taskRepository.updateTask(id, name, description, priority, status, listId);
             if (view.get() != null) {
                 TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
@@ -114,7 +121,7 @@ public class TaskPresenter {
     public void onViewDetached() {
         if (fetchTasksDisposable != null)
             fetchTasksDisposable.dispose();
-        if (changeTaskDisposable != null)
-            changeTaskDisposable.dispose();
+        if (updateTaskDisposable != null)
+            updateTaskDisposable.dispose();
     }
 }
