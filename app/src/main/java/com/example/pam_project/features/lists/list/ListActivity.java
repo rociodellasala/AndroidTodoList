@@ -3,8 +3,6 @@ package com.example.pam_project.features.lists.list;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -169,11 +167,11 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_action_bar, menu);
-        SetUpSearch(menu);
+        setUpSearch(menu);
         return true;
     }
 
-    private void SetUpSearch(Menu menu){
+    private void setUpSearch(Menu menu){
         MenuItem searchItem = menu.findItem(R.id.list_action_bar_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getResources().getString(R.string.search_hint));
