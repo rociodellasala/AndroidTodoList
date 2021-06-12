@@ -22,13 +22,21 @@
         android:hint="@string/create_task_name_label"
         style="@style/editTextStyle"/>
 
+    <TextView
+        android:id="@+id/edit_task_description_label"
+        android:text="@string/create_task_description_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_task_title_input"
+        style="@style/formTextViewStyle"/>
+
     <EditText
         android:id="@+id/edit_task_description_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_task_title_input"
+        app:layout_constraintTop_toBottomOf="@+id/edit_task_description_label"
         android:hint="@string/create_task_description_label"
-        style="@style/editTextStyle"/>
+        style="@style/editMultilineTextStyle"/>
 
     <TextView
         android:id="@+id/edit_task_priority_label"
