@@ -18,6 +18,7 @@ public class EditListPresenter {
     private final WeakReference<EditListView> view;
     private Disposable fetchCategoriesDisposable;
     private Disposable editListDisposable;
+    private Disposable deleteListDisposable;
 
 
     public EditListPresenter(final CategoriesRepository categoriesRepository,
@@ -63,12 +64,10 @@ public class EditListPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-
-        compositeDisposable.add(disposable);
     }
 
     public void deleteList(final long id){
-        Disposable disposable = Completable.fromAction(() -> {
+        deleteListDisposable = Completable.fromAction(() -> {
             listsRepository.deleteList(id);
             if (view.get() != null) {
                 view.get().onListDelete();
@@ -84,6 +83,8 @@ public class EditListPresenter {
             fetchCategoriesDisposable.dispose();
         if(editListDisposable != null)
             editListDisposable.dispose();
+        if(deleteListDisposable != null)
+            deleteListDisposable.dispose();
     }
 
 }

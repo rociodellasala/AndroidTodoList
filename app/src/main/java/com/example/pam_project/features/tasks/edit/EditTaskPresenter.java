@@ -7,7 +7,6 @@ import java.lang.ref.WeakReference;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -16,13 +15,13 @@ public class EditTaskPresenter {
     private final long taskId;
     private final TaskRepository repository;
     private final WeakReference<EditTaskView> view;
-    private final CompositeDisposable compositeDisposable;
+    private Disposable editTaskDisposable;
+    private Disposable deleteTaskDisposable;
 
     public EditTaskPresenter(final long taskId, final TaskRepository repository, final EditTaskView view) {
         this.taskId = taskId;
         this.repository = repository;
         this.view = new WeakReference<>(view);
-        this.compositeDisposable = new CompositeDisposable();
     }
 
     public void onViewAttached() {
@@ -33,7 +32,7 @@ public class EditTaskPresenter {
     }
 
     public void editTask(final String name, final String description, final boolean priority) {
-        Disposable disposable = Completable.fromAction(() -> {
+        editTaskDisposable = Completable.fromAction(() -> {
             repository.updateTask(taskId, name, description, priority);
             if (view.get() != null) {
                 view.get().onTaskEdit();
@@ -42,12 +41,10 @@ public class EditTaskPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-
-        compositeDisposable.add(disposable);
     }
 
     public void deleteTask(long taskId) {
-        Disposable disposable = Completable.fromAction(() -> {
+        deleteTaskDisposable = Completable.fromAction(() -> {
             repository.deleteTask(taskId);
             if (view.get() != null) {
                 view.get().onTaskDelete();
@@ -56,11 +53,13 @@ public class EditTaskPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe();
-        compositeDisposable.add(disposable);
     }
 
     public void onViewDetached() {
-        compositeDisposable.dispose();
+        if(editTaskDisposable != null)
+            editTaskDisposable.dispose();
+        if(deleteTaskDisposable != null)
+            deleteTaskDisposable.dispose();
     }
 
 }
