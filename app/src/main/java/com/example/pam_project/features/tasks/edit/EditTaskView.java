@@ -6,4 +6,5 @@ public interface EditTaskView {
 
     void bindTask(TaskInformation model);
 
+    void onTaskDelete();
 }

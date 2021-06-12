@@ -107,6 +107,11 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     }
 
     @Override
+    public void onTaskDelete(){
+        finish();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.check_action_bar, menu);
         return true;

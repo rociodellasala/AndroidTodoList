@@ -52,7 +52,9 @@ public class EditTaskPresenter {
     }
 
     private void onTaskDeleted() {
-        // TODO
+        if (view.get() != null) {
+            view.get().onTaskDelete();
+        }
     }
 
     private void onTaskDeletedError(final Throwable throwable) {
