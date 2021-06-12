@@ -3,10 +3,13 @@ package com.example.pam_project.features.lists.list;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -126,8 +129,13 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
-    public void showSearchBar() {
-        // TODO search
+    public void bindSearchedLists(String searchQuery) {
+        adapter.getFilter().filter(searchQuery);
+    }
+
+    @Override
+    public void unbindSearchedLists(){
+        adapter.update(adapter.getPreviousSearchDataset());
     }
 
     @Override
@@ -161,16 +169,53 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_action_bar, menu);
+        SetUpSearch(menu);
         return true;
+    }
+
+    private void SetUpSearch(Menu menu){
+        MenuItem searchItem = menu.findItem(R.id.list_action_bar_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint(getResources().getString(R.string.search_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String searchQuery) {
+                presenter.performSearch(searchQuery);
+                return true;
+            }
+        });
+
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                CharSequence emptyQuery = "";
+                searchView.setIconified(false);
+                searchView.requestFocusFromTouch();
+                searchView.setQuery(emptyQuery, false);
+                adapter.setPreviousSearchDataset();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                searchView.requestFocus();
+                searchView.setIconifiedByDefault(true);
+                presenter.onSearchDetached();
+                return true;
+            }
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.list_action_bar_search) {
-            presenter.onSearchBar();
-        } else if (itemId == R.id.list_action_bar_filter) {
+        if (itemId == R.id.list_action_bar_filter) {
             presenter.onFilterDialog();
         } else if (itemId == R.id.list_action_bar_sort_by) {
             presenter.onSortByDialog();

@@ -58,6 +58,8 @@
     <!--Create category activity-->
     <string name="activity_title_edit_category">Edit category</string>
     <!--Edit category activity-->
+    <!--Search Feature-->
+    <string name="search_hint">Search list</string>
     <string-array name="sort_by_criteria">
         <item>@string/sort_by_task_number</item>
         <item>@string/sort_by_category_alphabetically</item>

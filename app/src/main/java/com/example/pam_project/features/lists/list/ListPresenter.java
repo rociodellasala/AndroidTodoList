@@ -87,6 +87,16 @@ public class ListPresenter {
         }
     }
 
+    public void performSearch(String searchQuery){
+        if (view.get() != null)
+            view.get().bindSearchedLists(searchQuery);
+    }
+
+    public void onSearchDetached(){
+        if (view.get() != null)
+            view.get().unbindSearchedLists();
+    }
+
     public void onListClicked(final long id) {
         if (view.get() != null)
             view.get().showListContent(id);
@@ -95,11 +105,6 @@ public class ListPresenter {
     public void onButtonClicked() {
         if (view.get() != null)
             view.get().showAddList();
-    }
-
-    public void onSearchBar() {
-        if (view.get() != null)
-            view.get().showSearchBar();
     }
 
     public void onFilterDialog() {
