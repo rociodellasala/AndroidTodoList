@@ -37,9 +37,7 @@ public class EditTaskPresenter {
     }
 
     private void onTaskUpdated() {
-        if (view.get() != null) {
-            view.get().onTaskEdit();
-        }
+        // TODO
     }
 
     private void onTaskUpdatedError(final Throwable throwable) {
@@ -54,9 +52,7 @@ public class EditTaskPresenter {
     }
 
     private void onTaskDeleted() {
-        if (view.get() != null) {
-            view.get().onTaskDelete();
-        }
+        // TODO
     }
 
     private void onTaskDeletedError(final Throwable throwable) {

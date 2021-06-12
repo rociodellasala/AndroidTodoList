@@ -9,7 +9,6 @@ import com.example.pam_project.utils.TaskStatus;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
