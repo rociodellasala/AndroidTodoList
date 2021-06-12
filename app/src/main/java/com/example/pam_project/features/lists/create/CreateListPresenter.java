@@ -51,14 +51,14 @@ public class CreateListPresenter {
         insertListDisposable = listsRepository.insertList(name, categoryId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onListInsertion, this::onListInsertionError);
+                .subscribe(this::onListInserted, this::onListInsertedError);
     }
 
-    private void onListInsertion() {
+    private void onListInserted() {
         // TODO
     }
 
-    private void onListInsertionError(Throwable throwable) {
+    private void onListInsertedError(Throwable throwable) {
         // TODO
     }
 

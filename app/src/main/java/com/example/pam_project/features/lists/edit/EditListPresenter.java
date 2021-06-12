@@ -6,7 +6,6 @@ import com.example.pam_project.repositories.lists.ListsRepository;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -17,7 +16,7 @@ public class EditListPresenter {
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
     private Disposable fetchCategoriesDisposable;
-    private Disposable editListDisposable;
+    private Disposable updateListDisposable;
     private Disposable deleteListDisposable;
 
 
@@ -57,18 +56,18 @@ public class EditListPresenter {
         // TODO
     }
 
-    public void editList(final long id, final String name, final Long categoryId) {
-        editListDisposable = listsRepository.updateList(id, name, categoryId)
+    public void updateList(final long id, final String name, final Long categoryId) {
+        updateListDisposable = listsRepository.updateList(id, name, categoryId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onListUpdate, this::onListUpdateError);
+                .subscribe(this::onListUpdated, this::onListUpdatedError);
     }
 
-    private void onListUpdate() {
+    private void onListUpdated() {
         // TODO
     }
 
-    private void onListUpdateError(final Throwable throwable) {
+    private void onListUpdatedError(final Throwable throwable) {
         // TODO
     }
 
@@ -76,24 +75,24 @@ public class EditListPresenter {
         deleteListDisposable = listsRepository.deleteList(id)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onListDelete, this::onListDeleteError);
+                .subscribe(this::onListDeleted, this::onListDeletedError);
     }
 
-    private void onListDelete() {
+    private void onListDeleted() {
         if (view.get() != null) {
             view.get().onListDelete();
         }
     }
 
-    private void onListDeleteError(final Throwable throwable) {
+    private void onListDeletedError(final Throwable throwable) {
         // TODO
     }
 
     public void onViewDetached() {
         if(fetchCategoriesDisposable != null)
             fetchCategoriesDisposable.dispose();
-        if(editListDisposable != null)
-            editListDisposable.dispose();
+        if(updateListDisposable != null)
+            updateListDisposable.dispose();
         if(deleteListDisposable != null)
             deleteListDisposable.dispose();
     }

@@ -118,7 +118,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
             if (errorMessage != null) {
                 listNameInput.setError(errorMessage);
             } else {
-                presenter.editList(listId, listName, categoryId);
+                presenter.updateList(listId, listName, categoryId);
                 finish();
             }
         } else if (itemId == android.R.id.home) {
