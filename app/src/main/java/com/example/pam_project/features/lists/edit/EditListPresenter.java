@@ -35,7 +35,6 @@ public class EditListPresenter {
         }
     }
 
-
     private void fetchCategories(final long id) {
         fetchCategoriesDisposable = categoriesRepository.getCategories()
                 .subscribeOn(Schedulers.computation())
@@ -45,7 +44,7 @@ public class EditListPresenter {
                         view.get().bindCategories(model);
                         fetchList(id);
                     }
-                });
+                }, this::onCategoriesReceivedError);
     }
 
     private void fetchList(final long id) {
@@ -54,28 +53,40 @@ public class EditListPresenter {
             view.get().bindList(model);
     }
 
+    private void onCategoriesReceivedError(final Throwable throwable) {
+        // TODO
+    }
+
     public void editList(final long id, final String name, final Long categoryId) {
-        editListDisposable = Completable.fromAction(() -> {
-            listsRepository.updateList(id, name, categoryId);
-            if (view.get() != null) {
-                view.get().onListEdit();
-            }
-        }).onErrorComplete()
+        editListDisposable = listsRepository.updateList(id, name, categoryId)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onListUpdate, this::onListUpdateError);
+    }
+
+    private void onListUpdate() {
+        // TODO
+    }
+
+    private void onListUpdateError(final Throwable throwable) {
+        // TODO
     }
 
     public void deleteList(final long id){
-        deleteListDisposable = Completable.fromAction(() -> {
-            listsRepository.deleteList(id);
-            if (view.get() != null) {
-                view.get().onListDelete();
-            }
-        }).onErrorComplete()
+        deleteListDisposable = listsRepository.deleteList(id)
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(this::onListDelete, this::onListDeleteError);
+    }
+
+    private void onListDelete() {
+        if (view.get() != null) {
+            view.get().onListDelete();
+        }
+    }
+
+    private void onListDeleteError(final Throwable throwable) {
+        // TODO
     }
 
     public void onViewDetached() {
