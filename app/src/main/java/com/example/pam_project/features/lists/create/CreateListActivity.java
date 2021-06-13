@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -58,6 +59,16 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
     @Override
     public void bindCategories(final List<CategoryInformation> model) {
         adapter.update(model);
+    }
+
+    @Override
+    public void onListInsertedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_list_create), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCategoriesReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_categories_fetch), Toast.LENGTH_LONG).show();
     }
 
     @Override

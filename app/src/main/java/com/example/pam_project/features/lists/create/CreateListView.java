@@ -7,4 +7,8 @@ import java.util.List;
 public interface CreateListView {
 
     void bindCategories(final List<CategoryInformation> model);
+
+    void onListInsertedError();
+
+    void onCategoriesReceivedError();
 }

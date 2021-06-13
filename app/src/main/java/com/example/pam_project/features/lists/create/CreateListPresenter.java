@@ -44,22 +44,22 @@ public class CreateListPresenter {
     }
 
     private void onCategoriesReceivedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onCategoriesReceivedError();
+        }
     }
 
     public void insertList(final String name, final Long categoryId) {
         insertListDisposable = listsRepository.insertList(name, categoryId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onListInserted, this::onListInsertedError);
-    }
-
-    private void onListInserted() {
-        // TODO
+                .subscribe(null, this::onListInsertedError);
     }
 
     private void onListInsertedError(Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onListInsertedError();
+        }
     }
 
     public void onViewDetached() {
