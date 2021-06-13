@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -114,6 +115,11 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     @Override
     public void onCategoriesSwap(final int draggedPosition, final int targetPosition){
         adapter.swapItems(draggedPosition, targetPosition);
+    }
+
+    @Override
+    public void onCategoriesReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_categories_fetch), Toast.LENGTH_LONG).show();
     }
 
     private ItemTouchHelper.SimpleCallback setDraggableItems() {

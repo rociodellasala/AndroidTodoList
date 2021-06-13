@@ -27,4 +27,8 @@ public interface ListView {
     void showListContent(final long id);
 
     void showEmptyMessage();
+
+    void onListsReceivedError();
+
+    void onCategoriesReceivedError();
 }

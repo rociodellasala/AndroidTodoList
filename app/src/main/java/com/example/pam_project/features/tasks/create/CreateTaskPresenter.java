@@ -14,8 +14,7 @@ public class CreateTaskPresenter {
     private final WeakReference<CreateTaskView> view;
     private Disposable insertTaskDisposable;
 
-    public CreateTaskPresenter(final SchedulerProvider provider,
-                               final TaskRepository taskRepository, final CreateTaskView view) {
+    public CreateTaskPresenter(final SchedulerProvider provider, final TaskRepository taskRepository, final CreateTaskView view) {
         this.provider = provider;
         this.taskRepository = taskRepository;
         this.view = new WeakReference<>(view);
@@ -25,15 +24,14 @@ public class CreateTaskPresenter {
         insertTaskDisposable = taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(this::onTaskInserted, this::onTaskInsertedError);
-    }
-
-    private void onTaskInserted() {
-       // TODO
+                .doOnError(this::onTaskInsertedError)
+                .subscribe();
     }
 
     private void onTaskInsertedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onTaskInsertedError();
+        }
     }
 
     public void onViewDetached() {

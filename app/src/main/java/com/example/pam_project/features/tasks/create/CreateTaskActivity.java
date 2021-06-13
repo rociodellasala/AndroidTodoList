@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,11 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void onTaskInsertedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_task_create), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,7 +36,7 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository repository = container.getCategoriesRepository();
-        presenter = new CreateCategoryPresenter(schedulerProvider, repository);
+        presenter = new CreateCategoryPresenter(schedulerProvider, repository, this);
     }
 
     private void setUpView() {
@@ -52,6 +53,11 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    @Override
+    public void onCategoryInsertedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_category_create), Toast.LENGTH_LONG).show();
     }
 
     @Override

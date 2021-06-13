@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -109,6 +110,16 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     @Override
     public void onTaskDelete(){
         finish();
+    }
+
+    @Override
+    public void onTaskUpdatedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_task_update), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTaskDeletedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_task_delete), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -127,6 +128,16 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     @Override
     public void onCategoryDelete() {
         finish();
+    }
+
+    @Override
+    public void onCategoryUpdateError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_category_update), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCategoryDeletedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_category_delete), Toast.LENGTH_LONG).show();
     }
 
     @Override

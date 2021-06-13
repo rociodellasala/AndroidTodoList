@@ -12,4 +12,10 @@ public interface EditListView {
     void bindList(final ListInformation model);
 
     void onListDelete();
+
+    void onListDeletedError();
+
+    void onListUpdatedError();
+
+    void onCategoriesReceivedError();
 }

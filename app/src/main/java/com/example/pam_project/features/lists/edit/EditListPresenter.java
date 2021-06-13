@@ -53,22 +53,23 @@ public class EditListPresenter {
     }
 
     private void onCategoriesReceivedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onCategoriesReceivedError();
+        }
     }
 
     public void updateList(final long id, final String name, final Long categoryId) {
         updateListDisposable = listsRepository.updateList(id, name, categoryId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(this::onListUpdated, this::onListUpdatedError);
-    }
-
-    private void onListUpdated() {
-        // TODO
+                .doOnError(this::onListUpdatedError)
+                .subscribe();
     }
 
     private void onListUpdatedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onListUpdatedError();
+        }
     }
 
     public void deleteList(final long id){
@@ -85,7 +86,9 @@ public class EditListPresenter {
     }
 
     private void onListDeletedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onListDeletedError();
+        }
     }
 
     public void onViewDetached() {

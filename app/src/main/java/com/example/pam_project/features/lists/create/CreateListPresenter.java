@@ -46,22 +46,23 @@ public class CreateListPresenter {
     }
 
     private void onCategoriesReceivedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onCategoriesReceivedError();
+        }
     }
 
     public void insertList(final String name, final Long categoryId) {
         insertListDisposable = listsRepository.insertList(name, categoryId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(this::onListInserted, this::onListInsertedError);
-    }
-
-    private void onListInserted() {
-        // TODO
+                .doOnError(this::onListInsertedError)
+                .subscribe();
     }
 
     private void onListInsertedError(Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onListInsertedError();
+        }
     }
 
     public void onViewDetached() {

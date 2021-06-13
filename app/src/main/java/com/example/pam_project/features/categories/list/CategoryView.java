@@ -15,4 +15,6 @@ public interface CategoryView {
     void showEmptyMessage();
 
     void onCategoriesSwap(final int draggedPosition, final int targetPosition);
+
+    void onCategoriesReceivedError();
 }

@@ -109,6 +109,16 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
+    public void onListsReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_list_fetch), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCategoriesReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_categories_fetch), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void showListContent(final long id) {
         String uri = "pam://detail/list?id=";
         Intent activityIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri + id));
