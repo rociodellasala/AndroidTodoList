@@ -29,6 +29,7 @@ import com.example.pam_project.features.lists.create.CreateListActivity;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.WelcomeActivity;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -51,8 +52,9 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final FtuStorage storage = container.getFtuStorage();
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
-        presenter = new ListPresenter(storage, categoriesRepository, this);
+        presenter = new ListPresenter(storage, schedulerProvider, categoriesRepository, this);
     }
 
     private void setUpView() {

@@ -1,6 +1,7 @@
 package com.example.pam_project.features.categories.list;
 
 import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -10,11 +11,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CategoryPresenter {
+    private final SchedulerProvider provider;
     private final CategoriesRepository repository;
     private final WeakReference<CategoryView> view;
     private Disposable fetchCategoriesDisposable;
 
-    public CategoryPresenter(final CategoriesRepository repository, final CategoryView view) {
+    public CategoryPresenter(final SchedulerProvider provider,
+                             final CategoriesRepository repository, final CategoryView view) {
+        this.provider = provider;
         this.repository = repository;
         this.view = new WeakReference<>(view);
     }
@@ -28,8 +32,8 @@ public class CategoryPresenter {
 
     private void fetchCategories() {
         fetchCategoriesDisposable = repository.getCategories()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onCategoriesReceived, this::onCategoriesReceivedError);
     }
 

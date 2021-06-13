@@ -3,6 +3,7 @@ package com.example.pam_project.features.lists.list;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -10,20 +11,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class ListPresenter {
     private final FtuStorage ftuStorage;
+    private final SchedulerProvider provider;
     private final WeakReference<ListView> view;
     private final CategoriesRepository categoriesRepository;
     private Disposable fetchListsDisposable;
     private Disposable fetchCategoriesDisposable;
 
-    public ListPresenter(final FtuStorage ftuStorage, final CategoriesRepository categoriesRepository,
+    public ListPresenter(final FtuStorage ftuStorage, final SchedulerProvider provider,
+                         final CategoriesRepository categoriesRepository,
                          final ListView view) {
         this.ftuStorage = ftuStorage;
+        this.provider = provider;
         this.categoriesRepository = categoriesRepository;
         this.view = new WeakReference<>(view);
     }
@@ -44,8 +46,8 @@ public class ListPresenter {
 
     private void fetchCategories() {
         fetchCategoriesDisposable = categoriesRepository.getCategories()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onCategoriesReceived, this::onCategoriesReceivedError);
     }
 
@@ -65,8 +67,8 @@ public class ListPresenter {
 
     private void fetchLists() {
         fetchListsDisposable = categoriesRepository.getCategoriesWithLists()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onListsReceived, this::onListsReceivedError);
     }
 

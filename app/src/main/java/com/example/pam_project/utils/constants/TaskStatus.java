@@ -1,4 +1,4 @@
-package com.example.pam_project.utils;
+package com.example.pam_project.utils.constants;
 
 public enum TaskStatus {
     DONE,

@@ -14,7 +14,8 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.utils.constants.AppColor;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
 import java.util.Objects;
@@ -43,8 +44,9 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository repository = container.getCategoriesRepository();
-        presenter = new EditCategoryPresenter(categoryId, repository, this);
+        presenter = new EditCategoryPresenter(categoryId, schedulerProvider, repository, this);
     }
 
     private void setDeleteButton(){

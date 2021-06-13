@@ -11,7 +11,8 @@ import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.utils.constants.AppColor;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
 import java.util.Objects;
@@ -32,8 +33,9 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository repository = container.getCategoriesRepository();
-        presenter = new CreateCategoryPresenter(repository);
+        presenter = new CreateCategoryPresenter(schedulerProvider, repository);
     }
 
     private void setUpView() {

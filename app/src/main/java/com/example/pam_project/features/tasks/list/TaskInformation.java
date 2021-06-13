@@ -1,6 +1,6 @@
 package com.example.pam_project.features.tasks.list;
 
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.TaskStatus;
 
 public class TaskInformation implements Comparable<TaskInformation> {
     private final String title;

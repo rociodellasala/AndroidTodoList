@@ -23,9 +23,10 @@ import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.features.tasks.create.CreateTaskActivity;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
-import com.example.pam_project.utils.ActivityRegistry;
-import com.example.pam_project.utils.ActivityResultCode;
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.ActivityRegistry;
+import com.example.pam_project.utils.constants.ActivityResultCode;
+import com.example.pam_project.utils.constants.TaskStatus;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -50,9 +51,11 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final TaskRepository taskRepository = container.getTasksRepository();
         final ListsRepository listsRepository = container.getListsRepository();
-        presenter = new TaskPresenter(taskRepository, listsRepository, this, listId);
+        presenter = new TaskPresenter(schedulerProvider, taskRepository, listsRepository,
+                this, listId);
     }
 
     private void setUpView() {

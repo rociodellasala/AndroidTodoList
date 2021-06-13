@@ -8,7 +8,8 @@ import com.example.pam_project.database.categories.CategoryEntity;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.landing.FtuStorage;
-import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.utils.constants.AppColor;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,14 +25,18 @@ public class MainApplication extends Application {
         super.onCreate();
 
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final FtuStorage ftuStorage = container.getFtuStorage();
 
         if (ftuStorage.isActive()) {
             Context appContext = getApplicationContext();
             AppDatabase db = AppDatabase.getInstance(appContext);
-            Completable.fromAction(() -> {
-                db.categoryDao().insertCategory(createDefaultCategory(appContext));
-            }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+            Completable.fromAction(
+                    () -> db.categoryDao().insertCategory(createDefaultCategory(appContext))
+            ).onErrorComplete()
+             .subscribeOn(schedulerProvider.io())
+             .observeOn(schedulerProvider.ui())
+             .subscribe();
         }
     }
 

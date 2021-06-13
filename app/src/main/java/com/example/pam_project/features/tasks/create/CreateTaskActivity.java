@@ -13,6 +13,7 @@ import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.util.Objects;
 
@@ -39,8 +40,9 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final TaskRepository taskRepository = container.getTasksRepository();
-        presenter = new CreateTaskPresenter(taskRepository, this);
+        presenter = new CreateTaskPresenter(schedulerProvider, taskRepository, this);
     }
 
     @Override
