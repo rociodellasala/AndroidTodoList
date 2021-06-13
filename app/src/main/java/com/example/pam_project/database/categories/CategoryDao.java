@@ -24,9 +24,6 @@ public interface CategoryDao {
     @Insert
     void insertCategory(final CategoryEntity category);
 
-    @Insert
-    void insertAllCategories(final List<CategoryEntity> categories);
-
     @Update
     void updateCategory(final CategoryEntity category);
 

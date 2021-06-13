@@ -10,7 +10,6 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.utils.AppColor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
