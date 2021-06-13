@@ -3,6 +3,7 @@ package com.example.pam_project.features.categories.edit;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 public class EditCategoryActivity extends AppCompatActivity implements EditCategoryView {
     private static final AppColor DEFAULT_COLOR = AppColor.BLUE;
+    private static final int UNCATEGORIZED = 1;
     private int selectedColor = DEFAULT_COLOR.getARGBValue();
     private EditCategoryPresenter presenter;
     private long categoryId;
@@ -42,13 +44,16 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final CategoriesRepository repository = container.getCategoriesRepository();
-
         presenter = new EditCategoryPresenter(categoryId, repository, this);
     }
 
     private void setDeleteButton(){
         Button deleteButton = findViewById(R.id.delete_category_button);
-        deleteButton.setOnClickListener(v -> presenter.deleteCategory(categoryId));
+        if (categoryId != UNCATEGORIZED) {
+            deleteButton.setOnClickListener(v -> presenter.deleteCategory(categoryId));
+        } else {
+            deleteButton.setVisibility(View.GONE);
+        }
     }
 
     private void setUpView() {
