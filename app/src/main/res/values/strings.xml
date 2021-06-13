@@ -10,7 +10,7 @@
     <string name="list_task_completed">Completed tasks</string>
     <string name="list_task_pending">Pending tasks</string>
     <string name="list_task_urgent">Urgent tasks</string>
-    <string name="empty_list_message">Oops! You do not have lists created yet.\n\nClick on the button below to start your first list.</string>
+    <string name="empty_list_message">You do not have lists created yet.\n\nClick on the button below to start your first list.</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Create list</string>
     <string name="add_list_check_button">Create list</string>
@@ -25,7 +25,7 @@
     <!--Category activity-->
     <string name="activity_title_category">Categories</string>
     <string name="add_category">Add category</string>
-    <string name="empty_category_message">Oops! You do not have categories created yet.\n\nClick on the button below to start your first category.</string>
+    <string name="empty_category_message">You do not have categories created yet.\n\nClick on the button below to start your first category.</string>
     <!--Create or modify Category activity-->
     <string name="category_name_label">Name</string>
     <string name="category_color_label">Color</string>
@@ -38,7 +38,7 @@
     <string name="sort_by_list_alphabetically">List alphabetically</string>
     <string name="sort_by_task_number">Number of tasks</string>
     <string name="activity_title_create_task">Create task</string>
-    <string name="empty_task_message">Oops! You do not have tasks created yet.\n\nClick on the button below to start your first task.</string>
+    <string name="empty_task_message">You do not have tasks created yet.\n\nClick on the button below to start your first task.</string>
     <!---Create task activity-->
     <string name="create_task_name_label">Name</string>
     <string name="create_task_description_label">Description</string>
