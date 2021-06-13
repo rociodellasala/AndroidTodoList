@@ -16,7 +16,7 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.repositories.tasks.TaskRepository;
-import com.example.pam_project.utils.FormValidator;
+import com.example.pam_project.utils.validators.FormValidator;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.util.HashMap;

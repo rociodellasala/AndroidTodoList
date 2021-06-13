@@ -1,4 +1,4 @@
-package com.example.pam_project.utils;
+package com.example.pam_project.utils.validators;
 
 import android.content.Context;
 import android.content.res.Resources;

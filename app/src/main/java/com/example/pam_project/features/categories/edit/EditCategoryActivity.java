@@ -14,7 +14,7 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.utils.FormValidator;
+import com.example.pam_project.utils.validators.FormValidator;
 import com.example.pam_project.utils.constants.AppColor;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import com.thebluealliance.spectrum.SpectrumPalette;
