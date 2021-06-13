@@ -90,9 +90,9 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
         return super.onOptionsItemSelected(item);
     }
 
-    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+    private Map<EditText, String> createInputMap(String taskName, EditText listNameInput) {
         Map<EditText, String> map = new HashMap<>();
-        map.put(listNameInput, listName);
+        map.put(listNameInput, taskName);
         return map;
     }
 

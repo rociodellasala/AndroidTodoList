@@ -105,9 +105,9 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
         return super.onOptionsItemSelected(item);
     }
 
-    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+    private Map<EditText, String> createInputMap(String categoryName, EditText categoryNameInput) {
         Map<EditText, String> map = new HashMap<>();
-        map.put(listNameInput, listName);
+        map.put(categoryNameInput, categoryName);
         return map;
     }
 

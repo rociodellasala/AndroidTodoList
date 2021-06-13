@@ -68,7 +68,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             String taskName = taskNameInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
             boolean taskUrgency = checkboxUrgencyInput.isChecked();
-            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(taskName, taskNameInput));
+            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(taskName, taskNameInput, taskDescription, taskDescriptionInput));
 
             if (validForm) {
                 presenter.insertTask(taskName, taskDescription, taskUrgency, listId);
@@ -81,9 +81,10 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         return super.onOptionsItemSelected(item);
     }
 
-    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+    private Map<EditText, String> createInputMap(String taskName, EditText taskNameInput, String taskDescription, EditText taskDescriptionInput) {
         Map<EditText, String> map = new HashMap<>();
-        map.put(listNameInput, listName);
+        map.put(taskNameInput, taskName);
+        map.put(taskDescriptionInput, taskDescription);
         return map;
     }
 
