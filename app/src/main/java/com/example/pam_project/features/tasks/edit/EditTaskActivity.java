@@ -1,6 +1,5 @@
 package com.example.pam_project.features.tasks.edit;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.repositories.tasks.TaskRepository;
-import com.example.pam_project.utils.ActivityResultCode;
 
 import java.util.Objects;
 
