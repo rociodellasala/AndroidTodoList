@@ -15,8 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainApplication extends Application {
 

@@ -8,9 +8,7 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class CreateListPresenter {
     private final SchedulerProvider provider;

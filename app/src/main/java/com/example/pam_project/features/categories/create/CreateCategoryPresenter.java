@@ -3,9 +3,7 @@ package com.example.pam_project.features.categories.create;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class CreateCategoryPresenter {
     private final SchedulerProvider provider;
