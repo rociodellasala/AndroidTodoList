@@ -20,6 +20,7 @@
         <item>@color/theme_grey</item>
         <item>@color/theme_white</item>
         <item>@color/theme_light_blue</item>
+        <item>@color/theme_dark_blue</item>
     </array>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
@@ -44,10 +45,11 @@
     <color name="orange">#FFA305</color>
 
     <!-- classic & trusthworthy -->
-    <color name="theme_red">#E44848</color>
-    <color name="theme_blue">#304D75</color>
-    <color name="theme_light_blue">#357298</color>
+    <color name="theme_red">#cd201f</color>
+    <color name="theme_blue">#007ee5</color>
+    <color name="theme_dark_blue">#0077b5</color>
+    <color name="theme_light_blue">#34465d</color>
     <color name="theme_grey">#AEC0C9</color>
-    <color name="theme_black">#303032</color>
+    <color name="theme_black">#131418</color>
     <color name="theme_white">#f1faee</color>
 </resources>
