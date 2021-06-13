@@ -23,7 +23,6 @@ import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.utils.ActivityResultCode;
 import com.example.pam_project.utils.FormValidator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
