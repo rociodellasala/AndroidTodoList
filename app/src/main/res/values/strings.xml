@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PAM-Project</string>
+    <string name="app_name">RememberIt</string>
     <string name="welcome">Thanks for downloading our app!</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

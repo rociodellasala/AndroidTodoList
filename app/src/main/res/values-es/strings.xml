@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Proyecto de PAM</string>
+    <string name="app_name">RememberIt</string>
     <string name="welcome">Gracias por descargar nuestra aplicación</string>
     <string name="ok">Aceptar</string>
     <string name="cancel">Cancelar</string>
