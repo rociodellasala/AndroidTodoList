@@ -1,5 +1,6 @@
 package com.example.pam_project.tasks.list;
 
+import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.features.tasks.list.TaskPresenter;
 import com.example.pam_project.features.tasks.list.TaskView;
@@ -9,6 +10,9 @@ import com.example.pam_project.utils.TaskStatus;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -33,10 +37,16 @@ public class TaskPresenterTest {
     }
 
     @Test
-    public void givenTheViewWasAttachedThenShowTheTasks() {
+    public void givenAViewWasAttachedThenFetchTheTasks() {
+        final long categoryId = 1;
+        final String listTitle = "listTitle";
+        final List<TaskInformation> tasks = new ArrayList<>();
+        ListInformation li = new ListInformation(listId, listTitle, categoryId, tasks);
+
         presenter.onViewAttached();
 
-        verify(view).showTasks();
+        verify(view).bindListName(listTitle);
+        verify(view).bindTasks(tasks);
     }
 
     @Test
@@ -67,46 +77,5 @@ public class TaskPresenterTest {
         presenter.onEmptyTask();
 
         verify(view).showEmptyMessage();
-    }
-
-    @Test
-    public void givenATaskIsAppendedThenAppendTheTask() {
-        final long id = 48;
-
-        presenter.appendTask(id);
-
-        verify(view).bindTask(taskRepository.getTask(id));
-    }
-
-    @Test
-    public void givenATaskIsChangedWhenTaskWasDoneThenChangeTheTask() {
-        final int position = 3;
-        final long id = 49;
-        final String name = "Name";
-        final String description = "Description";
-        final boolean priority = true;
-        final TaskStatus status = TaskStatus.DONE;
-        final TaskInformation ti = new TaskInformation(id, name, description, priority, status);
-
-        presenter.onTaskChange(ti, position);
-
-        verify(taskRepository).updateTask(id, name, description, priority, status, id);
-        verify(view).onSuccessfulUpdate(ti, position);
-    }
-
-    @Test
-    public void givenATaskIsChangedWhenTaskWasPendingThenChangeTheTask() {
-        final int position = 3;
-        final long id = 49;
-        final String name = "Name";
-        final String description = "Description";
-        final boolean priority = true;
-        final TaskStatus status = TaskStatus.PENDING;
-        final TaskInformation ti = new TaskInformation(id, name, description, priority, status);
-
-        presenter.onTaskChange(ti, position);
-
-        verify(taskRepository).updateTask(id, name, description, priority, status, id);
-        verify(view).onSuccessfulUpdate(ti, position);
     }
 }
