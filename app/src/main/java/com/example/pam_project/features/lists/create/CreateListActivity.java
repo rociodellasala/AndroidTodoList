@@ -16,8 +16,11 @@ import com.example.pam_project.features.categories.spinner.SpinnerActivity;
 import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapter;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.FormValidator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CreateListActivity extends AppCompatActivity implements CreateListView {
@@ -75,11 +78,9 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         if (itemId == R.id.check_add_button) {
             String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
-            String errorMessage = checkForm(listName);
+            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(listName, listNameInput));
 
-            if (errorMessage != null) {
-                listNameInput.setError(errorMessage);
-            } else {
+            if (validForm) {
                 presenter.insertList(listName, categoryId);
                 finish();
             }
@@ -88,14 +89,10 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
         return super.onOptionsItemSelected(item);
     }
 
-    private String checkForm(String listName) {
-        String errorMessage = null;
-
-        if (listName == null || listName.trim().isEmpty()) {
-            errorMessage = getString(R.string.error_empty_input);
-        }
-
-        return errorMessage;
+    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+        Map<EditText, String> map = new HashMap<>();
+        map.put(listNameInput, listName);
+        return map;
     }
 
     @Override

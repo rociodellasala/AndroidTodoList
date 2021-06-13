@@ -13,7 +13,10 @@ import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.FormValidator;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
@@ -65,11 +68,9 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             String taskName = taskNameInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
             boolean taskUrgency = checkboxUrgencyInput.isChecked();
+            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(taskName, taskNameInput));
 
-            String errorMessage = checkForm(taskName);
-            if (errorMessage != null) {
-                taskNameInput.setError(errorMessage);
-            } else {
+            if (validForm) {
                 presenter.insertTask(taskName, taskDescription, taskUrgency, listId);
                 finish();
             }
@@ -80,14 +81,10 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         return super.onOptionsItemSelected(item);
     }
 
-    private String checkForm(String taskName) {
-        String errorMessage = null;
-
-        if (taskName == null || taskName.trim().isEmpty()) {
-            errorMessage = getString(R.string.error_empty_input);
-        }
-
-        return errorMessage;
+    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+        Map<EditText, String> map = new HashMap<>();
+        map.put(listNameInput, listName);
+        return map;
     }
 
     @Override

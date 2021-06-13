@@ -16,7 +16,10 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.FormValidator;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditTaskActivity extends AppCompatActivity implements EditTaskView {
@@ -74,11 +77,9 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
             String taskName = taskNameInput.getText().toString();
             String taskDescription = taskDescriptionInput.getText().toString();
             boolean taskUrgency = checkboxUrgencyInput.isChecked();
-            String errorMessage = checkForm(taskName);
+            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(taskName, taskNameInput));
 
-            if (errorMessage != null) {
-                taskNameInput.setError(errorMessage);
-            } else {
+            if (validForm) {
                 presenter.updateTask(taskName, taskDescription, taskUrgency);
                 finish();
             }
@@ -89,19 +90,15 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
         return super.onOptionsItemSelected(item);
     }
 
-    private void setDeleteButton(){
-        Button deleteButton = (Button) (Button)findViewById(R.id.delete_task_button);
-        deleteButton.setOnClickListener(v -> presenter.deleteTask(taskId));
+    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+        Map<EditText, String> map = new HashMap<>();
+        map.put(listNameInput, listName);
+        return map;
     }
 
-    private String checkForm(String categoryName) {
-        String errorMessage = null;
-
-        if (categoryName == null || categoryName.trim().isEmpty()) {
-            errorMessage = getString(R.string.error_empty_input);
-        }
-
-        return errorMessage;
+    private void setDeleteButton(){
+        Button deleteButton = findViewById(R.id.delete_task_button);
+        deleteButton.setOnClickListener(v -> presenter.deleteTask(taskId));
     }
 
     @Override

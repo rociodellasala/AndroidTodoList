@@ -12,8 +12,11 @@ import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.utils.FormValidator;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class CreateCategoryActivity extends AppCompatActivity implements CreateCategoryView {
@@ -66,16 +69,14 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
         if (itemId == R.id.check_add_button) {
             final String categoryName = categoryNameInput.getText().toString();
             final AppColor color = AppColor.fromARGBValue(selectedColor);
-            String errorMessage = checkForm(categoryName);
+            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(categoryName, categoryNameInput));
 
             String colorName = DEFAULT_COLOR.name();
             if (color != null) {
                 colorName = color.name();
             }
 
-            if (errorMessage != null) {
-                categoryNameInput.setError(errorMessage);
-            } else {
+            if (validForm) {
                 presenter.insertCategory(categoryName, colorName);
                 finish();
             }
@@ -84,14 +85,10 @@ public class CreateCategoryActivity extends AppCompatActivity implements CreateC
         return super.onOptionsItemSelected(item);
     }
 
-    private String checkForm(String categoryName) {
-        String errorMessage = null;
-
-        if (categoryName == null || categoryName.trim().isEmpty()) {
-            errorMessage = getString(R.string.error_empty_input);
-        }
-
-        return errorMessage;
+    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+        Map<EditText, String> map = new HashMap<>();
+        map.put(listNameInput, listName);
+        return map;
     }
 
     @Override
