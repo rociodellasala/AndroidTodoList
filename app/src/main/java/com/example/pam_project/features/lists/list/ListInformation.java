@@ -9,8 +9,8 @@ import com.example.pam_project.comparators.ListInformationComparator;
 import com.example.pam_project.comparators.ListTaskNumberComparator;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.features.tasks.list.TaskInformation;
-import com.example.pam_project.utils.AppColor;
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.AppColor;
+import com.example.pam_project.utils.constants.TaskStatus;
 
 import java.io.Serializable;
 import java.util.Comparator;

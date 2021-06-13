@@ -1,7 +1,7 @@
 package com.example.pam_project.repositories.tasks;
 
 import com.example.pam_project.features.tasks.list.TaskInformation;
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.TaskStatus;
 
 import io.reactivex.Completable;
 

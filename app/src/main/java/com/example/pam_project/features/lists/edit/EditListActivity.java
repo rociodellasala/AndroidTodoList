@@ -21,7 +21,8 @@ import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapte
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
-import com.example.pam_project.utils.ActivityResultCode;
+import com.example.pam_project.utils.constants.ActivityResultCode;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -54,9 +55,11 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
         final ListsRepository listsRepository = container.getListsRepository();
-        presenter = new EditListPresenter(categoriesRepository, listsRepository, this);
+        presenter = new EditListPresenter(schedulerProvider, categoriesRepository,
+                listsRepository, this);
     }
 
     private void setUpView() {

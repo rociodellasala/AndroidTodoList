@@ -3,14 +3,14 @@ package com.example.pam_project.features.lists.edit;
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class EditListPresenter {
+    private final SchedulerProvider provider;
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
@@ -18,8 +18,11 @@ public class EditListPresenter {
     private Disposable updateListDisposable;
     private Disposable deleteListDisposable;
 
-    public EditListPresenter(final CategoriesRepository categoriesRepository, final ListsRepository listsRepository,
+    public EditListPresenter(final SchedulerProvider provider,
+                             final CategoriesRepository categoriesRepository,
+                             final ListsRepository listsRepository,
                              final EditListView view) {
+        this.provider = provider;
         this.categoriesRepository = categoriesRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
@@ -33,8 +36,8 @@ public class EditListPresenter {
 
     private void fetchCategories(final long id) {
         fetchCategoriesDisposable = categoriesRepository.getCategories()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(model -> {
                     if (view.get() != null) {
                         view.get().bindCategories(model);
@@ -57,8 +60,8 @@ public class EditListPresenter {
 
     public void updateList(final long id, final String name, final Long categoryId) {
         updateListDisposable = listsRepository.updateList(id, name, categoryId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(null, this::onListUpdatedError);
     }
 
@@ -70,8 +73,8 @@ public class EditListPresenter {
 
     public void deleteList(final long id){
         deleteListDisposable = listsRepository.deleteList(id)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onListDeleted, this::onListDeletedError);
     }
 

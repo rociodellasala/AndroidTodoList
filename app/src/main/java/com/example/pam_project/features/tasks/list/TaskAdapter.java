@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pam_project.R;
 import com.example.pam_project.features.lists.list.OnListClickedListener;
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.List;

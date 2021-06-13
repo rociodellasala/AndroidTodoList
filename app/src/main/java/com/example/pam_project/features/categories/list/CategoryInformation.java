@@ -1,6 +1,6 @@
 package com.example.pam_project.features.categories.list;
 
-import com.example.pam_project.utils.AppColor;
+import com.example.pam_project.utils.constants.AppColor;
 
 import java.io.Serializable;
 

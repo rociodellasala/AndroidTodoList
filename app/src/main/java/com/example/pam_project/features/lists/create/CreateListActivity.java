@@ -17,6 +17,7 @@ import com.example.pam_project.features.categories.spinner.SpinnerActivity;
 import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapter;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,9 +37,11 @@ public class CreateListActivity extends AppCompatActivity implements CreateListV
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository categoriesRepository = container.getCategoriesRepository();
         final ListsRepository listsRepository = container.getListsRepository();
-        presenter = new CreateListPresenter(categoriesRepository, listsRepository, this);
+        presenter = new CreateListPresenter(schedulerProvider, categoriesRepository,
+                listsRepository, this);
     }
 
     private void setUpView() {
