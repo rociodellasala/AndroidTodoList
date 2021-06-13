@@ -23,7 +23,6 @@ import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.features.tasks.create.CreateTaskActivity;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
-import com.example.pam_project.utils.constants.ActivityRegistry;
 import com.example.pam_project.utils.constants.ActivityResultCode;
 import com.example.pam_project.utils.constants.TaskStatus;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TaskActivity extends AppCompatActivity implements TaskView, OnListClickedListener {
+    private static final int EDIT_LIST_ACTIVITY = 1;
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
     private TaskPresenter presenter;
@@ -93,7 +93,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal()) {
+        if(requestCode == EDIT_LIST_ACTIVITY) {
             if (resultCode == ActivityResultCode.DELETE_LIST_CODE.ordinal()) {
                 finish();
             }
@@ -140,7 +140,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
     public void showEditList() {
         Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
         activityIntent.putExtra("id", listId);
-        startActivityForResult(activityIntent, ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal());
+        startActivityForResult(activityIntent, EDIT_LIST_ACTIVITY);
     }
 
     @Override
