@@ -61,4 +61,8 @@
     <string name="activity_title_edit_category">Editar categoría</string>
     <!--Search Feature-->
     <string name="search_hint">Buscar Lista</string>
+    <!-- Error -->
+    <string name="error_categories_fetch">Se produjo un error al intentar obtener las categorias</string>
+    <string name="error_list_delete">Se produjo un error al intentar eliminar la lista</string>
+    <string name="error_list_update">Se produjo un error al intentar editar la lista</string>
 </resources>

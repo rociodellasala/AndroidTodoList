@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -103,6 +104,21 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         Intent returnIntent = new Intent();
         setResult(ActivityResultCode.DELETE_LIST_CODE.ordinal(), returnIntent);
         finish();
+    }
+
+    @Override
+    public void onListDeletedError(){
+        Toast.makeText(getApplicationContext(), getString(R.string.error_list_delete), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onListUpdatedError(){
+        Toast.makeText(getApplicationContext(), getString(R.string.error_list_update), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onCategoriesReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_categories_fetch), Toast.LENGTH_LONG).show();
     }
 
     @Override
