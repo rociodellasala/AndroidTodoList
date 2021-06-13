@@ -36,7 +36,8 @@ public class EditCategoryPresenter {
         updateCategoryDisposable = repository.updateCategory(categoryId, name, color)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(null, this::onCategoryUpdateError);
+                .doOnError(this::onCategoryUpdateError)
+                .subscribe();
     }
 
     private void onCategoryUpdateError(final Throwable throwable) {

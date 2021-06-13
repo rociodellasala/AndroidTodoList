@@ -24,7 +24,8 @@ public class CreateTaskPresenter {
         insertTaskDisposable = taskRepository.insertTask(name, description, priority, TaskStatus.PENDING, listId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(null, this::onTaskInsertedError);
+                .doOnError(this::onTaskInsertedError)
+                .subscribe();
     }
 
     private void onTaskInsertedError(final Throwable throwable) {

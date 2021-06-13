@@ -62,7 +62,8 @@ public class EditListPresenter {
         updateListDisposable = listsRepository.updateList(id, name, categoryId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(null, this::onListUpdatedError);
+                .doOnError(this::onListUpdatedError)
+                .subscribe();
     }
 
     private void onListUpdatedError(final Throwable throwable) {
