@@ -13,6 +13,14 @@
         <item>@color/light_orange</item>
         <item>@color/orange</item>
     </array>
+    <array name="theme_colors">
+        <item>@color/theme_red</item>
+        <item>@color/theme_blue</item>
+        <item>@color/theme_black</item>
+        <item>@color/theme_grey</item>
+        <item>@color/theme_white</item>
+        <item>@color/theme_light_blue</item>
+    </array>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -33,6 +41,13 @@
     <color name="green">#39C221</color>
     <color name="yellow">#FCF644</color>
     <color name="light_orange">#FCCB44</color>
-
     <color name="orange">#FFA305</color>
+
+    <!-- classic & trusthworthy -->
+    <color name="theme_red">#E44848</color>
+    <color name="theme_blue">#304D75</color>
+    <color name="theme_light_blue">#357298</color>
+    <color name="theme_grey">#AEC0C9</color>
+    <color name="theme_black">#303032</color>
+    <color name="theme_white">#f1faee</color>
 </resources>
