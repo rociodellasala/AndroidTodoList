@@ -31,7 +31,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/delete_list_button"
-        app:backgroundTint="@android:color/holo_red_dark"
+        app:backgroundTint="@color/theme_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
