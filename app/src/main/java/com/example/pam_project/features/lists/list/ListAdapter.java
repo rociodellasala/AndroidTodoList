@@ -3,6 +3,8 @@ package com.example.pam_project.features.lists.list;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,12 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements Filterable {
     private static List<Integer> filterSelections;
     private static int sortIndex = 0;
 
     private final List<ListInformation> dataSet;
     private final List<ListInformation> hiddenItems;
+    private final List<ListInformation> completeDataset;
+    private final List<ListInformation> previousSearchDataset;
+    private List<ListInformation> searchItems;
     private final Map<Long, CategoryInformation> categoriesWithIds;
     private List<CategoryInformation> categories;
     private OnListClickedListener listener;
@@ -31,13 +36,19 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         this.categoriesWithIds = new HashMap<>();
         this.categories = new ArrayList<>(categoriesWithIds.values());
         this.hiddenItems = new ArrayList<>();
+        this.completeDataset = new ArrayList<>();
+        this.previousSearchDataset = new ArrayList<>();
+        this.searchItems = new ArrayList<>();
     }
 
     public void update(final List<ListInformation> newDataSet) {
         this.dataSet.clear();
-        if (newDataSet != null) {
+
+        if(completeDataset.size() == 0 && newDataSet != null)
+            completeDataset.addAll(newDataSet);
+
+        if (newDataSet != null)
             dataSet.addAll(newDataSet);
-        }
 
         setFilterSelections(filterSelections); // sort and filter accordingly
         notifyDataSetChanged();
@@ -110,6 +121,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
         return Collections.unmodifiableList(categories);
     }
 
+    public void setPreviousSearchDataset(){
+        previousSearchDataset.clear();
+        previousSearchDataset.addAll(dataSet);
+    }
+
+    public List<ListInformation> getPreviousSearchDataset(){
+        return new ArrayList<>(previousSearchDataset);
+    }
+
     public void setFilterSelections(final List<Integer> newFilterSelections) {
         if (newFilterSelections == null) {
             sort();
@@ -136,6 +156,40 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     private void sort() {
         Collections.sort(dataSet, ListInformation.getComparator(sortIndex));
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    searchItems = completeDataset;
+                } else {
+                    List<ListInformation> filteredList = new ArrayList<>();
+                    for (ListInformation listInformation : completeDataset) {
+
+                        if (listInformation.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(listInformation);
+                        }
+                    }
+
+                    searchItems = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = searchItems;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                dataSet.clear();
+                dataSet.addAll((ArrayList<ListInformation>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     @FunctionalInterface

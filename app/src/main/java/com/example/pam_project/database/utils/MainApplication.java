@@ -10,7 +10,6 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.utils.AppColor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,27 +23,21 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        final ApplicationContainer container = ApplicationContainerLocator
-                .locateComponent(this);
+        final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
         final FtuStorage ftuStorage = container.getFtuStorage();
 
         if (ftuStorage.isActive()) {
+            Context appContext = getApplicationContext();
+            AppDatabase db = AppDatabase.getInstance(appContext);
             Completable.fromAction(() -> {
-                Context appContext = getApplicationContext();
-                AppDatabase db = AppDatabase.getInstance(appContext);
-                db.categoryDao().insertAllCategories(createDefaultCategory(appContext));
+                db.categoryDao().insertCategory(createDefaultCategory(appContext));
             }).onErrorComplete().observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
         }
     }
 
-    private List<CategoryEntity> createDefaultCategory(Context context) {
-        List<CategoryEntity> listOfCategories = new ArrayList<>();
+    private CategoryEntity createDefaultCategory(Context context) {
         String defaultCategory = context.getResources().getString(R.string.default_category);
         final List<AppColor> colors = Arrays.asList(AppColor.values());
-
-        CategoryEntity category = new CategoryEntity(defaultCategory, colors.get(0).toString());
-        listOfCategories.add(category);
-
-        return listOfCategories;
+        return new CategoryEntity(defaultCategory, colors.get(0).toString());
     }
 }

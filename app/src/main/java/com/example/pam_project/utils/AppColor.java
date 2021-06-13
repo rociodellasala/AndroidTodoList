@@ -3,10 +3,12 @@ package com.example.pam_project.utils;
 import android.graphics.Color;
 
 public enum AppColor {
-    RED("#22DC1316"),
-    BLUE("#2200A6FF"),
-    GREEN("#2277D353"),
-    YELLOW("#22FFBA5C");
+    RED("#30DC1316"),
+    ORANGE("#50FFBA5C"),
+    YELLOW("#40FBBC04"),
+    BLUE("#AAAECBFA"),
+    LIGHT_BLUE("#2500A6FF"),
+    GREEN("#3077D353");
 
     private final String hexValue;
 
@@ -41,5 +43,4 @@ public enum AppColor {
     public int getARGBValue() {
         return Color.parseColor(getHexValue());
     }
-
 }

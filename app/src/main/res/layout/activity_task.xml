@@ -29,7 +29,7 @@
         android:id="@+id/extended_fab_add_task"
         android:contentDescription="@string/add_task"
         android:text="@string/add_task"
-        app:backgroundTint="@color/dark_blue"
+        app:backgroundTint="@color/theme_light_blue"
         app:icon="@drawable/ic_add"
         app:iconTint="@color/white"
         style="@style/floatingButtonStyle"/>

@@ -22,7 +22,7 @@
         android:id="@+id/extended_fab_add_category"
         android:contentDescription="@string/add_category"
         android:text="@string/add_category"
-        app:backgroundTint="@color/dark_blue"
+        app:backgroundTint="@color/theme_light_blue"
         app:icon="@drawable/ic_add"
         app:iconTint="@color/white"
         style="@style/floatingButtonStyle"/>

@@ -14,7 +14,9 @@ public interface ListView {
 
     void showAddList();
 
-    void showSearchBar();
+    void bindSearchedLists(String searchQuery);
+
+    void unbindSearchedLists();
 
     void showFilterDialog();
 
