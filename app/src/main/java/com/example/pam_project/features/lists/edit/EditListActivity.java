@@ -20,9 +20,9 @@ import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapte
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
-import com.example.pam_project.utils.validators.FormValidator;
 import com.example.pam_project.utils.constants.ActivityResultCode;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
+import com.example.pam_project.utils.validators.FormValidator;
 
 import java.util.HashMap;
 import java.util.List;

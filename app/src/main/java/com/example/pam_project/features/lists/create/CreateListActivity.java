@@ -16,8 +16,8 @@ import com.example.pam_project.features.categories.spinner.SpinnerActivity;
 import com.example.pam_project.features.categories.spinner.SpinnerCategoryAdapter;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
-import com.example.pam_project.utils.validators.FormValidator;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
+import com.example.pam_project.utils.validators.FormValidator;
 
 import java.util.HashMap;
 import java.util.List;
