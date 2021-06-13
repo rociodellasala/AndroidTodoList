@@ -2,23 +2,25 @@ package com.example.pam_project.features.categories.edit;
 
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class EditCategoryPresenter {
     private final long categoryId;
+    private final SchedulerProvider provider;
     private final CategoriesRepository repository;
     private final WeakReference<EditCategoryView> view;
     private Disposable updateCategoryDisposable;
     private Disposable deleteCategoryDisposable;
 
-    public EditCategoryPresenter(final long categoryId, final CategoriesRepository repository,
+    public EditCategoryPresenter(final long categoryId, final SchedulerProvider provider,
+                                 final CategoriesRepository repository,
                                  final EditCategoryView view) {
         this.categoryId = categoryId;
+        this.provider = provider;
         this.repository = repository;
         this.view = new WeakReference<>(view);
     }
@@ -32,8 +34,8 @@ public class EditCategoryPresenter {
 
     public void updateCategory(final String name, final String color) {
         updateCategoryDisposable = repository.updateCategory(categoryId, name, color)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onCategoryUpdate, this::onCategoryUpdateError);
     }
 
@@ -47,8 +49,8 @@ public class EditCategoryPresenter {
 
     public void deleteCategory(final long id) {
         deleteCategoryDisposable = repository.deleteCategory(id)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onCategoryDeleted, this::onCategoryDeletedError);
     }
 

@@ -11,12 +11,15 @@ import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 public class ProductionApplicationContainer implements ApplicationContainer {
 
     private final ApplicationModule applicationModule;
 
     private FtuStorage ftuStorage;
+    private SchedulerProvider schedulerProvider;
+
     private CategoriesRepository categoriesRepository;
     private CategoryDao categoryDao;
     private CategoryMapper categoryMapper;
@@ -44,6 +47,15 @@ public class ProductionApplicationContainer implements ApplicationContainer {
         }
 
         return ftuStorage;
+    }
+
+    @Override
+    public SchedulerProvider getSchedulerProvider() {
+        if (schedulerProvider == null) {
+            schedulerProvider = applicationModule.provideSchedulerProvider();
+        }
+
+        return schedulerProvider;
     }
 
     @Override
