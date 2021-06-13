@@ -60,9 +60,9 @@ public class ListPresenter {
     }
 
     private void onCategoriesReceivedError(final Throwable e) {
-        /* if (view.get() != null) {
+        if (view.get() != null) {
             view.get().onCategoriesReceivedError();
-        } */
+        }
     }
 
     private void fetchLists() {
@@ -84,9 +84,9 @@ public class ListPresenter {
     }
 
     private void onListsReceivedError(final Throwable e) {
-        /* if (view.get() != null) {
-            // view.get().onListsReceivedError();
-        } */
+        if (view.get() != null) {
+            view.get().onListsReceivedError();
+        }
     }
 
     public void performSearch(String searchQuery){

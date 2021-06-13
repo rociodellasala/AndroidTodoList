@@ -7,4 +7,8 @@ public interface EditCategoryView {
     void bindCategory(CategoryInformation model);
 
     void onCategoryDelete();
+
+    void onCategoryUpdateError();
+
+    void onCategoryDeletedError();
 }

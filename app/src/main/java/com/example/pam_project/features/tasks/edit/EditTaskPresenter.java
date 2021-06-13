@@ -35,15 +35,13 @@ public class EditTaskPresenter {
         updateTaskDisposable = repository.updateTask(taskId, name, description, priority)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(this::onTaskUpdated, this::onTaskUpdatedError);
-    }
-
-    private void onTaskUpdated() {
-        // TODO
+                .subscribe(null, this::onTaskUpdatedError);
     }
 
     private void onTaskUpdatedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onTaskUpdatedError();
+        }
     }
 
     public void deleteTask(long taskId) {
@@ -60,7 +58,9 @@ public class EditTaskPresenter {
     }
 
     private void onTaskDeletedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onTaskDeletedError();
+        }
     }
 
     public void onViewDetached() {

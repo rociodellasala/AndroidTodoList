@@ -54,7 +54,9 @@ public class TaskPresenter {
     }
 
     private void onTasksReceivedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onTasksReceivedError();
+        }
     }
 
     public void onTaskChange(TaskInformation taskInformation, int position){
@@ -84,7 +86,9 @@ public class TaskPresenter {
     }
 
     private void onTaskUpdatedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onTaskUpdatedError();
+        }
     }
 
     public void onEmptyTask(){

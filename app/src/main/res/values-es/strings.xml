@@ -26,7 +26,8 @@
     <!--Category activity-->
     <string name="activity_title_category">Categorías</string>
     <string name="add_category">Crear categoría</string>
-    <string name="empty_category_message">Todavía no tienes categorias creadas.\n\nHaz click en el botón debajo para crear tu primera categoria.</string>
+    <string name="empty_category_message">Todavía no tienes categorias creadas.\n\nHaz click en el botón debajo para crear tu primera
+        categoría.</string>
     <!--Create or modify Category activity-->
     <string name="category_name_label">Nombre</string>
     <string name="category_color_label">Color</string>
@@ -67,9 +68,9 @@
     <string name="error_list_update">Se produjo un error al intentar editar la lista</string>
     <string name="error_list_create">Se produjo un error al intentar crear la lista</string>
     <string name="error_categories_fetch">Se produjo un error al intentar obtener las categorias</string>
-    <string name="error_category_delete">Se produjo un error al intentar eliminar la categoria</string>
-    <string name="error_category_update">Se produjo un error al intentar editar la categoria</string>
-    <string name="error_category_create">Se produjo un error al intentar crear la categoria</string>
+    <string name="error_category_delete">Se produjo un error al intentar eliminar la categoría</string>
+    <string name="error_category_update">Se produjo un error al intentar editar la categoría</string>
+    <string name="error_category_create">Se produjo un error al intentar crear la categoría</string>
     <string name="error_task_fetch">Se produjo un error al intentar obtener las tareas</string>
     <string name="error_task_delete">Se produjo un error al intentar eliminar la tarea</string>
     <string name="error_task_update">Se produjo un error al intentar editar la tarea</string>

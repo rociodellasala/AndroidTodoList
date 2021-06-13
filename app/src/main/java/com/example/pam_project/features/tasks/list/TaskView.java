@@ -19,4 +19,8 @@ public interface TaskView {
     void showEmptyMessage();
 
     void showEditList();
+
+    void onTasksReceivedError();
+
+    void onTaskUpdatedError();
 }

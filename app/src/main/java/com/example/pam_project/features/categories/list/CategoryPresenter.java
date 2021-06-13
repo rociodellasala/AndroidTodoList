@@ -42,7 +42,9 @@ public class CategoryPresenter {
     }
 
     private void onCategoriesReceivedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onCategoriesReceivedError();
+        }
     }
 
     public void onCategoryClicked(final long id) {

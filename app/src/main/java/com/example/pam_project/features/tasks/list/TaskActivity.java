@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -141,6 +142,16 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
         Intent activityIntent = new Intent(getApplicationContext(), EditListActivity.class);
         activityIntent.putExtra("id", listId);
         startActivityForResult(activityIntent, ActivityRegistry.EDIT_LIST_ACTIVITY.ordinal());
+    }
+
+    @Override
+    public void onTasksReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_task_fetch), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onTaskUpdatedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_task_update), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -36,15 +36,13 @@ public class EditCategoryPresenter {
         updateCategoryDisposable = repository.updateCategory(categoryId, name, color)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .subscribe(this::onCategoryUpdate, this::onCategoryUpdateError);
-    }
-
-    private void onCategoryUpdate() {
-       // TODO
+                .subscribe(null, this::onCategoryUpdateError);
     }
 
     private void onCategoryUpdateError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onCategoryUpdateError();
+        }
     }
 
     public void deleteCategory(final long id) {
@@ -61,7 +59,9 @@ public class EditCategoryPresenter {
     }
 
     private void onCategoryDeletedError(final Throwable throwable) {
-        // TODO
+        if (view.get() != null) {
+            view.get().onCategoryDeletedError();
+        }
     }
 
     public void onViewDetached() {
