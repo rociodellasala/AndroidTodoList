@@ -16,6 +16,8 @@ import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.lists.RoomListsRepository;
 import com.example.pam_project.repositories.tasks.RoomTaskRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.schedulers.AndroidSchedulerProvider;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -38,6 +40,10 @@ public class ApplicationModule {
         return new SharedPreferencesFtuStorage(
                 applicationContext.getSharedPreferences(PAM_PREF, MODE_PRIVATE)
         );
+    }
+
+    /* default */ SchedulerProvider provideSchedulerProvider() {
+        return new AndroidSchedulerProvider();
     }
 
     /* default */ CategoriesRepository provideCategoriesRepository(final CategoryDao dao,

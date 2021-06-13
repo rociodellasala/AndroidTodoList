@@ -19,6 +19,7 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.features.categories.create.CreateCategoryActivity;
 import com.example.pam_project.features.lists.list.OnListClickedListener;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.List;
@@ -40,8 +41,9 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
 
     private void createPresenter() {
         final ApplicationContainer container = ApplicationContainerLocator.locateComponent(this);
+        final SchedulerProvider schedulerProvider = container.getSchedulerProvider();
         final CategoriesRepository repository = container.getCategoriesRepository();
-        presenter = new CategoryPresenter(repository, this);
+        presenter = new CategoryPresenter(schedulerProvider, repository, this);
     }
 
     @Override

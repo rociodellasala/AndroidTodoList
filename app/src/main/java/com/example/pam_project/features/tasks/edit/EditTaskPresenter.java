@@ -2,22 +2,24 @@ package com.example.pam_project.features.tasks.edit;
 
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class EditTaskPresenter {
     private final long taskId;
+    private final SchedulerProvider provider;
     private final TaskRepository repository;
     private final WeakReference<EditTaskView> view;
     private Disposable updateTaskDisposable;
     private Disposable deleteTaskDisposable;
 
-    public EditTaskPresenter(final long taskId, final TaskRepository repository, final EditTaskView view) {
+    public EditTaskPresenter(final long taskId, final SchedulerProvider provider,
+                             final TaskRepository repository, final EditTaskView view) {
         this.taskId = taskId;
+        this.provider = provider;
         this.repository = repository;
         this.view = new WeakReference<>(view);
     }
@@ -31,8 +33,8 @@ public class EditTaskPresenter {
 
     public void updateTask(final String name, final String description, final boolean priority) {
         updateTaskDisposable = repository.updateTask(taskId, name, description, priority)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onTaskUpdated, this::onTaskUpdatedError);
     }
 
@@ -46,8 +48,8 @@ public class EditTaskPresenter {
 
     public void deleteTask(long taskId) {
         deleteTaskDisposable =  repository.deleteTask(taskId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onTaskDeleted, this::onTaskDeletedError);
     }
 

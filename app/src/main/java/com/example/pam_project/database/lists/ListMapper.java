@@ -4,7 +4,7 @@ import com.example.pam_project.database.relationships.ListsWithTasks;
 import com.example.pam_project.database.tasks.TaskEntity;
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.features.tasks.list.TaskInformation;
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.List;

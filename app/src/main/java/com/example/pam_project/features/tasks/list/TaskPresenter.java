@@ -4,16 +4,16 @@ import com.example.pam_project.R;
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
-import com.example.pam_project.utils.TaskStatus;
+import com.example.pam_project.utils.constants.TaskStatus;
+import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class TaskPresenter {
+    private final SchedulerProvider provider;
     private final TaskRepository taskRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<TaskView> view;
@@ -21,8 +21,10 @@ public class TaskPresenter {
     private Disposable updateTaskDisposable;
     private final long listId;
 
-    public TaskPresenter(final TaskRepository taskRepository, final ListsRepository listsRepository, final TaskView view,
+    public TaskPresenter(final SchedulerProvider provider, final TaskRepository taskRepository,
+                         final ListsRepository listsRepository, final TaskView view,
                          final long listId) {
+        this.provider = provider;
         this.taskRepository = taskRepository;
         this.listsRepository = listsRepository;
         this.view = new WeakReference<>(view);
@@ -38,8 +40,8 @@ public class TaskPresenter {
 
     private void fetchTasks() {
         fetchTasksDisposable = listsRepository.getListWithTasks(listId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onTasksReceived, this::onTasksReceivedError);
     }
 
@@ -71,8 +73,8 @@ public class TaskPresenter {
         final String description, final boolean priority,
         final TaskStatus status, final long listId) {
         updateTaskDisposable = taskRepository.updateTask(id, name, description, priority, status, listId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(() -> {
                     if (view.get() != null) {
                         TaskInformation taskInformation = new TaskInformation(id, name, description, priority, status);
