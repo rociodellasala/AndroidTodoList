@@ -1,5 +1,6 @@
 package com.example.pam_project.tasks.list;
 
+import com.example.pam_project.R;
 import com.example.pam_project.TestSchedulerProvider;
 import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.features.tasks.list.TaskInformation;
@@ -48,7 +49,7 @@ public class TaskPresenterTest {
     }
 
     @Test
-    public void givenAViewWasAttachedThenFetchTheTasks() {
+    public void givenAViewWasAttachedWhenEverythingIsOkThenFetchTheTasks() {
         final long categoryId = 1;
         final String listTitle = "listTitle";
         final List<TaskInformation> tasks = new ArrayList<>();
@@ -61,6 +62,18 @@ public class TaskPresenterTest {
 
         verify(view).bindListName(listTitle);
         verify(view).bindTasks(tasks);
+    }
+
+    @Test
+    public void givenAViewWasAttachedWhenItFailsThenHandleError() {
+        Flowable<ListInformation> listInformationObservable = Flowable.fromCallable(
+                () -> {throw new Exception("BOOM!");}
+        );
+        doReturn(listInformationObservable).when(listsRepository).getListWithTasks(listId);
+
+        presenter.onViewAttached();
+
+        verify(view).onTasksReceivedError();
     }
 
     @Test
@@ -94,6 +107,29 @@ public class TaskPresenterTest {
     }
 
     @Test
+    public void givenATaskFailsToUpdateThenHandleTheError() {
+        final long taskId = 14;
+        final String title = "taskTitle";
+        final String description = "description";
+        final boolean isUrgent = false;
+        final TaskStatus status = TaskStatus.PENDING;
+        final TaskStatus oppositeStatus = TaskStatus.DONE;
+        TaskInformation ti = new TaskInformation(taskId, title, description, isUrgent, status);
+
+        int position = 2;
+
+        when(taskRepository.updateTask(
+                taskId, title, description, isUrgent, oppositeStatus, listId
+        )).thenReturn(Completable.fromAction(() -> {
+            throw new Exception("BOOM!");
+        }));
+
+        presenter.onTaskChange(ti, position);
+
+        verify(view).onTaskUpdatedError();
+    }
+
+    @Test
     public void givenATaskWasClickedThenLaunchTheDetailScreen() {
         final long id = 2;
 
@@ -121,5 +157,12 @@ public class TaskPresenterTest {
         presenter.onEmptyTask();
 
         verify(view).showEmptyMessage();
+    }
+
+    @Test
+    public void givenThePresenterIsInstancedThenBindHeaders() {
+
+        int[] headers = {R.string.pending_tasks, R.string.done_tasks};
+        verify(view).bindHeaders(headers);
     }
 }
