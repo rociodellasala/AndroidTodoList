@@ -8,6 +8,8 @@ public interface ListView {
 
     void launchFtu();
 
+    void unFocusSearch();
+
     void bindCategories(List<CategoryInformation> model);
 
     void bindLists(final List<ListInformation> model);
