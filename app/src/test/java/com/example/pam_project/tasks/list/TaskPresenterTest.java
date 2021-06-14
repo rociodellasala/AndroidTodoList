@@ -7,6 +7,7 @@ import com.example.pam_project.features.tasks.list.TaskPresenter;
 import com.example.pam_project.features.tasks.list.TaskView;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
+import com.example.pam_project.utils.constants.TaskStatus;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import org.junit.Before;
@@ -15,11 +16,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class TaskPresenterTest {
 
@@ -60,23 +63,35 @@ public class TaskPresenterTest {
         verify(view).bindTasks(tasks);
     }
 
-    /*@Test
-    public void givenATaskWasUpdatedThenUpdateTheTask() {
+    @Test
+    public void givenATaskWasMovedFromPendingToDoneThenMoveTheTask() {
+        swapStatusTest(TaskStatus.PENDING, TaskStatus.DONE);
+    }
+
+    @Test
+    public void givenATaskWasMovedFromDoneToPendingThenMoveTheTask() {
+        swapStatusTest(TaskStatus.DONE, TaskStatus.PENDING);
+    }
+
+    private void swapStatusTest(TaskStatus status, TaskStatus oppositeStatus) {
         final long taskId = 14;
         final String title = "taskTitle";
         final String description = "description";
         final boolean isUrgent = false;
-        final TaskStatus status = TaskStatus.PENDING;
         TaskInformation ti = new TaskInformation(taskId, title, description, isUrgent, status);
 
         int position = 2;
 
-        doReturn(Completable.fromAction(() -> {int a = 1;})).when(taskRepository).updateTask(
-                taskId, title, description, isUrgent, status, listId
-        );
+        when(taskRepository.updateTask(
+                taskId, title, description, isUrgent, oppositeStatus, listId
+        )).thenReturn(Completable.complete());
 
-        verify(view).onTaskStatusEdit(ti, position);
-    }*/
+        presenter.onTaskChange(ti, position);
+
+        TaskInformation otherTi = new TaskInformation(taskId, title, description, isUrgent,
+                oppositeStatus);
+        verify(view).onTaskStatusEdit(otherTi, position);
+    }
 
     @Test
     public void givenATaskWasClickedThenLaunchTheDetailScreen() {
