@@ -185,8 +185,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                List<?> result = (List<?>) filterResults.values;
+                ArrayList<ListInformation> tempList = new ArrayList<>();
+                for (Object object : result) {
+                    if (object instanceof ListInformation) {
+                        tempList.add((ListInformation) object); // <-- add to temp
+                    }
+                }
+
                 dataSet.clear();
-                dataSet.addAll((ArrayList<ListInformation>) filterResults.values);
+                dataSet.addAll(tempList);
                 notifyDataSetChanged();
             }
         };

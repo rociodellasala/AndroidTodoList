@@ -28,7 +28,6 @@ public class TaskEntity {
     @ColumnInfo(name = "status")
     public final String status;
 
-    @ColumnInfo(index = true)
     @ForeignKey(entity = ListEntity.class, parentColumns = "id", childColumns = "listId", onDelete = CASCADE)
     public final long listId;
 

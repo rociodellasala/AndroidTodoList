@@ -20,7 +20,6 @@ public class ListEntity {
     @ColumnInfo(name = "name")
     public final String name;
 
-    @ColumnInfo(index = true)
     @ForeignKey(entity = CategoryEntity.class, parentColumns = "id", childColumns = "categoryId", onDelete = CASCADE)
     public final long categoryId;
 
