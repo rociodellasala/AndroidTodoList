@@ -111,7 +111,7 @@ public class TaskPresenter {
             view.get().showTaskContent(id);
     }
 
-    public void appendHeaders() {
+    private void appendHeaders() {
         if (view.get() != null) {
             int[] headers = {R.string.pending_tasks, R.string.done_tasks};
             view.get().bindHeaders(headers);
