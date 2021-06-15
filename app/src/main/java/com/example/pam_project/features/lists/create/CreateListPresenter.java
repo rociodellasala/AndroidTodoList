@@ -55,8 +55,7 @@ public class CreateListPresenter {
         insertListDisposable = listsRepository.insertList(name, categoryId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .doOnError(this::onListInsertedError)
-                .subscribe();
+                .subscribe(() -> {}, this::onListInsertedError);
     }
 
     private void onListInsertedError(Throwable throwable) {
