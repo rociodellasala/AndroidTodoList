@@ -8,6 +8,13 @@ import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListMapper;
 import com.example.pam_project.database.tasks.TaskDao;
 import com.example.pam_project.database.utils.AppDatabase;
+import com.example.pam_project.features.others.about.APIServiceImplementation;
+import com.example.pam_project.features.others.about.authors.AuthorsMapper;
+import com.example.pam_project.features.others.about.authors.AuthorsRepository;
+import com.example.pam_project.features.others.about.authors.RestAuthorsRepository;
+import com.example.pam_project.features.others.about.version.RestVersionRepository;
+import com.example.pam_project.features.others.about.version.VersionMapper;
+import com.example.pam_project.features.others.about.version.VersionRepository;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
@@ -81,5 +88,13 @@ public class ApplicationModule {
 
     /* default */ TaskDao provideTaskDao() {
         return mainStorage.taskDao();
+    }
+
+    /* default */ AuthorsRepository provideAuthorsRepository() {
+        return new RestAuthorsRepository(new APIServiceImplementation(), new AuthorsMapper());
+    }
+
+    /* default */ VersionRepository provideVersionRepository() {
+        return new RestVersionRepository(new APIServiceImplementation(), new VersionMapper());
     }
 }

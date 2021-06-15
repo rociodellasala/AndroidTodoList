@@ -129,6 +129,11 @@ public class ListPresenter {
             view.get().showManageCategories();
     }
 
+    public void onAboutSection() {
+        if (view.get() != null)
+            view.get().showAboutSection();
+    }
+
     public void onViewDetached() {
         if (fetchListsDisposable != null)
             fetchListsDisposable.dispose();

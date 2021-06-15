@@ -7,6 +7,8 @@ import com.example.pam_project.database.categories.CategoryMapper;
 import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListMapper;
 import com.example.pam_project.database.tasks.TaskDao;
+import com.example.pam_project.features.others.about.authors.AuthorsRepository;
+import com.example.pam_project.features.others.about.version.VersionRepository;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
@@ -30,6 +32,9 @@ public class ProductionApplicationContainer implements ApplicationContainer {
 
     private TaskRepository tasksRepository;
     private TaskDao taskDao;
+
+    private AuthorsRepository authorsRepository;
+    private VersionRepository versionRepository;
 
     public ProductionApplicationContainer(final Context context) {
         applicationModule = new ApplicationModule(context);
@@ -87,6 +92,24 @@ public class ProductionApplicationContainer implements ApplicationContainer {
         }
 
         return tasksRepository;
+    }
+
+    @Override
+    public AuthorsRepository getAuthorsRepository() {
+        if (authorsRepository == null) {
+            authorsRepository = applicationModule.provideAuthorsRepository();
+        }
+
+        return authorsRepository;
+    }
+
+    @Override
+    public VersionRepository getVersionRepository() {
+        if (versionRepository == null) {
+            versionRepository = applicationModule.provideVersionRepository();
+        }
+
+        return versionRepository;
     }
 
     private CategoryDao getCategoryDao() {

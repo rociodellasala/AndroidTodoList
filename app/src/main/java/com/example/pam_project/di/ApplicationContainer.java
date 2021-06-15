@@ -2,6 +2,8 @@ package com.example.pam_project.di;
 
 import android.content.Context;
 
+import com.example.pam_project.features.others.about.authors.AuthorsRepository;
+import com.example.pam_project.features.others.about.version.VersionRepository;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
@@ -24,4 +26,8 @@ public interface ApplicationContainer {
     ListsRepository getListsRepository();
 
     TaskRepository getTasksRepository();
+
+    AuthorsRepository getAuthorsRepository();
+
+    VersionRepository getVersionRepository();
 }
