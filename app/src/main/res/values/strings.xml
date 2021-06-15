@@ -81,7 +81,7 @@
     <string name="error_task_delete">An error occurred while trying to delete the task</string>
     <string name="error_task_update">An error occurred while trying to update the task</string>
     <string name="error_task_create">An error occurred while trying to create the task</string>
-    <string name="error_general">An error occurred, try again</string>
+    <string name="error_general">An error occurred, try again later</string>
     <!-- About -->
     <string name="authors_title">Authors</string>
     <string name="version_title">Version</string>

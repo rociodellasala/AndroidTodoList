@@ -6,7 +6,7 @@ import com.example.pam_project.networking.version.VersionModel;
 import java.util.List;
 
 public interface AboutView {
-    void bindAuthors(List<AuthorsModel> model);
+    void bindAuthors(String model);
 
     void onGeneralError();
 

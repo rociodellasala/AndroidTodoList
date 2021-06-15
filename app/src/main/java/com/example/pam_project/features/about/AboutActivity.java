@@ -66,9 +66,9 @@ public class AboutActivity extends AppCompatActivity implements AboutView {
     }
 
     @Override
-    public void bindAuthors(List<AuthorsModel> model) {
+    public void bindAuthors(String authors) {
         findViewById(R.id.authors).setVisibility(View.VISIBLE);
-        authorsView.setText(concatAuthors(model));
+        authorsView.setText(authors);
         showData();
     }
 
@@ -77,15 +77,6 @@ public class AboutActivity extends AppCompatActivity implements AboutView {
             hideLoader();
             findViewById(R.id.about_information).setVisibility(View.VISIBLE);
         }
-    }
-
-    private String concatAuthors(List<AuthorsModel> model) {
-        StringBuilder authors = new StringBuilder();
-        for (int i = 0; i < model.size(); i++) {
-            authors.append(model.get(i).getName()).append("\n");
-        }
-
-        return authors.toString();
     }
 
     @Override

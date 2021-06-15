@@ -43,8 +43,17 @@ public class AboutPresenter {
 
     private void onAuthorsReceived(final List<AuthorsModel> model) {
         if (view.get() != null) {
-            view.get().bindAuthors(model);
+            view.get().bindAuthors(concatAuthors(model));
         }
+    }
+
+    private String concatAuthors(List<AuthorsModel> model) {
+        StringBuilder authors = new StringBuilder();
+        for (int i = 0; i < model.size(); i++) {
+            authors.append(model.get(i).getName()).append("\n");
+        }
+
+        return authors.toString();
     }
 
     private void onAuthorsReceivedError(final Throwable throwable) {

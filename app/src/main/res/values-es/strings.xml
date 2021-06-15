@@ -76,7 +76,7 @@
     <string name="error_task_delete">Se produjo un error al intentar eliminar la tarea</string>
     <string name="error_task_update">Se produjo un error al intentar editar la tarea</string>
     <string name="error_task_create">Se produjo un error al intentar crear la tarea</string>
-    <string name="error_general">Se produjo un error, vuelvalo a intentar</string>
+    <string name="error_general">Se produjo un error, vuelva a intentarlo más tarde</string>
     <!-- About -->
     <string name="authors_title">Autores</string>
     <string name="version_title">Versión</string>
