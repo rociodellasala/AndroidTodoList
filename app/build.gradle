@@ -6,6 +6,12 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.pam_project"
         minSdkVersion 21
@@ -42,9 +48,11 @@ ext {
     retrofitVersion = "2.9.0"
     converterGsonVersion = "2.9.0"
     adapterRetrofitVersion = "2.9.0"
-    junitVersion = "4.+"
+    junitVersion = "4.13.2"
     junitTestVersion = "1.1.2"
     espressoVersion = "3.3.0"
+    robolectricVersion = "4.5.1"
+    mockitoVersion = "3.11.0"
 
 }
 
@@ -59,12 +67,14 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     implementation "com.thebluealliance:spectrum:$spectrumVersion"
-
+    
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$converterGsonVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$adapterRetrofitVersion"
 
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitTestVersion"
-    androidTestImplementation "androidx.test.espresso:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 }

@@ -45,6 +45,18 @@ public class TaskInformation implements Comparable<TaskInformation> {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == null)
+            return false;
+        if (!(o instanceof TaskInformation))
+            return false;
+        TaskInformation other = (TaskInformation) o;
+        return id == other.getId() && title.equals(other.getTitle()) &&
+                description.equals(other.getDescription()) && isUrgent == other.getUrgency() &&
+                status.equals(other.getStatus());
+    }
+
+    @Override
     public int compareTo(TaskInformation o) {
         return this.getStatus().compareTo(o.getStatus());
     }
