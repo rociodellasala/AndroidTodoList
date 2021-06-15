@@ -37,7 +37,7 @@ public class CreateCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryWasCreatedThenCreateTheCategory(){
+    public void givenACategoryThenCreateTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 

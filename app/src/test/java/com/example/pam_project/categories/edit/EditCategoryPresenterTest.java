@@ -1,10 +1,9 @@
 package com.example.pam_project.categories.edit;
 
 import com.example.pam_project.TestSchedulerProvider;
-import com.example.pam_project.features.categories.create.CreateCategoryPresenter;
-import com.example.pam_project.features.categories.create.CreateCategoryView;
 import com.example.pam_project.features.categories.edit.EditCategoryPresenter;
 import com.example.pam_project.features.categories.edit.EditCategoryView;
+import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.constants.AppColor;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
@@ -35,32 +34,74 @@ public class EditCategoryPresenterTest {
 
         view = mock(EditCategoryView.class);
 
+        categoryId = 2;
+
         presenter = new EditCategoryPresenter(categoryId, provider, repository, view);
     }
 
     @Test
-    public void givenACategoryWasCreatedThenCreateTheCategory(){
+    public void givenAViewWasAttachedThenFetchTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
-        when(repository.insertCategory(title, stringColor))
-                .thenReturn(Completable.complete());
+        CategoryInformation categoryInformation = new CategoryInformation(categoryId, title, stringColor);
 
-        presenter.insertCategory(title, stringColor);
-        verify(view, never()).onCategoryInsertedError();
+        when(repository.getCategory(categoryId))
+                .thenReturn(categoryInformation);
+
+        presenter.onViewAttached();
+        verify(view).bindCategory(categoryInformation);
     }
 
     @Test
-    public void givenACategoryFailsToCreateThenHandleTheError(){
+    public void givenACategoryThenUpdateTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
-        when(repository.insertCategory(title, stringColor))
+        when(repository.updateCategory(categoryId, title, stringColor))
+                .thenReturn(Completable.complete());
+
+        presenter.updateCategory(title, stringColor);
+        verify(view, never()).onCategoryUpdateError();
+    }
+
+    @Test
+    public void givenACategoryFailsToUpdateThenHandleTheError(){
+        final String title = "categoryTitle";
+        final String stringColor = AppColor.BLUE.getHexValue();
+
+        when(repository.updateCategory(categoryId, title, stringColor))
                 .thenReturn((Completable.fromAction(() -> {
                     throw new Exception("BOOM!");
                 })));
 
-        presenter.insertCategory(title, stringColor);
-        verify(view).onCategoryInsertedError();
+        presenter.updateCategory(title, stringColor);
+        verify(view).onCategoryUpdateError();
     }
+
+    @Test
+    public void givenACategoryThenDeleteTheCategory(){
+        when(repository.deleteCategory(categoryId))
+                .thenReturn(Completable.complete());
+
+        presenter.deleteCategory(categoryId);
+        verify(view).onCategoryDelete();
+        verify(view, never()).onCategoryDeletedError();
+    }
+
+    @Test
+    public void givenACategoryFailsToDeleteThenHandleTheError(){
+        when(repository.deleteCategory(categoryId))
+                .thenReturn((Completable.fromAction(() -> {
+                    throw new Exception("BOOM!");
+                })));
+
+        presenter.deleteCategory(categoryId);
+        verify(view).onCategoryDeletedError();
+        verify(view, never()).onCategoryDelete();
+    }
+
+
+
+
 }
