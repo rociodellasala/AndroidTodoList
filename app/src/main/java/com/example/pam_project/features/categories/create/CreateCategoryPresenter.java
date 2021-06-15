@@ -23,8 +23,7 @@ public class CreateCategoryPresenter {
         insertCategoryDisposable = repository.insertCategory(name, color)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .doOnError(this::onCategoryInsertedError)
-                .subscribe();
+                .subscribe(()->{},this::onCategoryInsertedError);
     }
 
     private void onCategoryInsertedError(final Throwable throwable) {
