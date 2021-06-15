@@ -3,6 +3,7 @@ package com.example.pam_project.features.lists.list;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
+    private Menu topMenu;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private ListPresenter presenter;
@@ -93,6 +95,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
+        adapter.setCompleteDataset(model);
+        adapter.setPreviousSearchDataset();
         presenter.onEmptyList();
     }
 
@@ -178,6 +182,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_action_bar, menu);
+        topMenu = menu;
         setUpSearch(menu);
         return true;
     }
@@ -218,6 +223,16 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
                 return true;
             }
         });
+    }
+
+    @Override
+    public void unFocusSearch(){
+        if(topMenu == null)
+            return;
+        MenuItem searchItem = topMenu.findItem(R.id.list_action_bar_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchItem.collapseActionView();
+        searchView.clearFocus();
     }
 
     @Override

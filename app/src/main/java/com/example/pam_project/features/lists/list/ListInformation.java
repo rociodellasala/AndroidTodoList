@@ -1,5 +1,7 @@
 package com.example.pam_project.features.lists.list;
 
+import android.util.Log;
+
 import com.example.pam_project.comparators.CategoryAlphabeticalComparator;
 import com.example.pam_project.comparators.CategoryPriorityComparator;
 import com.example.pam_project.comparators.ListAlphabeticalComparator;
