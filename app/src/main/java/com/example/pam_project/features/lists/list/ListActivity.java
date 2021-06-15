@@ -23,6 +23,7 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.dialogs.FilterDialogFragment;
 import com.example.pam_project.dialogs.SelectedDialogItems;
 import com.example.pam_project.dialogs.SortByDialogFragment;
+import com.example.pam_project.features.about.AboutActivity;
 import com.example.pam_project.features.categories.list.CategoryActivity;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.features.lists.create.CreateListActivity;
@@ -144,8 +145,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void showFilterDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        FilterDialogFragment filterDialog = FilterDialogFragment
-                .newInstance(adapter.getCategories(), adapter.getFilterSelections());
+        FilterDialogFragment filterDialog = FilterDialogFragment.newInstance(adapter.getCategories(), adapter.getFilterSelections());
         showDialog(fm, filterDialog);
     }
 
@@ -166,6 +166,12 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     public void showManageCategories() {
         Intent categoriesIntent = new Intent(getApplicationContext(), CategoryActivity.class);
         startActivity(categoriesIntent);
+    }
+
+    @Override
+    public void showAboutSection() {
+        Intent aboutIntent = new Intent(getApplicationContext(), AboutActivity.class);
+        startActivity(aboutIntent);
     }
 
     @Override
@@ -224,6 +230,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
             presenter.onSortByDialog();
         } else if (itemId == R.id.list_action_bar_manage_categories) {
             presenter.onManageCategories();
+        } else if (itemId == R.id.list_action_bar_about) {
+            presenter.onAboutSection();
         } else {
             return super.onOptionsItemSelected(item);
         }

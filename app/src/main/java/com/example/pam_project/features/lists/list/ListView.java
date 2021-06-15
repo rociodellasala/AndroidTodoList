@@ -31,4 +31,6 @@ public interface ListView {
     void onListsReceivedError();
 
     void onCategoriesReceivedError();
+
+    void showAboutSection();
 }
