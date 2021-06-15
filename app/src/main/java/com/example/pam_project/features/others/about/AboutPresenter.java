@@ -15,12 +15,12 @@ public class AboutPresenter {
     private final VersionRepository versionRepository;
     private final WeakReference<AboutView> view;
     private Disposable getConfigDisposable;
-    private final SchedulerProvider schedulerProvider;
+    private final SchedulerProvider provider;
 
     public AboutPresenter(AuthorsRepository authorsRepository, VersionRepository versionRepository, SchedulerProvider schedulerProvider, AboutView view) {
         this.authorsRepository = authorsRepository;
         this.versionRepository = versionRepository;
-        this.schedulerProvider = schedulerProvider;
+        this.provider = schedulerProvider;
         this.view = new WeakReference<>(view);
     }
 
@@ -33,8 +33,8 @@ public class AboutPresenter {
 
     private void getAuthorsRepository() {
         getConfigDisposable = authorsRepository.getAuthors()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onAuthorsReceived, this::onAuthorsReceivedError);
     }
 
@@ -52,8 +52,8 @@ public class AboutPresenter {
 
     private void getVersionRepository() {
         getConfigDisposable = versionRepository.getVersion()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
                 .subscribe(this::onVersionReceived, this::onVersionReceivedError);
     }
 
