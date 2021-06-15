@@ -67,7 +67,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorLayoutVersion"
     implementation "com.thebluealliance:spectrum:$spectrumVersion"
-    
+
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$converterGsonVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$adapterRetrofitVersion"

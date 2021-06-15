@@ -12,10 +12,12 @@
         android:indeterminate="true" />
 
     <LinearLayout
+        android:id="@+id/about_information"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="top"
+        android:visibility="gone"
         android:layout_margin="24dp">
 
         <TextView
@@ -51,7 +53,6 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:paddingTop="16dp"/>
-
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

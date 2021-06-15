@@ -62,23 +62,27 @@ public class AboutActivity extends AppCompatActivity implements AboutView {
     }
     
     private void hideLoader() {
-        if(findViewById(R.id.about_loader).getVisibility() == View.VISIBLE) {
-            findViewById(R.id.about_loader).setVisibility(View.GONE);
-        }
+        findViewById(R.id.about_loader).setVisibility(View.GONE);
     }
 
     @Override
     public void bindAuthors(List<AuthorsModel> model) {
-        hideLoader();
         findViewById(R.id.authors).setVisibility(View.VISIBLE);
         authorsView.setText(concatAuthors(model));
+        showData();
+    }
+
+    private void showData() {
+        if(findViewById(R.id.authors).getVisibility() == View.VISIBLE && findViewById(R.id.version).getVisibility() == View.VISIBLE) {
+            hideLoader();
+            findViewById(R.id.about_information).setVisibility(View.VISIBLE);
+        }
     }
 
     private String concatAuthors(List<AuthorsModel> model) {
         StringBuilder authors = new StringBuilder();
         for (int i = 0; i < model.size(); i++) {
-            authors.append(model.get(i).getName());
-            authors.append("\n");
+            authors.append(model.get(i).getName()).append("\n");
         }
 
         return authors.toString();
@@ -91,8 +95,8 @@ public class AboutActivity extends AppCompatActivity implements AboutView {
 
     @Override
     public void bindVersion(VersionModel model) {
-        hideLoader();
         findViewById(R.id.version).setVisibility(View.VISIBLE);
         versionView.setText(model.getVersion());
+        showData();
     }
 }
