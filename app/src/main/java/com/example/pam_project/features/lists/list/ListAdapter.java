@@ -1,5 +1,6 @@
 package com.example.pam_project.features.lists.list;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,10 @@ import com.example.pam_project.features.categories.list.CategoryInformation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements Filterable {
     private static List<Integer> filterSelections;
@@ -150,6 +153,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
         // show items in selected categories and remove them from hidden items
         moveToList(hiddenItems, dataSet, selectedCategoriesIds::contains);
 
+
+        removeDuplicates(dataSet);
+        removeDuplicates(hiddenItems);
         sort();
 
         notifyDataSetChanged();
@@ -209,5 +215,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
         // remove shown items from hidden elements or dataSet
         for (ListInformation item : to)
             from.remove(item);
+    }
+
+    private void removeDuplicates(List<ListInformation> list){
+        List<ListInformation> listNoDuplicates = new ArrayList<>();
+        Set<Long> idSet = new HashSet<>();
+
+        for(ListInformation listInformation: list){
+            if(! idSet.contains(listInformation.getId())){
+                idSet.add(listInformation.getId());
+                listNoDuplicates.add(listInformation);
+            }
+        }
+
+        list.clear();
+        list.addAll(listNoDuplicates);
     }
 }
