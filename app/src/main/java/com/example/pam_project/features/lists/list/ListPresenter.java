@@ -115,7 +115,6 @@ public class ListPresenter {
             view.get().showFilterDialog();
             view.get().unFocusSearch();
         }
-
     }
 
     public void onSortByDialog() {
@@ -123,7 +122,6 @@ public class ListPresenter {
             view.get().showSortByDialog();
             view.get().unFocusSearch();
         }
-
     }
 
     public void onEmptyList(){
@@ -132,8 +130,10 @@ public class ListPresenter {
     }
 
     public void onManageCategories() {
-        if (view.get() != null)
+        if (view.get() != null){
             view.get().showManageCategories();
+            view.get().unFocusSearch();
+        }
     }
 
     public void onViewDetached() {

@@ -44,9 +44,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
     public void update(final List<ListInformation> newDataSet) {
         this.dataSet.clear();
 
-        if(completeDataset.size() == 0 && newDataSet != null)
-            completeDataset.addAll(newDataSet);
-
         if (newDataSet != null)
             dataSet.addAll(newDataSet);
 
@@ -121,6 +118,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
         return Collections.unmodifiableList(categories);
     }
 
+    public void setCompleteDataset(final List<ListInformation> dataset){
+        completeDataset.clear();
+        completeDataset.addAll(dataset);
+    }
+
     public void setPreviousSearchDataset(){
         previousSearchDataset.clear();
         previousSearchDataset.addAll(dataSet);
@@ -169,7 +171,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
                 } else {
                     List<ListInformation> filteredList = new ArrayList<>();
                     for (ListInformation listInformation : completeDataset) {
-
                         if (listInformation.getTitle().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(listInformation);
                         }

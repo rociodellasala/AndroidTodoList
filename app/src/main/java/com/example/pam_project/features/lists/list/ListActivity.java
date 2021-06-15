@@ -47,7 +47,6 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        Log.e("CREATEEEEE","ASD");
         createPresenter();
         setUpView();
     }
@@ -95,6 +94,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
+        adapter.setCompleteDataset(model);
+        adapter.setPreviousSearchDataset();
         presenter.onEmptyList();
     }
 
@@ -224,6 +225,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
             return;
         MenuItem searchItem = topMenu.findItem(R.id.list_action_bar_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        searchItem.collapseActionView();
         searchView.clearFocus();
     }
 
