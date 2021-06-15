@@ -10,10 +10,7 @@ import com.example.pam_project.database.lists.ListEntity;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Tasks",foreignKeys = @ForeignKey(entity = ListEntity.class,
-        parentColumns = "id",
-        childColumns = "listId",
-        onDelete = CASCADE))
+@Entity(tableName = "Tasks")
 public class TaskEntity {
 
     @PrimaryKey(autoGenerate = true)
@@ -31,7 +28,7 @@ public class TaskEntity {
     @ColumnInfo(name = "status")
     public final String status;
 
-
+    @ForeignKey(entity = ListEntity.class, parentColumns = "id", childColumns = "listId", onDelete = CASCADE)
     public final long listId;
 
     public TaskEntity(final long id, final String name, final String description, final boolean priority,
