@@ -1,7 +1,7 @@
-package com.example.pam_project.features.others.about;
+package com.example.pam_project.networking;
 
-import com.example.pam_project.features.others.about.authors.AuthorsResponse;
-import com.example.pam_project.features.others.about.version.VersionResponse;
+import com.example.pam_project.networking.authors.ListAuthorsResponse;
+import com.example.pam_project.networking.version.VersionResponse;
 
 import io.reactivex.Single;
 import retrofit2.Response;
@@ -10,10 +10,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIServiceImplementation implements APIService {
-
     private static final String BASE_URL = "https://private-ad7668-rememberit.apiary-mock.com/";
-
-    private Retrofit retrofit;
+    private final Retrofit retrofit;
 
     public APIServiceImplementation() {
             retrofit = new Retrofit.Builder()
@@ -24,7 +22,7 @@ public class APIServiceImplementation implements APIService {
     }
 
     @Override
-    public Single<Response<AuthorsResponse>> getAuthors() {
+    public Single<Response<ListAuthorsResponse>> getAuthors() {
         APIService service = retrofit.create(APIService.class);
         return service.getAuthors();
     }

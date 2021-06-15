@@ -2,9 +2,9 @@ package com.example.pam_project.di;
 
 import android.content.Context;
 
-import com.example.pam_project.features.others.about.authors.AuthorsRepository;
-import com.example.pam_project.features.others.about.version.VersionRepository;
 import com.example.pam_project.landing.FtuStorage;
+import com.example.pam_project.networking.authors.AuthorsRepository;
+import com.example.pam_project.networking.version.VersionRepository;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;

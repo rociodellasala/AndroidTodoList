@@ -1,7 +1,7 @@
-package com.example.pam_project.features.others.about.version;
+package com.example.pam_project.networking.version;
 
-import com.example.pam_project.features.others.about.APIService;
-import com.example.pam_project.utils.networking.RetrofitUtils;
+import com.example.pam_project.networking.APIService;
+import com.example.pam_project.networking.RetrofitUtils;
 
 import io.reactivex.Single;
 

@@ -74,7 +74,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".features.others.about.AboutActivity"
+            android:name=".features.about.AboutActivity"
             android:parentActivityName=".features.lists.list.ListActivity" />
     </application>
 

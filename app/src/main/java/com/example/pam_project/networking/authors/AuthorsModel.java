@@ -1,4 +1,4 @@
-package com.example.pam_project.features.others.about.authors;
+package com.example.pam_project.networking.authors;
 
 public class AuthorsModel {
     private final String name;

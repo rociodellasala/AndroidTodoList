@@ -1,20 +1,22 @@
-package com.example.pam_project.features.others.about;
+package com.example.pam_project.features.about;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
-import com.example.pam_project.features.others.about.authors.AuthorsModel;
-import com.example.pam_project.features.others.about.authors.AuthorsRepository;
-import com.example.pam_project.features.others.about.version.VersionModel;
-import com.example.pam_project.features.others.about.version.VersionRepository;
+import com.example.pam_project.networking.authors.AuthorsModel;
+import com.example.pam_project.networking.authors.AuthorsRepository;
+import com.example.pam_project.networking.version.VersionModel;
+import com.example.pam_project.networking.version.VersionRepository;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
+import java.util.List;
 import java.util.Objects;
 
 public class AboutActivity extends AppCompatActivity implements AboutView {
@@ -66,16 +68,25 @@ public class AboutActivity extends AppCompatActivity implements AboutView {
     }
 
     @Override
-    public void bindAuthors(AuthorsModel model) {
+    public void bindAuthors(List<AuthorsModel> model) {
         hideLoader();
         findViewById(R.id.authors).setVisibility(View.VISIBLE);
-        authorsView.setText(model.getName());
+        authorsView.setText(concatAuthors(model));
+    }
+
+    private String concatAuthors(List<AuthorsModel> model) {
+        StringBuilder authors = new StringBuilder();
+        for (int i = 0; i < model.size(); i++) {
+            authors.append(model.get(i).getName());
+            authors.append("\n");
+        }
+
+        return authors.toString();
     }
 
     @Override
-    public void onAuthorsReceivedError() {
-        // Toast.makeText();
-        // TODO
+    public void onGeneralError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_general), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -83,11 +94,5 @@ public class AboutActivity extends AppCompatActivity implements AboutView {
         hideLoader();
         findViewById(R.id.version).setVisibility(View.VISIBLE);
         versionView.setText(model.getVersion());
-    }
-
-    @Override
-    public void onVersionReceivedError() {
-        // Toast.makeText();
-        // TODO
     }
 }

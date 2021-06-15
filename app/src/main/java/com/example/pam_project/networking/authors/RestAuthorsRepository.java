@@ -1,7 +1,9 @@
-package com.example.pam_project.features.others.about.authors;
+package com.example.pam_project.networking.authors;
 
-import com.example.pam_project.features.others.about.APIService;
-import com.example.pam_project.utils.networking.RetrofitUtils;
+import com.example.pam_project.networking.APIService;
+import com.example.pam_project.networking.RetrofitUtils;
+
+import java.util.List;
 
 import io.reactivex.Single;
 
@@ -15,7 +17,7 @@ public class RestAuthorsRepository implements AuthorsRepository {
     }
 
     @Override
-    public Single<AuthorsModel> getAuthors() {
+    public Single<List<AuthorsModel>> getAuthors() {
         return RetrofitUtils.performRequest(service.getAuthors()).map(authorsMapper::map);
     }
 }

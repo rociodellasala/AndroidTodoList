@@ -1,4 +1,4 @@
-package com.example.pam_project.features.others.about.version;
+package com.example.pam_project.networking.version;
 
 public class VersionMapper {
 

@@ -1,12 +1,13 @@
-package com.example.pam_project.features.others.about;
+package com.example.pam_project.features.about;
 
-import com.example.pam_project.features.others.about.authors.AuthorsModel;
-import com.example.pam_project.features.others.about.authors.AuthorsRepository;
-import com.example.pam_project.features.others.about.version.VersionModel;
-import com.example.pam_project.features.others.about.version.VersionRepository;
+import com.example.pam_project.networking.authors.AuthorsModel;
+import com.example.pam_project.networking.authors.AuthorsRepository;
+import com.example.pam_project.networking.version.VersionModel;
+import com.example.pam_project.networking.version.VersionRepository;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -14,10 +15,12 @@ public class AboutPresenter {
     private final AuthorsRepository authorsRepository;
     private final VersionRepository versionRepository;
     private final WeakReference<AboutView> view;
-    private Disposable getConfigDisposable;
+    private Disposable authorDisposable;
+    private Disposable versionDisposable;
     private final SchedulerProvider provider;
 
-    public AboutPresenter(AuthorsRepository authorsRepository, VersionRepository versionRepository, SchedulerProvider schedulerProvider, AboutView view) {
+    public AboutPresenter(AuthorsRepository authorsRepository, VersionRepository versionRepository, SchedulerProvider schedulerProvider,
+                          AboutView view) {
         this.authorsRepository = authorsRepository;
         this.versionRepository = versionRepository;
         this.provider = schedulerProvider;
@@ -32,13 +35,13 @@ public class AboutPresenter {
     }
 
     private void getAuthorsRepository() {
-        getConfigDisposable = authorsRepository.getAuthors()
+        authorDisposable = authorsRepository.getAuthors()
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe(this::onAuthorsReceived, this::onAuthorsReceivedError);
     }
 
-    private void onAuthorsReceived(final AuthorsModel model) {
+    private void onAuthorsReceived(final List<AuthorsModel> model) {
         if (view.get() != null) {
             view.get().bindAuthors(model);
         }
@@ -46,12 +49,12 @@ public class AboutPresenter {
 
     private void onAuthorsReceivedError(final Throwable throwable) {
         if (view.get() != null) {
-            view.get().onAuthorsReceivedError();
+            view.get().onGeneralError();
         }
     }
 
     private void getVersionRepository() {
-        getConfigDisposable = versionRepository.getVersion()
+        versionDisposable = versionRepository.getVersion()
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe(this::onVersionReceived, this::onVersionReceivedError);
@@ -65,13 +68,16 @@ public class AboutPresenter {
 
     private void onVersionReceivedError(final Throwable throwable) {
         if (view.get() != null) {
-            view.get().onVersionReceivedError();
+            view.get().onGeneralError();
         }
     }
 
     public void onViewDetached() {
-        if (getConfigDisposable != null){
-            getConfigDisposable.dispose();
+        if (authorDisposable != null){
+            authorDisposable.dispose();
+        }
+        if (versionDisposable != null){
+            versionDisposable.dispose();
         }
     }
 }
