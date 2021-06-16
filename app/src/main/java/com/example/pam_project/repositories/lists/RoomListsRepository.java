@@ -22,11 +22,8 @@ public class RoomListsRepository implements ListsRepository {
     }
 
     @Override
-    public ListInformation getList(final long listId) {
-        ListEntity listEntity = listDao.getListById(listId).blockingFirst();
-        CategoryEntity categoryEntity = categoryDao.getCategoryById(listEntity.categoryId).blockingFirst();
-        return new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId,
-                categoryEntity.color);
+    public Flowable<ListInformation> getList(final long listId) {
+        return listDao.getListById(listId).map(mapper::toModel);
     }
 
     @Override

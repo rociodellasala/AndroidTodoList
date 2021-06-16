@@ -4,10 +4,7 @@ import com.example.pam_project.TestSchedulerProvider;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.features.categories.list.CategoryPresenter;
 import com.example.pam_project.features.categories.list.CategoryView;
-import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
-import com.example.pam_project.utils.constants.AppColor;
-import com.example.pam_project.utils.constants.TaskStatus;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import org.junit.Before;
