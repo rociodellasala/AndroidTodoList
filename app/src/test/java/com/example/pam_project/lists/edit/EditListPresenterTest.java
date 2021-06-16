@@ -136,4 +136,11 @@ public class EditListPresenterTest {
 
         verify(view).onListDeletedError();
     }
+
+    @Test
+    public void givenDeleteButtonWasClickedThenShowDeleteDialog() {
+        presenter.onDeletePressed();
+
+        verify(view).showDeleteDialog();
+    }
 }

@@ -106,4 +106,11 @@ public class EditTaskPresenterTest {
 
         verify(view).onTaskRetrievedError();
     }
+
+    @Test
+    public void givenDeleteButtonWasClickedThenShowDeleteDialog() {
+        presenter.onDeletePressed();
+
+        verify(view).showDeleteDialog();
+    }
 }
