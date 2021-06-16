@@ -59,11 +59,30 @@ public class EditListPresenterTest {
         presenter.onViewAttached(id);
 
         verify(view).bindCategories(categories);
+    }
+
+    @Test
+    public void givenAViewWasAttachedWhenEverythingOkThenFetchTheList() {
+        final long id = 3;
+
+        final CategoryInformation[] categoriesArray = { mock(CategoryInformation.class),
+                mock(CategoryInformation.class) };
+        final List<CategoryInformation> categories = Arrays.asList(categoriesArray);
+        final Flowable<List<CategoryInformation>> categoriesFlowable = Flowable.just(categories);
+        doReturn(categoriesFlowable).when(categoriesRepository).getCategories();
+
+        final ListInformation li = mock(ListInformation.class);
+        final Flowable<ListInformation> flowable = Flowable.just(li);
+        when(listsRepository.getList(id)).thenReturn(flowable);
+
+        presenter.onViewAttached(id);
+
+        verify(view).bindCategories(categories);
         verify(view).bindList(li);
     }
 
     @Test
-    public void givenAViewWasAttachedWhenThereIsAnErrorThenHandleTheError() {
+    public void givenAViewWasAttachedWhenCategoriesFetchFailsThenHandleTheError() {
         final long id = 3;
         doReturn(
                 Flowable.fromCallable(() -> {throw new Exception("BOOM!");})
@@ -75,16 +94,23 @@ public class EditListPresenterTest {
     }
 
     @Test
-    public void givenAViewWasAttachedWhenAnErrorOccursThenHandleTheError() {
+    public void givenAViewWasAttachedWhenListFetchFailsThenHandleTheError() {
         final long id = 3;
 
-        final Flowable<List<CategoryInformation>> categoriesFlowable = Flowable
-                .fromCallable(() -> {throw new Exception("BOOM!");});
+        final CategoryInformation[] categoriesArray = { mock(CategoryInformation.class),
+                mock(CategoryInformation.class) };
+        final List<CategoryInformation> categories = Arrays.asList(categoriesArray);
+        final Flowable<List<CategoryInformation>> categoriesFlowable = Flowable.just(categories);
         doReturn(categoriesFlowable).when(categoriesRepository).getCategories();
+
+        final Flowable<List<ListInformation>> listFlowable = Flowable
+                .fromCallable(() -> {throw new Exception("BOOM!");});
+        doReturn(listFlowable).when(listsRepository).getList(id);
 
         presenter.onViewAttached(id);
 
-        verify(view).onCategoriesReceivedError();
+        verify(view).bindCategories(categories);
+        verify(view).onListReceivedError();
     }
 
     @Test
