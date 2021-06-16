@@ -64,8 +64,6 @@
     <string name="search_hint">Search list</string>
     <string-array name="sort_by_criteria">
         <item>@string/sort_by_task_number</item>
-        <item>@string/sort_by_category_alphabetically</item>
-        <item>@string/sort_by_category_priority</item>
         <item>@string/sort_by_list_alphabetically</item>
         <item>@string/sort_by_date_added</item>
     </string-array>
