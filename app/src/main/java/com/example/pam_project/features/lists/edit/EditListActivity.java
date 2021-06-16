@@ -1,5 +1,6 @@
 package com.example.pam_project.features.lists.edit;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -82,7 +83,17 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
 
     private void setDeleteButton(){
         Button deleteButton = findViewById(R.id.delete_list_button);
-        deleteButton.setOnClickListener(v -> presenter.deleteList(listId));
+        deleteButton.setOnClickListener(v -> presenter.onDeletePressed());
+    }
+
+    @Override
+    public void showDeleteDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.confirm_list_delete)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm_dialog, (dialog, id) -> presenter.deleteList(listId))
+                .setNegativeButton(R.string.cancel_dialog, null)
+                .show();
     }
 
     @Override

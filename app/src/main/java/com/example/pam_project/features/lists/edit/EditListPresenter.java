@@ -103,6 +103,12 @@ public class EditListPresenter {
         }
     }
 
+    public void onDeletePressed() {
+        if (view.get() != null) {
+            view.get().showDeleteDialog();
+        }
+    }
+
     public void onViewDetached() {
         if(fetchListDisposable != null)
             fetchListDisposable.dispose();

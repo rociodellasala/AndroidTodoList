@@ -76,6 +76,12 @@ public class EditCategoryPresenter {
         }
     }
 
+    public void onDeletePressed() {
+        if (view.get() != null) {
+            view.get().showDeleteDialog();
+        }
+    }
+
     public void onViewDetached() {
         if (fetchCategoryDisposable != null)
             fetchCategoryDisposable.dispose();

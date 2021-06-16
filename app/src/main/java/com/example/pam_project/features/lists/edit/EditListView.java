@@ -19,5 +19,7 @@ public interface EditListView {
 
     void onCategoriesReceivedError();
 
+    void showDeleteDialog();
+
     void onListReceivedError();
 }

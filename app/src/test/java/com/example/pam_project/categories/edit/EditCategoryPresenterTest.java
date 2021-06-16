@@ -115,7 +115,10 @@ public class EditCategoryPresenterTest {
         verify(view, never()).onCategoryDelete();
     }
 
+    @Test
+    public void givenDeleteButtonWasClickedThenShowDeleteDialog() {
+        presenter.onDeletePressed();
 
-
-
+        verify(view).showDeleteDialog();
+    }
 }
