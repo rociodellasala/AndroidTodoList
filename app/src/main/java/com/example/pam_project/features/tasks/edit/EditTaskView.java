@@ -11,4 +11,6 @@ public interface EditTaskView {
     void onTaskUpdatedError();
 
     void onTaskDeletedError();
+
+    void onTaskRetrievedError();
 }

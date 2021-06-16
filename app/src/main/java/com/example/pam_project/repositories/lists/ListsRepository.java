@@ -7,7 +7,7 @@ import io.reactivex.Flowable;
 
 public interface ListsRepository {
 
-    ListInformation getList(final long id);
+    Flowable<ListInformation> getList(final long id);
 
     Completable insertList(final String name, final long categoryId);
 

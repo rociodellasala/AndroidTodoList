@@ -70,15 +70,18 @@
         <item>@string/sort_by_date_added</item>
     </string-array>
     <!-- Errors-->
-    <string name="error_list_fetch">An error occurred while trying to fetch lists</string>
+    <string name="error_lists_fetch">An error occurred while trying to fetch lists</string>
+    <string name="error_list_fetch">An error occurred while trying to fetch the list</string>
     <string name="error_list_delete">An error occurred while trying to delete the list</string>
     <string name="error_list_update">An error occurred while trying to update the list</string>
     <string name="error_list_create">An error occurred while trying to create the list</string>
     <string name="error_categories_fetch">An error occurred while trying to fetch categories</string>
+    <string name="error_category_fetch">An error occurred while trying to fetch the category</string>
     <string name="error_category_delete">An error occurred while trying to delete the category</string>
     <string name="error_category_update">An error occurred while trying to update the category</string>
     <string name="error_category_create">An error occurred while trying to create the category</string>
-    <string name="error_task_fetch">An error occurred while trying to fetch tasks</string>
+    <string name="error_tasks_fetch">An error occurred while trying to fetch tasks</string>
+    <string name="error_task_fetch">An error occurred while trying to fetch the task</string>
     <string name="error_task_delete">An error occurred while trying to delete the task</string>
     <string name="error_task_update">An error occurred while trying to update the task</string>
     <string name="error_task_create">An error occurred while trying to create the task</string>

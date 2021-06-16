@@ -146,7 +146,7 @@ public class TaskActivity extends AppCompatActivity implements TaskView, OnListC
 
     @Override
     public void onTasksReceivedError() {
-        Toast.makeText(getApplicationContext(), getString(R.string.error_task_fetch), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.error_tasks_fetch), Toast.LENGTH_LONG).show();
     }
 
     @Override

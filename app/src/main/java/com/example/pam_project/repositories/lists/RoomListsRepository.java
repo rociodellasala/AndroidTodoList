@@ -1,7 +1,6 @@
 package com.example.pam_project.repositories.lists;
 
 import com.example.pam_project.database.categories.CategoryDao;
-import com.example.pam_project.database.categories.CategoryEntity;
 import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListEntity;
 import com.example.pam_project.database.lists.ListMapper;
@@ -22,11 +21,8 @@ public class RoomListsRepository implements ListsRepository {
     }
 
     @Override
-    public ListInformation getList(final long listId) {
-        ListEntity listEntity = listDao.getListById(listId).blockingFirst();
-        CategoryEntity categoryEntity = categoryDao.getCategoryById(listEntity.categoryId).blockingFirst();
-        return new ListInformation(listEntity.id, listEntity.name, listEntity.categoryId,
-                categoryEntity.color);
+    public Flowable<ListInformation> getList(final long listId) {
+        return listDao.getListById(listId).map(mapper::toModel);
     }
 
     @Override
@@ -37,25 +33,19 @@ public class RoomListsRepository implements ListsRepository {
     @Override
     public Completable insertList(final String name, final long categoryId) {
         ListEntity listEntity = new ListEntity(name, categoryId);
-        return Completable.fromAction(() -> {
-            listDao.insertList(listEntity);
-        });
+        return Completable.fromAction(() -> listDao.insertList(listEntity));
     }
 
     @Override
     public Completable updateList(final long id, final String name, final long categoryId) {
         ListEntity listEntity = new ListEntity(id, name, categoryId);
-        return Completable.fromAction(() -> {
-            listDao.updateList(listEntity);
-        });
+        return Completable.fromAction(() -> listDao.updateList(listEntity));
     }
 
     @Override
     public Completable deleteList(long id) {
         ListEntity listEntity = listDao.getListById(id).blockingFirst();
-        return Completable.fromAction(() -> {
-            listDao.deleteList(listEntity);
-        });
+        return Completable.fromAction(() -> listDao.deleteList(listEntity));
     }
 }
 

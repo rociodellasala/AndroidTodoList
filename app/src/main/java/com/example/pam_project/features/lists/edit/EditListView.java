@@ -18,4 +18,6 @@ public interface EditListView {
     void onListUpdatedError();
 
     void onCategoriesReceivedError();
+
+    void onListReceivedError();
 }

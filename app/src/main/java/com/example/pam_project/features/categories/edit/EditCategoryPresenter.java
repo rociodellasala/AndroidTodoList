@@ -13,11 +13,11 @@ public class EditCategoryPresenter {
     private final SchedulerProvider provider;
     private final CategoriesRepository repository;
     private final WeakReference<EditCategoryView> view;
+    private Disposable fetchCategoryDisposable;
     private Disposable updateCategoryDisposable;
     private Disposable deleteCategoryDisposable;
 
-    public EditCategoryPresenter(final long categoryId, final SchedulerProvider provider,
-                                 final CategoriesRepository repository,
+    public EditCategoryPresenter(final long categoryId, final SchedulerProvider provider, final CategoriesRepository repository,
                                  final EditCategoryView view) {
         this.categoryId = categoryId;
         this.provider = provider;
@@ -26,9 +26,21 @@ public class EditCategoryPresenter {
     }
 
     public void onViewAttached() {
+        fetchCategoryDisposable = repository.getCategory(categoryId)
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
+                .subscribe(this::onCategoryRetrieved, this::onCategoryRetrievedError);
+    }
+
+    private void onCategoryRetrieved(final CategoryInformation model) {
         if (view.get() != null) {
-            CategoryInformation model = repository.getCategory(categoryId);
             view.get().bindCategory(model);
+        }
+    }
+
+    private void onCategoryRetrievedError(final Throwable throwable) {
+        if (view.get() != null) {
+            view.get().onCategoryRetrievedError();
         }
     }
 
@@ -65,6 +77,8 @@ public class EditCategoryPresenter {
     }
 
     public void onViewDetached() {
+        if (fetchCategoryDisposable != null)
+            fetchCategoryDisposable.dispose();
         if (updateCategoryDisposable != null)
             updateCategoryDisposable.dispose();
         if (deleteCategoryDisposable != null)

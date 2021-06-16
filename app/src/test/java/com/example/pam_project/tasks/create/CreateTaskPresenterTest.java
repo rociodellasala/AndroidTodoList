@@ -3,8 +3,6 @@ package com.example.pam_project.tasks.create;
 import com.example.pam_project.TestSchedulerProvider;
 import com.example.pam_project.features.tasks.create.CreateTaskPresenter;
 import com.example.pam_project.features.tasks.create.CreateTaskView;
-import com.example.pam_project.features.tasks.list.TaskPresenter;
-import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.repositories.tasks.TaskRepository;
 import com.example.pam_project.utils.constants.TaskStatus;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
@@ -15,9 +13,9 @@ import org.junit.Test;
 import io.reactivex.Completable;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
 
 public class CreateTaskPresenterTest {
     private SchedulerProvider provider;

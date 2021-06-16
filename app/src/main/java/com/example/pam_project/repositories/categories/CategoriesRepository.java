@@ -11,7 +11,7 @@ import io.reactivex.Flowable;
 
 public interface CategoriesRepository {
 
-    CategoryInformation getCategory(final long id);
+    Flowable<CategoryInformation> getCategory(final long id);
 
     Flowable<Map<CategoryInformation, List<ListInformation>>> getCategoriesWithLists();
 

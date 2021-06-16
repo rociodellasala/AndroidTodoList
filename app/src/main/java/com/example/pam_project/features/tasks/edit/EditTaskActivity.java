@@ -120,6 +120,11 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
     }
 
     @Override
+    public void onTaskRetrievedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_task_fetch), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.check_action_bar, menu);
         return true;
