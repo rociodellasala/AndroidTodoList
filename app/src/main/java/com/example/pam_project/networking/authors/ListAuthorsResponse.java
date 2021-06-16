@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ListAuthorsResponse {
     @SerializedName("authors")
-    public List<AuthorsResponse> allAuthors;
+    public final List<AuthorsResponse> allAuthors;
 
     public ListAuthorsResponse(List<AuthorsResponse> allAuthors) {
         this.allAuthors = allAuthors;

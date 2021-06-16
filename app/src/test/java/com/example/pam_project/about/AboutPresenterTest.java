@@ -83,8 +83,6 @@ public class AboutPresenterTest {
 
     @Test
     public void givenAViewWasAttachedWhenAuthorsFetchFailsThenHandleTheError(){
-        List<AuthorsModel> authors = new ArrayList<>();
-        String concatAuthors = "";
         VersionModel versionModel = new VersionModel("version");
 
         when(authorsRepository.getAuthors())
@@ -103,7 +101,6 @@ public class AboutPresenterTest {
 
     @Test
     public void givenAViewWasAttachedWhenAuthorsFetchAndVersionFailsThenHandleTheError(){
-        List<AuthorsModel> authors = new ArrayList<>();
         String concatAuthors = "";
         VersionModel versionModel = new VersionModel("version");
 

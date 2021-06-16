@@ -88,7 +88,7 @@ public class ProductionApplicationContainer implements ApplicationContainer {
     public ListsRepository getListsRepository() {
         if (listsRepository == null) {
             listsRepository = applicationModule.provideListsRepository(
-                    getListDao(), getCategoryDao(), getListMapper()
+                    getListDao(), getListMapper()
             );
         }
 

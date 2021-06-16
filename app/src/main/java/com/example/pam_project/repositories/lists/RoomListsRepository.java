@@ -1,6 +1,5 @@
 package com.example.pam_project.repositories.lists;
 
-import com.example.pam_project.database.categories.CategoryDao;
 import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListEntity;
 import com.example.pam_project.database.lists.ListMapper;
@@ -11,12 +10,10 @@ import io.reactivex.Flowable;
 
 public class RoomListsRepository implements ListsRepository {
     private final ListDao listDao;
-    private final CategoryDao categoryDao;
     private final ListMapper mapper;
 
-    public RoomListsRepository(final ListDao listDao, final CategoryDao categoryDao, final ListMapper mapper) {
+    public RoomListsRepository(final ListDao listDao, final ListMapper mapper) {
         this.listDao = listDao;
-        this.categoryDao = categoryDao;
         this.mapper = mapper;
     }
 

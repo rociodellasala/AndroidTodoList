@@ -17,7 +17,7 @@ public final class RetrofitUtils {
         return response.body();
     }
 
-    private static boolean isRequestFailed(final Response response) {
+    private static <T> boolean isRequestFailed(final Response<T> response) {
         return !response.isSuccessful() || isErrorCode(response.code());
     }
 
