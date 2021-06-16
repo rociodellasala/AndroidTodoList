@@ -161,4 +161,11 @@ public class ListPresenterTest {
 
         verify(view).showManageCategories();
     }
+
+    @Test
+    public void givenOnAboutButtonWasClickedThenOnAboutActivity() {
+        presenter.onAboutSection();
+
+        verify(view).showAboutSection();
+    }
 }

@@ -18,7 +18,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CreateTaskPresenterTest {
-    private SchedulerProvider provider;
     private TaskRepository taskRepository;
     private CreateTaskView view;
 
@@ -26,7 +25,7 @@ public class CreateTaskPresenterTest {
 
     @Before
     public void setup() {
-        provider = new TestSchedulerProvider();
+        SchedulerProvider provider = new TestSchedulerProvider();
 
         taskRepository = mock(TaskRepository.class);
 

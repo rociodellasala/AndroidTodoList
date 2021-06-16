@@ -69,10 +69,9 @@ public class ApplicationModule {
     }
 
     /* default */ ListsRepository provideListsRepository(final ListDao listDao,
-                                                         final CategoryDao categoryDao,
                                                          final ListMapper mapper) {
 
-        return new RoomListsRepository(listDao, categoryDao, mapper);
+        return new RoomListsRepository(listDao, mapper);
     }
 
     /* default */ ListDao provideListDao() {

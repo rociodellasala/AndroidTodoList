@@ -14,11 +14,6 @@ import java.util.List;
 public class SortByDialogFragment extends ListActivityDialogFragment {
     private static final String INITIAL_VALUE_KEY = "initialValue";
 
-
-    public static SortByDialogFragment newInstance() {
-        return newInstance(0);
-    }
-
     public static SortByDialogFragment newInstance(final int initialValue) {
         SortByDialogFragment frag = new SortByDialogFragment();
         Bundle args = new Bundle();

@@ -87,5 +87,7 @@ public class EditTaskPresenter {
             updateTaskDisposable.dispose();
         if(deleteTaskDisposable != null)
             deleteTaskDisposable.dispose();
+        if(fetchTaskDisposable != null)
+            fetchTaskDisposable.dispose();
     }
 }

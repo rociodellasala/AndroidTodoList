@@ -158,6 +158,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> implements
         sort();
 
         notifyDataSetChanged();
+        setPreviousSearchDataset();
         ListAdapter.filterSelections = newFilterSelections;
     }
 
