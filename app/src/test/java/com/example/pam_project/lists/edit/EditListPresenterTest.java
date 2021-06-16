@@ -53,12 +53,25 @@ public class EditListPresenterTest {
         doReturn(categoriesFlowable).when(categoriesRepository).getCategories();
 
         final ListInformation li = mock(ListInformation.class);
-        when(listsRepository.getList(id)).thenReturn(li);
+        final Flowable<ListInformation> flowable = Flowable.just(li);
+        when(listsRepository.getList(id)).thenReturn(flowable);
 
         presenter.onViewAttached(id);
 
         verify(view).bindCategories(categories);
         verify(view).bindList(li);
+    }
+
+    @Test
+    public void givenAViewWasAttachedWhenThereIsAnErrorThenHandleTheError() {
+        final long id = 3;
+        doReturn(
+                Flowable.fromCallable(() -> {throw new Exception("BOOM!");})
+        ).when(categoriesRepository).getCategories();
+
+        presenter.onViewAttached(id);
+
+        verify(view).onCategoriesReceivedError();
     }
 
     @Test
