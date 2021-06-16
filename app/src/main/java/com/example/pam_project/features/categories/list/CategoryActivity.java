@@ -56,10 +56,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         RecyclerView recyclerView = findViewById(R.id.category);
         recyclerView.setHasFixedSize(true);
 
-        adapter = new CategoryAdapter();
-        adapter.setOnClickedListener(this);
-        recyclerView.setAdapter(adapter);
-
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setDraggableItems());
         touchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
