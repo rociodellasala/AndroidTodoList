@@ -8,8 +8,6 @@ public interface CategoryView {
 
     void showAddCategory();
 
-    void showCategories();
-
     void showCategoryForm(final long id);
 
     void showEmptyMessage();

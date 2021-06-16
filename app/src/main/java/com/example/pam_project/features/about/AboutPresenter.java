@@ -15,8 +15,8 @@ public class AboutPresenter {
     private final AuthorsRepository authorsRepository;
     private final VersionRepository versionRepository;
     private final WeakReference<AboutView> view;
-    private Disposable authorDisposable;
-    private Disposable versionDisposable;
+    private Disposable fetchAuthorDisposable;
+    private Disposable fetchVersionDisposable;
     private final SchedulerProvider provider;
 
     public AboutPresenter(AuthorsRepository authorsRepository, VersionRepository versionRepository, SchedulerProvider schedulerProvider,
@@ -29,13 +29,13 @@ public class AboutPresenter {
 
     public void onViewAttached() {
         if (view.get() != null) {
-            getAuthorsRepository();
-            getVersionRepository();
+            fetchAuthors();
+            fetchVersion();
         }
     }
 
-    private void getAuthorsRepository() {
-        authorDisposable = authorsRepository.getAuthors()
+    private void fetchAuthors() {
+        fetchAuthorDisposable = authorsRepository.getAuthors()
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe(this::onAuthorsReceived, this::onAuthorsReceivedError);
@@ -62,8 +62,8 @@ public class AboutPresenter {
         }
     }
 
-    private void getVersionRepository() {
-        versionDisposable = versionRepository.getVersion()
+    private void fetchVersion() {
+        fetchVersionDisposable = versionRepository.getVersion()
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe(this::onVersionReceived, this::onVersionReceivedError);
@@ -82,11 +82,11 @@ public class AboutPresenter {
     }
 
     public void onViewDetached() {
-        if (authorDisposable != null){
-            authorDisposable.dispose();
+        if (fetchAuthorDisposable != null){
+            fetchAuthorDisposable.dispose();
         }
-        if (versionDisposable != null){
-            versionDisposable.dispose();
+        if (fetchVersionDisposable != null){
+            fetchVersionDisposable.dispose();
         }
     }
 }

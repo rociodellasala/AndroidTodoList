@@ -23,7 +23,6 @@ public class CategoryPresenter {
 
     public void onViewAttached() {
         if (view.get() != null) {
-            view.get().showCategories();
             fetchCategories();
         }
     }
