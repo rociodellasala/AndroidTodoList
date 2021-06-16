@@ -83,19 +83,35 @@ public class ApplicationModule {
         return new ListMapper();
     }
 
-    /* default */ TaskRepository provideTasksRepository(final TaskDao dao) {
-        return new RoomTaskRepository(dao, new TaskMapper());
+    /* default */ TaskRepository provideTasksRepository(final TaskDao dao, final TaskMapper mapper) {
+        return new RoomTaskRepository(dao, mapper);
     }
 
     /* default */ TaskDao provideTaskDao() {
         return mainStorage.taskDao();
     }
 
-    /* default */ AuthorsRepository provideAuthorsRepository() {
-        return new RestAuthorsRepository(new APIServiceImplementation(), new AuthorsMapper());
+    /* default */ TaskMapper provideTaskMapper() {
+        return new TaskMapper();
     }
 
-    /* default */ VersionRepository provideVersionRepository() {
-        return new RestVersionRepository(new APIServiceImplementation(), new VersionMapper());
+    /* default */ AuthorsRepository provideAuthorsRepository(final APIServiceImplementation service, final AuthorsMapper mapper) {
+        return new RestAuthorsRepository(service, mapper);
+    }
+
+    /* default */ AuthorsMapper provideAuthorsMapper() {
+        return new AuthorsMapper();
+    }
+
+    /* default */ APIServiceImplementation provideAPIService() {
+        return new APIServiceImplementation();
+    }
+
+    /* default */ VersionRepository provideVersionRepository(final APIServiceImplementation service, final VersionMapper mapper) {
+        return new RestVersionRepository(service, mapper);
+    }
+
+    /* default */ VersionMapper provideVersionMapper() {
+        return new VersionMapper();
     }
 }

@@ -7,8 +7,12 @@ import com.example.pam_project.database.categories.CategoryMapper;
 import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListMapper;
 import com.example.pam_project.database.tasks.TaskDao;
+import com.example.pam_project.database.tasks.TaskMapper;
 import com.example.pam_project.landing.FtuStorage;
+import com.example.pam_project.networking.APIServiceImplementation;
+import com.example.pam_project.networking.authors.AuthorsMapper;
 import com.example.pam_project.networking.authors.AuthorsRepository;
+import com.example.pam_project.networking.version.VersionMapper;
 import com.example.pam_project.networking.version.VersionRepository;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
@@ -32,9 +36,15 @@ public class ProductionApplicationContainer implements ApplicationContainer {
 
     private TaskRepository tasksRepository;
     private TaskDao taskDao;
+    private TaskMapper taskMapper;
+
+    private APIServiceImplementation service;
 
     private AuthorsRepository authorsRepository;
+    private AuthorsMapper authorsMapper;
     private VersionRepository versionRepository;
+    private VersionMapper versionMapper;
+
 
     public ProductionApplicationContainer(final Context context) {
         applicationModule = new ApplicationModule(context);
@@ -88,7 +98,7 @@ public class ProductionApplicationContainer implements ApplicationContainer {
     @Override
     public TaskRepository getTasksRepository() {
         if (tasksRepository == null) {
-            tasksRepository = applicationModule.provideTasksRepository(getTaskDao());
+            tasksRepository = applicationModule.provideTasksRepository(getTaskDao(), getTaskMapper());
         }
 
         return tasksRepository;
@@ -97,19 +107,43 @@ public class ProductionApplicationContainer implements ApplicationContainer {
     @Override
     public AuthorsRepository getAuthorsRepository() {
         if (authorsRepository == null) {
-            authorsRepository = applicationModule.provideAuthorsRepository();
+            authorsRepository = applicationModule.provideAuthorsRepository(getService(), getAuthorsMapper());
         }
 
         return authorsRepository;
     }
 
+    private APIServiceImplementation getService() {
+        if (service == null) {
+            service = applicationModule.provideAPIService();
+        }
+
+        return service;
+    }
+
+    private AuthorsMapper getAuthorsMapper() {
+        if (authorsMapper == null) {
+            authorsMapper = applicationModule.provideAuthorsMapper();
+        }
+
+        return authorsMapper;
+    }
+
     @Override
     public VersionRepository getVersionRepository() {
         if (versionRepository == null) {
-            versionRepository = applicationModule.provideVersionRepository();
+            versionRepository = applicationModule.provideVersionRepository(getService(), getVersionMapper());
         }
 
         return versionRepository;
+    }
+
+    private VersionMapper getVersionMapper() {
+        if (versionMapper == null) {
+            versionMapper = applicationModule.provideVersionMapper();
+        }
+
+        return versionMapper;
     }
 
     private CategoryDao getCategoryDao() {
@@ -150,5 +184,13 @@ public class ProductionApplicationContainer implements ApplicationContainer {
         }
 
         return taskDao;
+    }
+
+    private TaskMapper getTaskMapper() {
+        if (taskMapper == null) {
+            taskMapper = applicationModule.provideTaskMapper();
+        }
+
+        return taskMapper;
     }
 }
