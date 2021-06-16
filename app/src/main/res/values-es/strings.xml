@@ -68,6 +68,7 @@
     <string name="error_list_update">Se produjo un error al intentar editar la lista</string>
     <string name="error_list_create">Se produjo un error al intentar crear la lista</string>
     <string name="error_categories_fetch">Se produjo un error al intentar obtener las categorias</string>
+    <string name="error_category_fetch">Se produjo un error al intentar obtener la categoría</string>
     <string name="error_category_delete">Se produjo un error al intentar eliminar la categoría</string>
     <string name="error_category_update">Se produjo un error al intentar editar la categoría</string>
     <string name="error_category_create">Se produjo un error al intentar crear la categoría</string>

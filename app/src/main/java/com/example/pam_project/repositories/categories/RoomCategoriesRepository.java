@@ -22,8 +22,8 @@ public class RoomCategoriesRepository implements CategoriesRepository {
     }
 
     @Override
-    public CategoryInformation getCategory(final long id) {
-        return categoryDao.getCategoryById(id).map(mapper::toModel).blockingFirst();
+    public Flowable<CategoryInformation> getCategory(final long id) {
+        return categoryDao.getCategoryById(id).map(mapper::toModel);
     }
 
     @Override
@@ -39,24 +39,18 @@ public class RoomCategoriesRepository implements CategoriesRepository {
     @Override
     public Completable insertCategory(final String name, final String color) {
         CategoryEntity entity = new CategoryEntity(name, color);
-        return Completable.fromAction(() -> {
-            categoryDao.insertCategory(entity);
-        });
+        return Completable.fromAction(() -> categoryDao.insertCategory(entity));
     }
 
     @Override
     public Completable updateCategory(final long id, final String name, final String color) {
         CategoryEntity entity = new CategoryEntity(id, name, color);
-        return Completable.fromAction(() -> {
-            categoryDao.updateCategory(entity);
-        });
+        return Completable.fromAction(() -> categoryDao.updateCategory(entity));
     }
 
     @Override
     public Completable deleteCategory(final long id) {
         CategoryEntity entity = categoryDao.getCategoryById(id).blockingFirst();
-        return Completable.fromAction(() -> {
-            categoryDao.deleteCategory(entity);
-        });
+        return Completable.fromAction(() -> categoryDao.deleteCategory(entity));
     }
 }

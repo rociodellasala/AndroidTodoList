@@ -56,6 +56,11 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     private void setUpView() {
         recyclerView = findViewById(R.id.category);
         recyclerView.setHasFixedSize(true);
+
+        adapter = new CategoryAdapter();
+        adapter.setOnClickedListener(this);
+        recyclerView.setAdapter(adapter);
+
         final ItemTouchHelper touchHelper = new ItemTouchHelper(setDraggableItems());
         touchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -72,7 +77,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         Intent activityIntent = new Intent(getApplicationContext(), CreateCategoryActivity.class);
         startActivity(activityIntent);
     }
-
 
     @Override
     public void bindCategories(List<CategoryInformation> model) {
@@ -91,13 +95,6 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         } else {
             emptyDataMessage.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void showCategories() {
-        adapter = new CategoryAdapter();
-        adapter.setOnClickedListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override

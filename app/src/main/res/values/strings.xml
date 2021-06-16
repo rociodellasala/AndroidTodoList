@@ -73,6 +73,7 @@
     <string name="error_list_update">An error occurred while trying to update the list</string>
     <string name="error_list_create">An error occurred while trying to create the list</string>
     <string name="error_categories_fetch">An error occurred while trying to fetch categories</string>
+    <string name="error_category_fetch">An error occurred while trying to fetch category</string>
     <string name="error_category_delete">An error occurred while trying to delete the category</string>
     <string name="error_category_update">An error occurred while trying to update the category</string>
     <string name="error_category_create">An error occurred while trying to create the category</string>

@@ -37,25 +37,19 @@ public class RoomListsRepository implements ListsRepository {
     @Override
     public Completable insertList(final String name, final long categoryId) {
         ListEntity listEntity = new ListEntity(name, categoryId);
-        return Completable.fromAction(() -> {
-            listDao.insertList(listEntity);
-        });
+        return Completable.fromAction(() -> listDao.insertList(listEntity));
     }
 
     @Override
     public Completable updateList(final long id, final String name, final long categoryId) {
         ListEntity listEntity = new ListEntity(id, name, categoryId);
-        return Completable.fromAction(() -> {
-            listDao.updateList(listEntity);
-        });
+        return Completable.fromAction(() -> listDao.updateList(listEntity));
     }
 
     @Override
     public Completable deleteList(long id) {
         ListEntity listEntity = listDao.getListById(id).blockingFirst();
-        return Completable.fromAction(() -> {
-            listDao.deleteList(listEntity);
-        });
+        return Completable.fromAction(() -> listDao.deleteList(listEntity));
     }
 }
 
