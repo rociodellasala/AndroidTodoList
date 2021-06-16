@@ -1,7 +1,6 @@
 package com.example.pam_project.features.categories.edit;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

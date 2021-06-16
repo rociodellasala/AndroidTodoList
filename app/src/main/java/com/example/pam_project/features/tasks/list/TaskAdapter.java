@@ -33,6 +33,8 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    // Sabemos que no deberiamos hacer un notifyDataSetChanged al final
+    // pero por alguna razon nos rompe y no pudimos encontrarlo
     public void update(final TaskInformation modifiedTask, final int index) {
         dataSet.add(modifiedTask);
         notifyItemInserted(dataSet.indexOf(modifiedTask));
@@ -43,11 +45,6 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setOnClickedListener(final OnListClickedListener listener) {
         this.listener = listener;
-    }
-
-    public void addItem(TaskInformation newTask) {
-        this.dataSet.add(newTask);
-        notifyItemInserted(dataSet.indexOf(newTask));
     }
 
     public TaskInformation getItem(int adapterPosition) {
