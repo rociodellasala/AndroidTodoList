@@ -32,15 +32,15 @@ public class EditCategoryPresenter {
                 .subscribe(this::onCategoryRetrieved, this::onCategoryRetrievedError);
     }
 
-    private void onCategoryRetrievedError(final Throwable throwable) {
-        if (view.get() != null) {
-            view.get().onCategoryRetrievedError();
-        }
-    }
-
     private void onCategoryRetrieved(final CategoryInformation model) {
         if (view.get() != null) {
             view.get().bindCategory(model);
+        }
+    }
+
+    private void onCategoryRetrievedError(final Throwable throwable) {
+        if (view.get() != null) {
+            view.get().onCategoryRetrievedError();
         }
     }
 

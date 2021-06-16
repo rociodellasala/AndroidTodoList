@@ -7,6 +7,7 @@ import com.example.pam_project.database.categories.CategoryMapper;
 import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListMapper;
 import com.example.pam_project.database.tasks.TaskDao;
+import com.example.pam_project.database.tasks.TaskMapper;
 import com.example.pam_project.database.utils.AppDatabase;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
@@ -76,7 +77,7 @@ public class ApplicationModule {
     }
 
     /* default */ TaskRepository provideTasksRepository(final TaskDao dao) {
-        return new RoomTaskRepository(dao);
+        return new RoomTaskRepository(dao, new TaskMapper());
     }
 
     /* default */ TaskDao provideTaskDao() {

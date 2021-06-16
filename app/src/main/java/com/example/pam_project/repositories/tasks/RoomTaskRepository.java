@@ -2,24 +2,26 @@ package com.example.pam_project.repositories.tasks;
 
 import com.example.pam_project.database.tasks.TaskDao;
 import com.example.pam_project.database.tasks.TaskEntity;
+import com.example.pam_project.database.tasks.TaskMapper;
 import com.example.pam_project.features.tasks.list.TaskInformation;
 import com.example.pam_project.utils.constants.TaskStatus;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 public class RoomTaskRepository implements TaskRepository {
 
     private final TaskDao taskDao;
+    private final TaskMapper mapper;
 
-    public RoomTaskRepository(final TaskDao taskDao) {
+    public RoomTaskRepository(final TaskDao taskDao, final TaskMapper mapper) {
         this.taskDao = taskDao;
+        this.mapper = mapper;
     }
 
     @Override
-    public TaskInformation getTask(final long taskId) {
-        TaskEntity taskEntity = taskDao.getTaskById(taskId).blockingFirst();
-        return new TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
-                taskEntity.priority, TaskStatus.getStatus(taskEntity.status));
+    public Flowable<TaskInformation> getTask(final long taskId) {
+        return taskDao.getTaskById(taskId).map(mapper::toModel);
     }
 
     @Override

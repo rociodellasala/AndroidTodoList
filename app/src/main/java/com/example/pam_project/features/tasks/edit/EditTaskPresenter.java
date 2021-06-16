@@ -13,6 +13,7 @@ public class EditTaskPresenter {
     private final SchedulerProvider provider;
     private final TaskRepository repository;
     private final WeakReference<EditTaskView> view;
+    private Disposable fetchTaskDisposable;
     private Disposable updateTaskDisposable;
     private Disposable deleteTaskDisposable;
 
@@ -25,9 +26,21 @@ public class EditTaskPresenter {
     }
 
     public void onViewAttached() {
+        fetchTaskDisposable = repository.getTask(taskId)
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
+                .subscribe(this::onTaskRetrieved, this::onTaskRetrievedError);
+    }
+
+    private void onTaskRetrieved(final TaskInformation model) {
         if (view.get() != null) {
-            TaskInformation model = repository.getTask(taskId);
             view.get().bindTask(model);
+        }
+    }
+
+    private void onTaskRetrievedError(final Throwable throwable) {
+        if (view.get() != null) {
+            view.get().onTaskRetrievedError();
         }
     }
 

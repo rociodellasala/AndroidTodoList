@@ -110,7 +110,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
 
     @Override
     public void onListsReceivedError() {
-        Toast.makeText(getApplicationContext(), getString(R.string.error_list_fetch), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.error_lists_fetch), Toast.LENGTH_LONG).show();
     }
 
     @Override

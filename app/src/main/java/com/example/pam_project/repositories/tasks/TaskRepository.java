@@ -8,7 +8,7 @@ import io.reactivex.Flowable;
 
 public interface TaskRepository {
 
-    TaskInformation getTask(final long id);
+    Flowable<TaskInformation> getTask(final long id);
 
     Completable insertTask(final String name, final String description, final boolean priority, final TaskStatus status, final long listId);
 
