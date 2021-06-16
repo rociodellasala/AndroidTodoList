@@ -1,5 +1,6 @@
 package com.example.pam_project.features.tasks.edit;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,7 +102,17 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskView 
 
     private void setDeleteButton(){
         Button deleteButton = findViewById(R.id.delete_task_button);
-        deleteButton.setOnClickListener(v -> presenter.deleteTask(taskId));
+        deleteButton.setOnClickListener(v -> presenter.onDeletePressed());
+    }
+
+    @Override
+    public void showDeleteDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.confirm_task_delete)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm_dialog, (dialog, id) -> presenter.deleteTask(taskId))
+                .setNegativeButton(R.string.cancel_dialog, null)
+                .show();
     }
 
     @Override

@@ -63,6 +63,12 @@ public class EditTaskPresenter {
         }
     }
 
+    public void onDeletePressed() {
+        if (view.get() != null) {
+            view.get().showDeleteDialog();
+        }
+    }
+
     public void onViewDetached() {
         if(updateTaskDisposable != null)
             updateTaskDisposable.dispose();

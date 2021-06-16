@@ -82,9 +82,9 @@
     <string name="authors_title">Autores</string>
     <string name="version_title">Versión</string>
     <!-- Confirm dialog -->
-    <string name="confirm_list_delete">Estás seguro que deseas eliminar la lista?</string>
-    <string name="confirm_category_delete">Estás seguro que deseas eliminar la categoria?</string>
-    <string name="confirm_task_delete">Estás seguro que deseas eliminar la tarea?</string>
+    <string name="confirm_list_delete">Estás seguro que deseas eliminar esta lista?</string>
+    <string name="confirm_category_delete">Estás seguro que deseas eliminar esta categoria?</string>
+    <string name="confirm_task_delete">Estás seguro que deseas eliminar esta tarea?</string>
     <string name="confirm_dialog">Eliminar</string>
     <string name="cancel_dialog">Cancelar</string>
 </resources>
