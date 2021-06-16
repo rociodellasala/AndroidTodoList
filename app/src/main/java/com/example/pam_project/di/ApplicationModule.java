@@ -11,6 +11,13 @@ import com.example.pam_project.database.tasks.TaskMapper;
 import com.example.pam_project.database.utils.AppDatabase;
 import com.example.pam_project.landing.FtuStorage;
 import com.example.pam_project.landing.SharedPreferencesFtuStorage;
+import com.example.pam_project.networking.APIServiceImplementation;
+import com.example.pam_project.networking.authors.AuthorsMapper;
+import com.example.pam_project.networking.authors.AuthorsRepository;
+import com.example.pam_project.networking.authors.RestAuthorsRepository;
+import com.example.pam_project.networking.version.RestVersionRepository;
+import com.example.pam_project.networking.version.VersionMapper;
+import com.example.pam_project.networking.version.VersionRepository;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.categories.RoomCategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
@@ -82,5 +89,13 @@ public class ApplicationModule {
 
     /* default */ TaskDao provideTaskDao() {
         return mainStorage.taskDao();
+    }
+
+    /* default */ AuthorsRepository provideAuthorsRepository() {
+        return new RestAuthorsRepository(new APIServiceImplementation(), new AuthorsMapper());
+    }
+
+    /* default */ VersionRepository provideVersionRepository() {
+        return new RestVersionRepository(new APIServiceImplementation(), new VersionMapper());
     }
 }

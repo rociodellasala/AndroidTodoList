@@ -3,6 +3,7 @@ package com.example.pam_project.features.lists.list;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import com.example.pam_project.di.ApplicationContainerLocator;
 import com.example.pam_project.dialogs.FilterDialogFragment;
 import com.example.pam_project.dialogs.SelectedDialogItems;
 import com.example.pam_project.dialogs.SortByDialogFragment;
+import com.example.pam_project.features.about.AboutActivity;
 import com.example.pam_project.features.categories.list.CategoryActivity;
 import com.example.pam_project.features.categories.list.CategoryInformation;
 import com.example.pam_project.features.lists.create.CreateListActivity;
@@ -37,6 +39,7 @@ import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity implements SelectedDialogItems, OnListClickedListener, ListView {
     private static final String DIALOG_FRAGMENT_SHOW_TAG = "fragment_alert";
+    private Menu topMenu;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private ListPresenter presenter;
@@ -92,6 +95,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void bindLists(final List<ListInformation> model) {
         adapter.update(model);
+        adapter.setCompleteDataset(model);
+        adapter.setPreviousSearchDataset();
         presenter.onEmptyList();
     }
 
@@ -144,8 +149,7 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     @Override
     public void showFilterDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        FilterDialogFragment filterDialog = FilterDialogFragment
-                .newInstance(adapter.getCategories(), adapter.getFilterSelections());
+        FilterDialogFragment filterDialog = FilterDialogFragment.newInstance(adapter.getCategories(), adapter.getFilterSelections());
         showDialog(fm, filterDialog);
     }
 
@@ -169,9 +173,16 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
+    public void showAboutSection() {
+        Intent aboutIntent = new Intent(getApplicationContext(), AboutActivity.class);
+        startActivity(aboutIntent);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_action_bar, menu);
+        topMenu = menu;
         setUpSearch(menu);
         return true;
     }
@@ -215,6 +226,16 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
     }
 
     @Override
+    public void unFocusSearch(){
+        if(topMenu == null)
+            return;
+        MenuItem searchItem = topMenu.findItem(R.id.list_action_bar_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchItem.collapseActionView();
+        searchView.clearFocus();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
@@ -224,6 +245,8 @@ public class ListActivity extends AppCompatActivity implements SelectedDialogIte
             presenter.onSortByDialog();
         } else if (itemId == R.id.list_action_bar_manage_categories) {
             presenter.onManageCategories();
+        } else if (itemId == R.id.list_action_bar_about) {
+            presenter.onAboutSection();
         } else {
             return super.onOptionsItemSelected(item);
         }

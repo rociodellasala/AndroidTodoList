@@ -13,15 +13,17 @@
     <string name="empty_list_message">You do not have lists created yet.\n\nClick on the button below to start your first list.</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Create list</string>
-    <string name="add_list_check_button">Create list</string>
     <string name="create_list_name_label">Name</string>
     <string name="create_list_category_label">Category</string>
     <string name="default_category">Uncategorized</string>
+    <!-- Generic buttons text -->
+    <string name="add_check_button">Confirm</string>
     <!--List Overflow Menu-->
     <string name="search">Search</string>
     <string name="filter">Filter</string>
     <string name="sort_by">Sort by</string>
     <string name="manage_categories">Manage categories</string>
+    <string name="about">About</string>
     <!--Category activity-->
     <string name="activity_title_category">Categories</string>
     <string name="add_category">Add category</string>
@@ -83,4 +85,8 @@
     <string name="error_task_delete">An error occurred while trying to delete the task</string>
     <string name="error_task_update">An error occurred while trying to update the task</string>
     <string name="error_task_create">An error occurred while trying to create the task</string>
+    <string name="error_general">An error occurred, try again later</string>
+    <!-- About -->
+    <string name="authors_title">Authors</string>
+    <string name="version_title">Version</string>
 </resources>

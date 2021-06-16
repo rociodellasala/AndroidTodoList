@@ -23,8 +23,11 @@ import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.repositories.lists.ListsRepository;
 import com.example.pam_project.utils.constants.ActivityResultCode;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
+import com.example.pam_project.utils.validators.FormValidator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditListActivity extends AppCompatActivity implements EditListView {
@@ -78,7 +81,7 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     private void setDeleteButton(){
-        Button deleteButton = (Button) (Button)findViewById(R.id.delete_list_button);
+        Button deleteButton = findViewById(R.id.delete_list_button);
         deleteButton.setOnClickListener(v -> presenter.deleteList(listId));
     }
 
@@ -133,10 +136,9 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         if (itemId == R.id.check_add_button) {
             String listName = listNameInput.getText().toString();
             Long categoryId = adapter.getCategoriesMap().get(spinner.getSelectedItem().toString());
-            String errorMessage = checkForm(listName);
-            if (errorMessage != null) {
-                listNameInput.setError(errorMessage);
-            } else {
+            boolean validForm = FormValidator.validate(getApplicationContext(), createInputMap(listName, listNameInput));
+
+            if (validForm) {
                 presenter.updateList(listId, listName, categoryId);
                 finish();
             }
@@ -147,14 +149,10 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
         return super.onOptionsItemSelected(item);
     }
 
-    private String checkForm(String listName) {
-        String errorMessage = null;
-
-        if (listName == null || listName.trim().isEmpty()) {
-            errorMessage = getString(R.string.error_empty_input);
-        }
-
-        return errorMessage;
+    private Map<EditText, String> createInputMap(String listName, EditText listNameInput) {
+        Map<EditText, String> map = new HashMap<>();
+        map.put(listNameInput, listName);
+        return map;
     }
 
     @Override

@@ -40,6 +40,7 @@ public class ListPresenter {
             if (view.get() != null) {
                 fetchCategories();
                 fetchLists();
+                view.get().unFocusSearch();
             }
         }
     }
@@ -110,13 +111,17 @@ public class ListPresenter {
     }
 
     public void onFilterDialog() {
-        if (view.get() != null)
+        if (view.get() != null){
             view.get().showFilterDialog();
+            view.get().unFocusSearch();
+        }
     }
 
     public void onSortByDialog() {
-        if (view.get() != null)
+        if (view.get() != null){
             view.get().showSortByDialog();
+            view.get().unFocusSearch();
+        }
     }
 
     public void onEmptyList(){
@@ -125,8 +130,15 @@ public class ListPresenter {
     }
 
     public void onManageCategories() {
-        if (view.get() != null)
+        if (view.get() != null){
             view.get().showManageCategories();
+            view.get().unFocusSearch();
+        }
+    }
+
+    public void onAboutSection() {
+        if (view.get() != null)
+            view.get().showAboutSection();
     }
 
     public void onViewDetached() {

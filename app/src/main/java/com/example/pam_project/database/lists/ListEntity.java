@@ -4,16 +4,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.example.pam_project.database.categories.CategoryEntity;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "Lists", foreignKeys = @ForeignKey(entity = CategoryEntity.class,
-        parentColumns = "id",
-        childColumns = "categoryId",
-        onDelete = CASCADE))
+@Entity(tableName = "Lists")
 public class ListEntity {
 
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +20,7 @@ public class ListEntity {
     @ColumnInfo(name = "name")
     public final String name;
 
-    @ColumnInfo(name = "categoryId")
+    @ForeignKey(entity = CategoryEntity.class, parentColumns = "id", childColumns = "categoryId", onDelete = CASCADE)
     public final long categoryId;
 
     public ListEntity(long id, String name, long categoryId) {
