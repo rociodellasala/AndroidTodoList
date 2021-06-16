@@ -6,6 +6,8 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         app:showAsAction="always|collapseActionView"
+        app:closeIcon="@null" 
+        app:iconifiedByDefault="false"
         app:actionViewClass="android.widget.SearchView" />
     <item
         android:id="@+id/list_action_bar_filter"

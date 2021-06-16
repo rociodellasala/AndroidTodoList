@@ -18,10 +18,6 @@ public class FilterDialogFragment extends ListActivityDialogFragment {
     protected CharSequence[] filterItems;
     private List<Integer> selectedItems;
 
-    public static FilterDialogFragment newInstance(final List<CategoryInformation> items) {
-        return newInstance(items, null);
-    }
-
     public static FilterDialogFragment newInstance(final List<CategoryInformation> items,
                                                    List<Integer> initialSelection) {
         final FilterDialogFragment frag = new FilterDialogFragment();
