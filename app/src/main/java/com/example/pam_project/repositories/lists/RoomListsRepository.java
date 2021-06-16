@@ -1,7 +1,6 @@
 package com.example.pam_project.repositories.lists;
 
 import com.example.pam_project.database.categories.CategoryDao;
-import com.example.pam_project.database.categories.CategoryEntity;
 import com.example.pam_project.database.lists.ListDao;
 import com.example.pam_project.database.lists.ListEntity;
 import com.example.pam_project.database.lists.ListMapper;
