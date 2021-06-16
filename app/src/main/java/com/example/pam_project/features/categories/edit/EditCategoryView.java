@@ -11,4 +11,6 @@ public interface EditCategoryView {
     void onCategoryUpdateError();
 
     void onCategoryDeletedError();
+
+    void showDeleteDialog();
 }

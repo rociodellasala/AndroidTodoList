@@ -1,5 +1,7 @@
 package com.example.pam_project.features.categories.edit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,10 +58,20 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     private void setDeleteButton(){
         Button deleteButton = findViewById(R.id.delete_category_button);
         if (categoryId != UNCATEGORIZED) {
-            deleteButton.setOnClickListener(v -> presenter.deleteCategory(categoryId));
+            deleteButton.setOnClickListener(v -> presenter.onDeletePressed());
         } else {
             deleteButton.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void showDeleteDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.confirm_category_delete)
+                .setCancelable(false)
+                .setPositiveButton(R.string.confirm_dialog, (dialog, id) -> presenter.deleteCategory(categoryId))
+                .setNegativeButton(R.string.cancel_dialog, null)
+                .show();
     }
 
     private void setUpView() {

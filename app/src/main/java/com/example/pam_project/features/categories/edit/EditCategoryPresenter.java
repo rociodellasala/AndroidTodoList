@@ -58,6 +58,12 @@ public class EditCategoryPresenter {
         }
     }
 
+    public void onDeletePressed() {
+        if (view.get() != null) {
+            view.get().showDeleteDialog();
+        }
+    }
+
     private void onCategoryDeletedError(final Throwable throwable) {
         if (view.get() != null) {
             view.get().onCategoryDeletedError();
