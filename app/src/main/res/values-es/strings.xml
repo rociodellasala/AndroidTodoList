@@ -65,15 +65,18 @@
     <!--Search Feature-->
     <string name="search_hint">Buscar Lista</string>
     <!-- Error -->
-    <string name="error_list_fetch">Se produjo un error al intentar obtener las listas</string>
+    <string name="error_lists_fetch">Se produjo un error al intentar obtener las listas</string>
+    <string name="error_list_fetch">Se produjo un error al intentar obtener la lista</string>
     <string name="error_list_delete">Se produjo un error al intentar eliminar la lista</string>
     <string name="error_list_update">Se produjo un error al intentar editar la lista</string>
     <string name="error_list_create">Se produjo un error al intentar crear la lista</string>
     <string name="error_categories_fetch">Se produjo un error al intentar obtener las categorias</string>
+    <string name="error_category_fetch">Se produjo un error al intentar obtener la categoría</string>
     <string name="error_category_delete">Se produjo un error al intentar eliminar la categoría</string>
     <string name="error_category_update">Se produjo un error al intentar editar la categoría</string>
     <string name="error_category_create">Se produjo un error al intentar crear la categoría</string>
-    <string name="error_task_fetch">Se produjo un error al intentar obtener las tareas</string>
+    <string name="error_tasks_fetch">Se produjo un error al intentar obtener las tareas</string>
+    <string name="error_task_fetch">Se produjo un error al intentar obtener la tarea</string>
     <string name="error_task_delete">Se produjo un error al intentar eliminar la tarea</string>
     <string name="error_task_update">Se produjo un error al intentar editar la tarea</string>
     <string name="error_task_create">Se produjo un error al intentar crear la tarea</string>

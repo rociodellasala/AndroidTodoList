@@ -7,15 +7,15 @@ import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.constants.AppColor;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import io.reactivex.Completable;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CreateCategoryPresenterTest {
 

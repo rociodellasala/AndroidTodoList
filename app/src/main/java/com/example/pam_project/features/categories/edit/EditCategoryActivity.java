@@ -145,6 +145,11 @@ public class EditCategoryActivity extends AppCompatActivity implements EditCateg
     }
 
     @Override
+    public void onCategoryRetrievedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_category_fetch), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onCategoryDeletedError() {
         Toast.makeText(getApplicationContext(), getString(R.string.error_category_delete), Toast.LENGTH_LONG).show();
     }

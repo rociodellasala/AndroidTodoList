@@ -10,13 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.pam_project.R;
 import com.example.pam_project.di.ApplicationContainer;
 import com.example.pam_project.di.ApplicationContainerLocator;
-import com.example.pam_project.networking.authors.AuthorsModel;
 import com.example.pam_project.networking.authors.AuthorsRepository;
 import com.example.pam_project.networking.version.VersionModel;
 import com.example.pam_project.networking.version.VersionRepository;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
-import java.util.List;
 import java.util.Objects;
 
 public class AboutActivity extends AppCompatActivity implements AboutView {

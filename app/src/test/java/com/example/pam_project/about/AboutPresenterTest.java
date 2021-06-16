@@ -1,18 +1,12 @@
 package com.example.pam_project.about;
 
 import com.example.pam_project.TestSchedulerProvider;
-import com.example.pam_project.features.about.AboutActivity;
 import com.example.pam_project.features.about.AboutPresenter;
 import com.example.pam_project.features.about.AboutView;
-import com.example.pam_project.features.categories.create.CreateCategoryPresenter;
-import com.example.pam_project.features.categories.create.CreateCategoryView;
-import com.example.pam_project.features.categories.list.CategoryInformation;
-import com.example.pam_project.features.lists.list.ListInformation;
 import com.example.pam_project.networking.authors.AuthorsModel;
 import com.example.pam_project.networking.authors.AuthorsRepository;
 import com.example.pam_project.networking.version.VersionModel;
 import com.example.pam_project.networking.version.VersionRepository;
-import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
 import org.junit.Before;
@@ -21,11 +15,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;

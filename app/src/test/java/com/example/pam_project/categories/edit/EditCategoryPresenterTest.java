@@ -8,15 +8,16 @@ import com.example.pam_project.repositories.categories.CategoriesRepository;
 import com.example.pam_project.utils.constants.AppColor;
 import com.example.pam_project.utils.schedulers.SchedulerProvider;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EditCategoryPresenterTest {
 
@@ -43,13 +44,27 @@ public class EditCategoryPresenterTest {
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
-        CategoryInformation categoryInformation = new CategoryInformation(categoryId, title, stringColor);
+        final CategoryInformation categoryInformation = new CategoryInformation(categoryId,
+                title, stringColor);
+        final Flowable<CategoryInformation> flowable = Flowable.just(categoryInformation);
 
-        when(repository.getCategory(categoryId))
-                .thenReturn(categoryInformation);
+        when(repository.getCategory(categoryId)).thenReturn(flowable);
 
         presenter.onViewAttached();
+
         verify(view).bindCategory(categoryInformation);
+    }
+
+    @Test
+    public void givenAViewWasAttachedWhenThereIsAnErrorThenHandleTheError(){
+        final Flowable<CategoryInformation> flowable = Flowable.fromCallable(
+                () -> {throw new Exception("BOOM!");}
+        );
+        when(repository.getCategory(categoryId)).thenReturn(flowable);
+
+        presenter.onViewAttached();
+
+        verify(view).onCategoryRetrievedError();
     }
 
     @Test

@@ -14,6 +14,7 @@ public class EditListPresenter {
     private final CategoriesRepository categoriesRepository;
     private final ListsRepository listsRepository;
     private final WeakReference<EditListView> view;
+    private Disposable fetchListDisposable;
     private Disposable fetchCategoriesDisposable;
     private Disposable updateListDisposable;
     private Disposable deleteListDisposable;
@@ -47,9 +48,21 @@ public class EditListPresenter {
     }
 
     private void fetchList(final long id) {
-        ListInformation model = listsRepository.getList(id);
+        fetchListDisposable = listsRepository.getList(id)
+                .subscribeOn(provider.computation())
+                .observeOn(provider.ui())
+                .subscribe(this::onListReceived, this::onListReceivedError);
+    }
+
+    private void onListReceived(final ListInformation model) {
         if (view.get() != null)
             view.get().bindList(model);
+    }
+
+    private void onListReceivedError(final Throwable throwable) {
+        if (view.get() != null) {
+            view.get().onListReceivedError();
+        }
     }
 
     private void onCategoriesReceivedError(final Throwable throwable) {
@@ -97,6 +110,8 @@ public class EditListPresenter {
     }
 
     public void onViewDetached() {
+        if(fetchListDisposable != null)
+            fetchListDisposable.dispose();
         if(fetchCategoriesDisposable != null)
             fetchCategoriesDisposable.dispose();
         if(updateListDisposable != null)

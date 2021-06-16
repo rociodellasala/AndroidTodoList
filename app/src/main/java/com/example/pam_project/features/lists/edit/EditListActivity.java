@@ -139,6 +139,11 @@ public class EditListActivity extends AppCompatActivity implements EditListView 
     }
 
     @Override
+    public void onListReceivedError() {
+        Toast.makeText(getApplicationContext(), getString(R.string.error_list_fetch), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         long itemId = item.getItemId();
         final Spinner spinner = findViewById(R.id.edit_list_category_spinner);

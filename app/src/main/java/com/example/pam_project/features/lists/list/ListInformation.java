@@ -1,11 +1,6 @@
 package com.example.pam_project.features.lists.list;
 
-import android.util.Log;
-
-import com.example.pam_project.comparators.CategoryAlphabeticalComparator;
-import com.example.pam_project.comparators.CategoryPriorityComparator;
 import com.example.pam_project.comparators.ListAlphabeticalComparator;
-import com.example.pam_project.comparators.ListCategoryComparator;
 import com.example.pam_project.comparators.ListDateAddedComparator;
 import com.example.pam_project.comparators.ListInformationComparator;
 import com.example.pam_project.comparators.ListTaskNumberComparator;
@@ -31,8 +26,6 @@ public class ListInformation implements Serializable, Comparable<ListInformation
             new ListTaskNumberComparator();
     private static final ListInformationComparator[] COMPARATORS = {
             NATURAL_COMPARATOR,
-            new ListCategoryComparator(new CategoryAlphabeticalComparator()),
-            new ListCategoryComparator(new CategoryPriorityComparator()),
             new ListAlphabeticalComparator(),
             new ListDateAddedComparator()
     };
