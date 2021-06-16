@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 
 public class EditCategoryPresenterTest {
 
-    private SchedulerProvider provider;
     private CategoriesRepository repository;
     private EditCategoryView view;
     private EditCategoryPresenter presenter;
@@ -28,7 +27,7 @@ public class EditCategoryPresenterTest {
 
     @Before
     public void setup() {
-        provider = new TestSchedulerProvider();
+        SchedulerProvider provider = new TestSchedulerProvider();
 
         repository = mock(CategoriesRepository.class);
 
@@ -40,7 +39,7 @@ public class EditCategoryPresenterTest {
     }
 
     @Test
-    public void givenAViewWasAttachedThenFetchTheCategory(){
+    public void givenAViewWasAttachedWhenEverythingIsOkThenFetchTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
@@ -54,7 +53,7 @@ public class EditCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryThenUpdateTheCategory(){
+    public void givenACategoryIsUpdatedWhenEverythingIsOkThenUpdateTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
@@ -66,7 +65,7 @@ public class EditCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryFailsToUpdateThenHandleTheError(){
+    public void givenACategoryIsUpdatedWhenAnErrorOccursThenHandleTheError(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
@@ -80,7 +79,7 @@ public class EditCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryThenDeleteTheCategory(){
+    public void givenACategoryIsDeletedWhenEverythingIsOkThenDeleteTheCategory(){
         when(repository.deleteCategory(categoryId))
                 .thenReturn(Completable.complete());
 
@@ -90,7 +89,7 @@ public class EditCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryFailsToDeleteThenHandleTheError(){
+    public void givenACategoryIsDeletedWhenAnErrorOccursThenHandleTheError(){
         when(repository.deleteCategory(categoryId))
                 .thenReturn((Completable.fromAction(() -> {
                     throw new Exception("BOOM!");

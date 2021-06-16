@@ -21,14 +21,13 @@ import static org.mockito.Mockito.verify;
 
 public class CategoryPresenterTest {
 
-    private SchedulerProvider provider;
     private CategoriesRepository repository;
     private CategoryView view;
     private CategoryPresenter presenter;
 
     @Before
     public void setup() {
-        provider = new TestSchedulerProvider();
+        SchedulerProvider provider = new TestSchedulerProvider();
 
         repository = mock(CategoriesRepository.class);
 
@@ -38,19 +37,18 @@ public class CategoryPresenterTest {
     }
 
     @Test
-    public void givenAViewWasAttachedThenFetchTheCategories(){
+    public void givenAViewWasAttachedWhenEverythingIsOkThenFetchTheCategories(){
         final List<CategoryInformation> categories = new ArrayList<>();
 
         Flowable<List<CategoryInformation>> categoryInformationObservable = Flowable.just(categories);
         doReturn(categoryInformationObservable).when(repository).getCategories();
 
         presenter.onViewAttached();
-        verify(view).showCategories();
         verify(view).bindCategories(categories);
     }
 
     @Test
-    public void givenAViewWasAttachedWhenItFailsThenHandleError(){
+    public void givenAViewWasAttachedWhenAnErrorOccursThenHandleError(){
         Flowable<CategoryInformation> categoryInformationObservable = Flowable.fromCallable(
                 () -> {throw new Exception("BOOM!");}
         );

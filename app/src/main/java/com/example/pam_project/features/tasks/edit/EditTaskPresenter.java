@@ -48,8 +48,7 @@ public class EditTaskPresenter {
         updateTaskDisposable = repository.updateTask(taskId, name, description, priority)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
-                .doOnError(this::onTaskUpdatedError)
-                .subscribe();
+                .subscribe(() -> {}, this::onTaskUpdatedError);
     }
 
     private void onTaskUpdatedError(final Throwable throwable) {

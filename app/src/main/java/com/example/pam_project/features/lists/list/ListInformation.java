@@ -107,6 +107,8 @@ public class ListInformation implements Serializable, Comparable<ListInformation
     }
 
     public int getPendingTaskCount() {
+        if (tasks == null)
+            return 0;
         int completed = 0;
 
         for (TaskInformation task : tasks) {
@@ -118,6 +120,9 @@ public class ListInformation implements Serializable, Comparable<ListInformation
     }
 
     public int getUrgentPendingTaskCount() {
+        if (tasks == null)
+            return 0;
+
         int urgent = 0;
         for (TaskInformation task : tasks) {
             if (task.getUrgency() && task.getStatus().equals(TaskStatus.PENDING))

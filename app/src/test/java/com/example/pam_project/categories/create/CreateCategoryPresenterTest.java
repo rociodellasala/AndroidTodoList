@@ -19,14 +19,13 @@ import static org.mockito.Mockito.when;
 
 public class CreateCategoryPresenterTest {
 
-    private SchedulerProvider provider;
     private CategoriesRepository repository;
     private CreateCategoryView view;
     private CreateCategoryPresenter presenter;
 
     @Before
     public void setup() {
-        provider = new TestSchedulerProvider();
+        SchedulerProvider provider = new TestSchedulerProvider();
 
         repository = mock(CategoriesRepository.class);
 
@@ -36,7 +35,7 @@ public class CreateCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryThenCreateTheCategory(){
+    public void givenACategoryIsCreatedWhenEverythingIsOkThenCreateTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
@@ -48,7 +47,7 @@ public class CreateCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryFailsToCreateThenHandleTheError(){
+    public void givenACategoryIsCreatedWhenAnErrorOccursThenHandleTheError(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 

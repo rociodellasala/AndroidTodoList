@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryView, OnListClickedListener {
-    private RecyclerView recyclerView;
     private CategoryPresenter presenter;
     private CategoryAdapter adapter;
 
@@ -54,7 +53,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
     }
 
     private void setUpView() {
-        recyclerView = findViewById(R.id.category);
+        RecyclerView recyclerView = findViewById(R.id.category);
         recyclerView.setHasFixedSize(true);
 
         adapter = new CategoryAdapter();
@@ -65,6 +64,10 @@ public class CategoryActivity extends AppCompatActivity implements CategoryView,
         touchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         setExtendedFloatingButtonAction();
+
+        adapter = new CategoryAdapter();
+        adapter.setOnClickedListener(this);
+        recyclerView.setAdapter(adapter);
     }
 
     private void setExtendedFloatingButtonAction() {
