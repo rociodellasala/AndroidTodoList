@@ -36,7 +36,7 @@ public class EditTaskPresenterTest {
     }
 
     @Test
-    public void givenATaskIsEditedThenEditTheTask() {
+    public void givenATaskIsEditedWhenEverythingIsOkThenEditTheTask() {
         final String title = "taskTitle";
         final String description = "taskDescription";
         final boolean priority = false;
@@ -64,7 +64,7 @@ public class EditTaskPresenterTest {
     }
 
     @Test
-    public void givenATaskIsDeletedThenDeleteTheTask() {
+    public void givenATaskIsDeletedWhenEverythingIsOkThenDeleteTheTask() {
         when(taskRepository.deleteTask(taskId))
                 .thenReturn(Completable.complete());
 
@@ -84,7 +84,7 @@ public class EditTaskPresenterTest {
     }
 
     @Test
-    public void givenAViewWasAttachedThenBindTheTask() {
+    public void givenAViewWasAttachedWhenEverythingIsOkThenBindTheTask() {
         final TaskInformation ti = mock(TaskInformation.class);
         when(taskRepository.getTask(taskId)).thenReturn(ti);
 
