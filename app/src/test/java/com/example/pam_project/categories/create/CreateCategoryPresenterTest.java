@@ -1,7 +1,6 @@
 package com.example.pam_project.categories.create;
 
 import com.example.pam_project.TestSchedulerProvider;
-import com.example.pam_project.features.categories.create.CreateCategoryActivity;
 import com.example.pam_project.features.categories.create.CreateCategoryPresenter;
 import com.example.pam_project.features.categories.create.CreateCategoryView;
 import com.example.pam_project.repositories.categories.CategoriesRepository;
@@ -20,14 +19,13 @@ import io.reactivex.Completable;
 
 public class CreateCategoryPresenterTest {
 
-    private SchedulerProvider provider;
     private CategoriesRepository repository;
     private CreateCategoryView view;
     private CreateCategoryPresenter presenter;
 
     @Before
     public void setup() {
-        provider = new TestSchedulerProvider();
+        SchedulerProvider provider = new TestSchedulerProvider();
 
         repository = mock(CategoriesRepository.class);
 
@@ -37,7 +35,7 @@ public class CreateCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryThenCreateTheCategory(){
+    public void givenACategoryIsCreatedWhenEverythingIsOkThenCreateTheCategory(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
@@ -49,7 +47,7 @@ public class CreateCategoryPresenterTest {
     }
 
     @Test
-    public void givenACategoryFailsToCreateThenHandleTheError(){
+    public void givenACategoryIsCreatedWhenAnErrorOccursThenHandleTheError(){
         final String title = "categoryTitle";
         final String stringColor = AppColor.BLUE.getHexValue();
 
