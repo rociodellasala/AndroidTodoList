@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -86,10 +87,23 @@ public class EditTaskPresenterTest {
     @Test
     public void givenAViewWasAttachedWhenEverythingIsOkThenBindTheTask() {
         final TaskInformation ti = mock(TaskInformation.class);
-        when(taskRepository.getTask(taskId)).thenReturn(ti);
+        final Flowable<TaskInformation> flowable = Flowable.just(ti);
+        when(taskRepository.getTask(taskId)).thenReturn(flowable);
 
         presenter.onViewAttached();
 
         verify(view).bindTask(ti);
+    }
+
+    @Test
+    public void givenAViewWasAttachedWhenThereIsAnErrorThenHandleTheError() {
+        final Flowable<TaskInformation> flowable = Flowable.fromCallable(
+                () -> {throw new Exception("BOOM!");}
+        );
+        when(taskRepository.getTask(taskId)).thenReturn(flowable);
+
+        presenter.onViewAttached();
+
+        verify(view).onTaskRetrievedError();
     }
 }
