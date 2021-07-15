@@ -1,6 +1,7 @@
 plugins {
     id "com.android.application"
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -77,4 +78,9 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitTestVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
