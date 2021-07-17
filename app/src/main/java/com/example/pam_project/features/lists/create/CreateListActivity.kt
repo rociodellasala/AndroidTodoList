@@ -16,21 +16,22 @@ import com.example.pam_project.utils.validators.FormValidator
 import java.util.*
 
 class CreateListActivity : AppCompatActivity(), CreateListView {
-    private var presenter: CreateListPresenter? = null
-    private var adapter: SpinnerCategoryAdapter? = null
+    private lateinit var presenter: CreateListPresenter
+    private lateinit var adapter: SpinnerCategoryAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_list)
         createPresenter()
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_create_list)
+        supportActionBar?.setTitle(R.string.activity_title_create_list)
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val categoriesRepository = container.categoriesRepository
-        val listsRepository = container.listsRepository
+        val schedulerProvider = container?.schedulerProvider
+        val categoriesRepository = container?.categoriesRepository
+        val listsRepository = container?.listsRepository
         presenter = CreateListPresenter(schedulerProvider, categoriesRepository,
                 listsRepository, this)
     }
@@ -38,19 +39,19 @@ class CreateListActivity : AppCompatActivity(), CreateListView {
     private fun setUpView() {
         val spinner = findViewById<Spinner>(R.id.create_list_category_spinner)
         adapter = SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item)
-        adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter.getCategories()
+        adapter.categories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter.categories
         val spinnerActivity = SpinnerActivity()
         spinner.onItemSelectedListener = spinnerActivity
     }
 
     public override fun onStart() {
         super.onStart()
-        presenter!!.onViewAttached()
+        presenter.onViewAttached()
     }
 
     override fun bindCategories(model: List<CategoryInformation?>?) {
-        adapter!!.update(model)
+        adapter.update(model)
     }
 
     override fun onListInsertedError() {
@@ -72,10 +73,10 @@ class CreateListActivity : AppCompatActivity(), CreateListView {
         val listNameInput = findViewById<EditText>(R.id.create_list_title_input)
         if (itemId == R.id.check_add_button.toLong()) {
             val listName = listNameInput.text.toString()
-            val categoryId = adapter!!.categoriesMap[spinner.selectedItem.toString()]
+            val categoryId = adapter.categoriesMap[spinner.selectedItem.toString()]
             val validForm = FormValidator.validate(applicationContext, createInputMap(listName, listNameInput))
             if (validForm) {
-                presenter!!.insertList(listName, categoryId)
+                presenter.insertList(listName, categoryId)
                 finish()
             }
         }
@@ -90,6 +91,6 @@ class CreateListActivity : AppCompatActivity(), CreateListView {
 
     public override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 }

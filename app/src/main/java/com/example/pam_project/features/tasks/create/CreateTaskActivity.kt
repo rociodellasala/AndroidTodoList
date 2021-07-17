@@ -13,8 +13,9 @@ import com.example.pam_project.utils.validators.FormValidator
 import java.util.*
 
 class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
-    private var presenter: CreateTaskPresenter? = null
+    private lateinit var presenter: CreateTaskPresenter
     private var listId: Long? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
@@ -22,13 +23,13 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_create_task)
+        supportActionBar?.setTitle(R.string.activity_title_create_task)
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val taskRepository = container.tasksRepository
+        val schedulerProvider = container?.schedulerProvider
+        val taskRepository = container?.tasksRepository
         presenter = CreateTaskPresenter(schedulerProvider, taskRepository, this)
     }
 
@@ -56,7 +57,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
             val taskUrgency = checkboxUrgencyInput.isChecked
             val validForm = FormValidator.validate(applicationContext, createInputMap(taskName, taskNameInput))
             if (validForm) {
-                presenter!!.insertTask(taskName, taskDescription, taskUrgency, listId!!)
+                presenter.insertTask(taskName, taskDescription, taskUrgency, listId!!)
                 finish()
             }
         } else if (itemId == android.R.id.home.toLong()) {
@@ -71,13 +72,9 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
         return map
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     public override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 
     companion object {

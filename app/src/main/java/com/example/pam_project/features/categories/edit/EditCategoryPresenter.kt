@@ -6,17 +6,19 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class EditCategoryPresenter(private val categoryId: Long, private val provider: SchedulerProvider?, private val repository: CategoriesRepository?,
-                            view: EditCategoryView?) {
-    private val view: WeakReference<EditCategoryView?>
+class EditCategoryPresenter(private val categoryId: Long, private val provider: SchedulerProvider?,
+                            private val repository: CategoriesRepository?, view: EditCategoryView?) {
+    private val view: WeakReference<EditCategoryView?> = WeakReference(view)
     private var fetchCategoryDisposable: Disposable? = null
     private var updateCategoryDisposable: Disposable? = null
     private var deleteCategoryDisposable: Disposable? = null
+
     fun onViewAttached() {
         fetchCategoryDisposable = repository!!.getCategory(categoryId)
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
-                .subscribe({ model: CategoryInformation? -> onCategoryRetrieved(model) }) { throwable: Throwable -> onCategoryRetrievedError(throwable) }
+                .subscribe({ model: CategoryInformation? -> onCategoryRetrieved(model) }) { throwable: Throwable
+                    -> onCategoryRetrievedError(throwable) }
     }
 
     private fun onCategoryRetrieved(model: CategoryInformation?) {
@@ -75,7 +77,4 @@ class EditCategoryPresenter(private val categoryId: Long, private val provider: 
         if (deleteCategoryDisposable != null) deleteCategoryDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

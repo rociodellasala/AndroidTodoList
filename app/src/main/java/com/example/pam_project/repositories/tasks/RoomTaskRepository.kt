@@ -9,19 +9,18 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 class RoomTaskRepository(private val taskDao: TaskDao?, private val mapper: TaskMapper?) : TaskRepository {
-    override fun getTask(taskId: Long): Flowable<TaskInformation?> {
-        return taskDao!!.getTaskById(taskId).map { entity: TaskEntity? -> mapper!!.toModel(entity) }
+    override fun getTask(id: Long): Flowable<TaskInformation> {
+        return taskDao!!.getTaskById(id).map { entity: TaskEntity? -> mapper!!.toModel(entity) }
     }
 
-    override fun insertTask(name: String?, description: String?, priority: Boolean,
-                            status: TaskStatus?, listId: Long): Completable {
-        val taskEntity = TaskEntity(name, description, priority, TaskStatus.Companion.statusToString(status), listId)
+    override fun insertTask(name: String?, description: String?, priority: Boolean, status: TaskStatus?, listId: Long): Completable {
+        val taskEntity = TaskEntity(name, description, priority, TaskStatus.statusToString(status), listId)
         return Completable.fromAction { taskDao!!.insertTask(taskEntity) }
     }
 
     override fun updateTask(id: Long, name: String?, description: String?, priority: Boolean,
                             status: TaskStatus?, listId: Long): Completable {
-        val taskEntity = TaskEntity(id, name, description, priority, TaskStatus.Companion.statusToString(status), listId)
+        val taskEntity = TaskEntity(id, name, description, priority, TaskStatus.statusToString(status), listId)
         return Completable.fromAction { taskDao!!.updateTask(taskEntity) }
     }
 

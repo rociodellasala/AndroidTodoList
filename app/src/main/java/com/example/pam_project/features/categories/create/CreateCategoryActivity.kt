@@ -13,20 +13,21 @@ import com.thebluealliance.spectrum.SpectrumPalette
 import java.util.*
 
 class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
-    private var presenter: CreateCategoryPresenter? = null
-    private var selectedColor = DEFAULT_COLOR.argbValue
+    private lateinit var presenter: CreateCategoryPresenter
+    private var selectedColor = DEFAULT_COLOR.aRGBValue
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_category)
         createPresenter()
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_create_category)
+        supportActionBar?.setTitle(R.string.activity_title_create_category)
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val repository = container.categoriesRepository
+        val schedulerProvider = container?.schedulerProvider
+        val repository = container?.categoriesRepository
         presenter = CreateCategoryPresenter(schedulerProvider, repository, this)
     }
 
@@ -34,7 +35,7 @@ class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
         val palette = findViewById<SpectrumPalette>(R.id.create_category_palette_color)
         val colors = IntArray(AppColor.values().size)
         for (i in colors.indices) {
-            colors[i] = AppColor.values()[i].argbValue
+            colors[i] = AppColor.values()[i].aRGBValue
         }
         palette.setColors(colors)
         palette.setSelectedColor(selectedColor)
@@ -59,14 +60,14 @@ class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
         val categoryNameInput = findViewById<EditText>(R.id.create_category_name_input)
         if (itemId == R.id.check_add_button.toLong()) {
             val categoryName = categoryNameInput.text.toString()
-            val color: AppColor = AppColor.Companion.fromARGBValue(selectedColor)
+            val color: AppColor? = AppColor.fromARGBValue(selectedColor)
             val validForm = FormValidator.validate(applicationContext, createInputMap(categoryName, categoryNameInput))
             var colorName = DEFAULT_COLOR.name
             if (color != null) {
                 colorName = color.name
             }
             if (validForm) {
-                presenter!!.insertCategory(categoryName, colorName)
+                presenter.insertCategory(categoryName, colorName)
                 finish()
             }
         }
@@ -81,7 +82,7 @@ class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
 
     public override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 
     companion object {

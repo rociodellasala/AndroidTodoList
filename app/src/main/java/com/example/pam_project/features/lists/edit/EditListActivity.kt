@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -23,16 +22,17 @@ import com.example.pam_project.utils.validators.FormValidator
 import java.util.*
 
 class EditListActivity : AppCompatActivity(), EditListView {
-    private var presenter: EditListPresenter? = null
-    private var adapter: SpinnerCategoryAdapter? = null
-    private var spinner: Spinner? = null
+    private lateinit var presenter: EditListPresenter
+    private lateinit var adapter: SpinnerCategoryAdapter
+    private lateinit var spinner: Spinner
     private var listId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_list)
         createPresenter()
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_edit_list)
+        supportActionBar?.setTitle(R.string.activity_title_edit_list)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         setDeleteButton()
@@ -41,9 +41,9 @@ class EditListActivity : AppCompatActivity(), EditListView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val categoriesRepository = container.categoriesRepository
-        val listsRepository = container.listsRepository
+        val schedulerProvider = container?.schedulerProvider
+        val categoriesRepository = container?.categoriesRepository
+        val listsRepository = container?.listsRepository
         presenter = EditListPresenter(schedulerProvider, categoriesRepository,
                 listsRepository, this)
     }
@@ -51,41 +51,41 @@ class EditListActivity : AppCompatActivity(), EditListView {
     private fun setUpView() {
         spinner = findViewById(R.id.edit_list_category_spinner)
         adapter = SpinnerCategoryAdapter(this, android.R.layout.simple_spinner_item)
-        adapter.getCategories().setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.setAdapter(adapter.getCategories())
+        adapter.categories.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter.categories
         val spinnerActivity = SpinnerActivity()
-        spinner.setOnItemSelectedListener(spinnerActivity)
+        spinner.onItemSelectedListener = spinnerActivity
     }
 
     public override fun onStart() {
         super.onStart()
-        presenter!!.onViewAttached(listId)
+        presenter.onViewAttached(listId)
     }
 
     private fun setDeleteButton() {
         val deleteButton = findViewById<Button>(R.id.delete_list_button)
-        deleteButton.setOnClickListener { v: View? -> presenter!!.onDeletePressed() }
+        deleteButton.setOnClickListener { presenter.onDeletePressed() }
     }
 
     override fun showDeleteDialog() {
         AlertDialog.Builder(this)
                 .setMessage(R.string.confirm_list_delete)
                 .setCancelable(false)
-                .setPositiveButton(R.string.confirm_dialog) { dialog: DialogInterface?, id: Int -> presenter!!.deleteList(listId) }
+                .setPositiveButton(R.string.confirm_dialog) { _: DialogInterface?, _: Int -> presenter.deleteList(listId) }
                 .setNegativeButton(R.string.cancel_dialog, null)
                 .show()
     }
 
     override fun bindCategories(model: List<CategoryInformation?>?) {
-        adapter!!.update(model)
+        adapter.update(model)
     }
 
     override fun bindList(model: ListInformation?) {
         val title = findViewById<EditText>(R.id.edit_list_title_input)
-        val categoryId = model.getCategoryId()
-        val spinnerPosition = adapter.getCategories().getPosition(adapter!!.getCategoryById(categoryId))
-        title.setText(model.getTitle())
-        spinner!!.setSelection(spinnerPosition)
+        val categoryId = model?.categoryId
+        val spinnerPosition = adapter.categories.getPosition(adapter.getCategoryById(categoryId!!))
+        title.setText(model.title)
+        spinner.setSelection(spinnerPosition)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -121,10 +121,10 @@ class EditListActivity : AppCompatActivity(), EditListView {
         val listNameInput = findViewById<EditText>(R.id.edit_list_title_input)
         if (itemId == R.id.check_add_button.toLong()) {
             val listName = listNameInput.text.toString()
-            val categoryId = adapter!!.categoriesMap[spinner.selectedItem.toString()]
+            val categoryId = adapter.categoriesMap[spinner.selectedItem.toString()]
             val validForm = FormValidator.validate(applicationContext, createInputMap(listName, listNameInput))
             if (validForm) {
-                presenter!!.updateList(listId, listName, categoryId)
+                presenter.updateList(listId, listName, categoryId)
                 finish()
             }
         } else if (itemId == android.R.id.home.toLong()) {
@@ -141,11 +141,7 @@ class EditListActivity : AppCompatActivity(), EditListView {
 
     public override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
+        presenter.onViewDetached()
     }
 
     companion object {

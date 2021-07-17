@@ -20,7 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         private const val DB_NAME = "db_pam"
         private var instance: AppDatabase? = null
-        @Synchronized
+
         fun getInstance(context: Context): AppDatabase? {
             if (instance == null) {
                 instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DB_NAME)

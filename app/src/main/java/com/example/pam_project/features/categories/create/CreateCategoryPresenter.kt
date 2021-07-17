@@ -5,9 +5,11 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class CreateCategoryPresenter(private val provider: SchedulerProvider?, private val repository: CategoriesRepository?, view: CreateCategoryView?) {
-    private val view: WeakReference<CreateCategoryView?>
+class CreateCategoryPresenter(private val provider: SchedulerProvider?,
+                              private val repository: CategoriesRepository?, view: CreateCategoryView?) {
+    private val view: WeakReference<CreateCategoryView?> = WeakReference(view)
     private var insertCategoryDisposable: Disposable? = null
+
     fun insertCategory(name: String, color: String) {
         insertCategoryDisposable = repository!!.insertCategory(name, color)
                 .subscribeOn(provider!!.computation())
@@ -25,7 +27,4 @@ class CreateCategoryPresenter(private val provider: SchedulerProvider?, private 
         if (insertCategoryDisposable != null) insertCategoryDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

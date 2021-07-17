@@ -7,8 +7,9 @@ import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
 class CreateTaskPresenter(private val provider: SchedulerProvider?, private val taskRepository: TaskRepository?, view: CreateTaskView?) {
-    private val view: WeakReference<CreateTaskView?>
+    private val view: WeakReference<CreateTaskView?> = WeakReference(view)
     private var insertTaskDisposable: Disposable? = null
+
     fun insertTask(name: String?, description: String?, priority: Boolean, listId: Long) {
         insertTaskDisposable = taskRepository!!.insertTask(name, description, priority, TaskStatus.PENDING, listId)
                 .subscribeOn(provider!!.computation())
@@ -26,7 +27,4 @@ class CreateTaskPresenter(private val provider: SchedulerProvider?, private val 
         if (insertTaskDisposable != null) insertTaskDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

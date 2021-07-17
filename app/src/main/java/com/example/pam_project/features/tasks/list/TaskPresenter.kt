@@ -12,11 +12,11 @@ import java.util.*
 
 class TaskPresenter(private val provider: SchedulerProvider?, private val taskRepository: TaskRepository?,
                     private val listsRepository: ListsRepository?, view: TaskView?,
-                    listId: Long) {
-    private val view: WeakReference<TaskView?>
+                    private val listId: Long) {
+    private val view: WeakReference<TaskView?> = WeakReference(view)
     private var fetchTasksDisposable: Disposable? = null
     private var updateTaskDisposable: Disposable? = null
-    private val listId: Long
+
     fun onViewAttached() {
         if (view.get() != null) {
             fetchTasks()
@@ -31,10 +31,10 @@ class TaskPresenter(private val provider: SchedulerProvider?, private val taskRe
     }
 
     private fun onTasksReceived(model: ListInformation?) {
-        Collections.sort(model.getTasks(), Collections.reverseOrder())
+        Collections.sort(model?.tasks, Collections.reverseOrder())
         if (view.get() != null) {
-            view.get()!!.bindListName(model.getTitle())
-            view.get()!!.bindTasks(model.getTasks())
+            view.get()!!.bindListName(model?.title)
+            view.get()!!.bindTasks(model?.tasks)
         }
     }
 
@@ -105,8 +105,6 @@ class TaskPresenter(private val provider: SchedulerProvider?, private val taskRe
     }
 
     init {
-        this.view = WeakReference(view)
-        this.listId = listId
         appendHeaders()
     }
 }

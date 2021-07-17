@@ -13,18 +13,18 @@ class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(list: ListInformation?) {
         val title = itemView.findViewById<TextView>(R.id.title)
         val tasksInformation = itemView.findViewById<TextView>(R.id.number_of_tasks)
-        title.text = list.getTitle()
+        title.text = list?.title
         val numberOfTasksPending = itemView.context.resources.getString(R.string.list_task_pending)
         val numberOfTasksUrgent = itemView.context.resources.getString(R.string.list_task_urgent)
-        val tasksUrgentText = numberOfTasksUrgent + ": " + list.getUrgentPendingTaskCount()
-        val tasksPendingText = numberOfTasksPending + ": " + list.getPendingTaskCount()
+        val tasksUrgentText = numberOfTasksUrgent + ": " + list?.urgentPendingTaskCount
+        val tasksPendingText = numberOfTasksPending + ": " + list?.pendingTaskCount
         val tasksInformationText = "$tasksUrgentText | $tasksPendingText"
         tasksInformation.text = tasksInformationText
         val linearLayout = itemView.findViewById<LinearLayout>(R.id.listLeftLayout)
         val drawable = linearLayout.background as GradientDrawable
-        drawable.setColor(list.getColor().argbValue)
+        drawable.setColor(list?.color?.aRGBValue!!)
         val urgency = itemView.findViewById<ImageView>(R.id.listUrgency)
-        if (list!!.hasUrgentTask()) {
+        if (list.hasUrgentTask()) {
             urgency.visibility = View.VISIBLE
         } else {
             urgency.visibility = View.GONE

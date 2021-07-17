@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
 }
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
@@ -59,6 +60,7 @@ ext {
 
 dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
     annotationProcessor "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-rxjava2:$rxroomVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"

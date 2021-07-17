@@ -18,8 +18,9 @@ import com.example.pam_project.utils.validators.FormValidator
 import java.util.*
 
 class EditTaskActivity : AppCompatActivity(), EditTaskView {
-    private var presenter: EditTaskPresenter? = null
+    private lateinit var presenter: EditTaskPresenter
     private var taskId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
@@ -28,29 +29,29 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
         createPresenter()
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_edit_task)
+        supportActionBar?.setTitle(R.string.activity_title_edit_task)
         setDeleteButton()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val taskRepository = container.tasksRepository
+        val schedulerProvider = container?.schedulerProvider
+        val taskRepository = container?.tasksRepository
         presenter = EditTaskPresenter(taskId, schedulerProvider, taskRepository, this)
     }
 
     override fun onStart() {
         super.onStart()
-        presenter!!.onViewAttached()
+        presenter.onViewAttached()
     }
 
     override fun bindTask(model: TaskInformation?) {
         val name = findViewById<EditText>(R.id.edit_task_title_input)
         val description = findViewById<EditText>(R.id.edit_task_description_input)
         val urgency = findViewById<CheckBox>(R.id.edit_task_priority_checkbox)
-        name.setText(model.getTitle())
-        description.setText(model.getDescription())
-        urgency.isChecked = model.getUrgency()
+        name.setText(model?.title)
+        description.setText(model?.description)
+        urgency.isChecked = model?.urgency == true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -64,7 +65,7 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
             val taskUrgency = checkboxUrgencyInput.isChecked
             val validForm = FormValidator.validate(applicationContext, createInputMap(taskName, taskNameInput))
             if (validForm) {
-                presenter!!.updateTask(taskName, taskDescription, taskUrgency)
+                presenter.updateTask(taskName, taskDescription, taskUrgency)
                 finish()
             }
         } else if (itemId == android.R.id.home.toLong()) {
@@ -81,14 +82,14 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
 
     private fun setDeleteButton() {
         val deleteButton = findViewById<Button>(R.id.delete_task_button)
-        deleteButton.setOnClickListener { v: View? -> presenter!!.onDeletePressed() }
+        deleteButton.setOnClickListener { v: View? -> presenter.onDeletePressed() }
     }
 
     override fun showDeleteDialog() {
         AlertDialog.Builder(this)
                 .setMessage(R.string.confirm_task_delete)
                 .setCancelable(false)
-                .setPositiveButton(R.string.confirm_dialog) { dialog: DialogInterface?, id: Int -> presenter!!.deleteTask(taskId) }
+                .setPositiveButton(R.string.confirm_dialog) { dialog: DialogInterface?, id: Int -> presenter.deleteTask(taskId) }
                 .setNegativeButton(R.string.cancel_dialog, null)
                 .show()
     }
@@ -120,7 +121,7 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
 
     override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 
     companion object {

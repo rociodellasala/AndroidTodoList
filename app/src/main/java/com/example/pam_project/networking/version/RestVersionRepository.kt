@@ -6,5 +6,5 @@ import io.reactivex.Single
 
 class RestVersionRepository(private val service: APIService?, private val versionMapper: VersionMapper?) : VersionRepository {
     override val version: Single<VersionModel?>
-        get() = RetrofitUtils.performRequest(service.getVersion()).map { response: VersionResponse? -> versionMapper!!.map(response) }
+        get() = RetrofitUtils.performRequest(service?.version).map { response: VersionResponse? -> versionMapper!!.map(response) }
 }

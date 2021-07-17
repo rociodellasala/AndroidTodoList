@@ -8,11 +8,13 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class AboutPresenter(private val authorsRepository: AuthorsRepository?, private val versionRepository: VersionRepository?, private val provider: SchedulerProvider?,
+class AboutPresenter(private val authorsRepository: AuthorsRepository?, private val versionRepository: VersionRepository?,
+                     private val provider: SchedulerProvider?,
                      view: AboutView?) {
-    private val view: WeakReference<AboutView?>
+    private val view: WeakReference<AboutView?> = WeakReference(view)
     private var fetchAuthorDisposable: Disposable? = null
     private var fetchVersionDisposable: Disposable? = null
+
     fun onViewAttached() {
         if (view.get() != null) {
             fetchAuthors()
@@ -21,10 +23,11 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository?, private 
     }
 
     private fun fetchAuthors() {
-        fetchAuthorDisposable = authorsRepository.getAuthors()
+        fetchAuthorDisposable = authorsRepository!!.authors
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
-                .subscribe({ model: List<AuthorsModel?>? -> onAuthorsReceived(model) }) { throwable: Throwable -> onAuthorsReceivedError(throwable) }
+                .subscribe({ model: List<AuthorsModel?>? -> onAuthorsReceived(model) }) { throwable: Throwable
+                    -> onAuthorsReceivedError(throwable) }
     }
 
     private fun onAuthorsReceived(model: List<AuthorsModel?>?) {
@@ -36,7 +39,7 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository?, private 
     private fun concatAuthors(model: List<AuthorsModel?>?): String {
         val authors = StringBuilder()
         for (i in model!!.indices) {
-            authors.append(model[i].getName()).append("\n")
+            authors.append(model[i]?.name).append("\n")
         }
         return authors.toString()
     }
@@ -48,7 +51,7 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository?, private 
     }
 
     private fun fetchVersion() {
-        fetchVersionDisposable = versionRepository.getVersion()
+        fetchVersionDisposable = versionRepository!!.version
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: VersionModel? -> onVersionReceived(model) }) { throwable: Throwable -> onVersionReceivedError(throwable) }
@@ -75,7 +78,4 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository?, private 
         }
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

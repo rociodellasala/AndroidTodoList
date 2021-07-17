@@ -9,11 +9,11 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: SchedulerProvider?,
-                    private val categoriesRepository: CategoriesRepository?,
-                    view: ListView?) {
-    private val view: WeakReference<ListView?>
+                    private val categoriesRepository: CategoriesRepository?, view: ListView?) {
+    private val view: WeakReference<ListView?> = WeakReference(view)
     private var fetchListsDisposable: Disposable? = null
     private var fetchCategoriesDisposable: Disposable? = null
+
     fun onViewAttached() {
         if (ftuStorage!!.isActive) {
             ftuStorage.deactivate()
@@ -28,7 +28,7 @@ class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: S
     }
 
     private fun fetchCategories() {
-        fetchCategoriesDisposable = categoriesRepository.getCategories()
+        fetchCategoriesDisposable = categoriesRepository!!.categories
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<CategoryInformation?>? -> onCategoriesReceived(model) }) { e: Throwable -> onCategoriesReceivedError(e) }
@@ -37,7 +37,7 @@ class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: S
     private fun onCategoriesReceived(model: List<CategoryInformation?>?) {
         if (view.get() != null) {
             val finalList: List<CategoryInformation?> = ArrayList(model)
-            Collections.sort(finalList)
+            finalList.sortedBy { it?.id }
             view.get()!!.bindCategories(finalList)
         }
     }
@@ -49,19 +49,20 @@ class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: S
     }
 
     private fun fetchLists() {
-        fetchListsDisposable = categoriesRepository.getCategoriesWithLists()
+        fetchListsDisposable = categoriesRepository!!.categoriesWithLists
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
-                .subscribe({ model: Map<CategoryInformation?, List<ListInformation?>?>? -> onListsReceived(model) }) { e: Throwable -> onListsReceivedError(e) }
+                .subscribe({ model: Map<CategoryInformation, List<ListInformation>> -> onListsReceived(model) })
+                { e: Throwable -> onListsReceivedError(e) }
     }
 
-    private fun onListsReceived(model: Map<CategoryInformation?, List<ListInformation?>?>?) {
+    private fun onListsReceived(model: Map<CategoryInformation, List<ListInformation>>) {
         if (view.get() != null) {
             val finalList: MutableList<ListInformation?> = ArrayList()
-            for (list in model!!.values) {
-                finalList.addAll(list!!)
+            for (list in model.values) {
+                finalList.addAll(list)
             }
-            Collections.sort(finalList)
+            finalList.sortedBy { it?.id }
             view.get()!!.bindLists(finalList)
         }
     }
@@ -122,7 +123,4 @@ class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: S
         if (fetchCategoriesDisposable != null) fetchCategoriesDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

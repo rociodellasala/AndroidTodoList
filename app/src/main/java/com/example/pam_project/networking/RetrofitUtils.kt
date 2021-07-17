@@ -6,10 +6,10 @@ import retrofit2.Response
 object RetrofitUtils {
     fun <T> performRequest(request: Single<Response<T>?>?): Single<T> {
         return request!!.onErrorResumeNext { exception: Throwable? -> Single.error(exception) }
-                .map { obj: Response<T>? -> unwrapResponse() }
+                .map { obj: Response<T> -> unwrapResponse(obj) }
     }
 
-    fun <T> unwrapResponse(response: Response<T>): T? {
+    private fun <T> unwrapResponse(response: Response<T>): T? {
         require(!isRequestFailed(response))
         return response.body()
     }
@@ -19,6 +19,6 @@ object RetrofitUtils {
     }
 
     private fun isErrorCode(statusCode: Int): Boolean {
-        return statusCode >= 400 && statusCode < 600
+        return statusCode in 400..599
     }
 }

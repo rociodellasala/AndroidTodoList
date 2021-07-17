@@ -10,6 +10,7 @@ import java.util.*
 class CategoryAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
     private val dataSet: MutableList<CategoryInformation?>
     private var listener: OnListClickedListener? = null
+
     fun update(newDataSet: List<CategoryInformation?>?) {
         dataSet.clear()
         if (newDataSet != null) {

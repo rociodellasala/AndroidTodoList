@@ -7,14 +7,14 @@ class CategoryInformation(val title: String?, val color: AppColor?) : Serializab
     var id: Long = 0
         private set
 
-    constructor(title: String?, color: String?) : this(title, AppColor.Companion.fromName(color)) {}
+    constructor(title: String?, color: String?) : this(title, AppColor.fromName(color))
     constructor(id: Long, title: String?, color: AppColor?) : this(title, color) {
         this.id = id
     }
 
-    constructor(id: Long, title: String?, color: String?) : this(id, title, AppColor.Companion.fromName(color)) {}
+    constructor(id: Long, title: String?, color: String?) : this(id, title, AppColor.fromName(color))
 
-    override fun compareTo(categoryInformation: CategoryInformation): Int {
-        return title!!.compareTo(categoryInformation.title!!)
+    override fun compareTo(other: CategoryInformation): Int {
+        return title!!.compareTo(other.title!!)
     }
 }

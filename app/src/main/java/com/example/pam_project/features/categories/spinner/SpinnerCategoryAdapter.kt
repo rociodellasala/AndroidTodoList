@@ -7,11 +7,12 @@ import java.util.*
 
 class SpinnerCategoryAdapter(context: Context?, layout: Int) {
     val categories: ArrayAdapter<String?>
-    private val categoriesMap: MutableMap<String?, Long?>
+    val categoriesMap: MutableMap<String?, Long?>
+
     fun update(model: List<CategoryInformation?>?) {
         for (categoryInformation in model!!) {
-            categories.add(categoryInformation.getTitle())
-            categoriesMap[categoryInformation.getTitle()] = categoryInformation.getId()
+            categories.add(categoryInformation?.title)
+            categoriesMap[categoryInformation?.title] = categoryInformation?.id
         }
         categories.notifyDataSetChanged()
     }
@@ -22,10 +23,6 @@ class SpinnerCategoryAdapter(context: Context?, layout: Int) {
             if (categoryId != null && categoryId == id) return categoryName
         }
         return ""
-    }
-
-    fun getCategoriesMap(): Map<String?, Long?> {
-        return categoriesMap
     }
 
     init {

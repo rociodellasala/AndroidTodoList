@@ -27,8 +27,8 @@ import com.example.pam_project.utils.schedulers.AndroidSchedulerProvider
 import com.example.pam_project.utils.schedulers.SchedulerProvider
 
 class ApplicationModule internal constructor(context: Context) {
-    /* default */  val applicationContext: Context
-    private val mainStorage: AppDatabase?
+    /* default */  val applicationContext: Context = context.applicationContext
+    private val mainStorage: AppDatabase? = AppDatabase.getInstance(applicationContext)
 
     /* default */
     fun provideFtuStorage(): FtuStorage {
@@ -43,8 +43,7 @@ class ApplicationModule internal constructor(context: Context) {
     }
 
     /* default */
-    fun provideCategoriesRepository(dao: CategoryDao?,
-                                    mapper: CategoryMapper?): CategoriesRepository {
+    fun provideCategoriesRepository(dao: CategoryDao?, mapper: CategoryMapper?): CategoriesRepository {
         return RoomCategoriesRepository(dao, mapper)
     }
 
@@ -118,9 +117,4 @@ class ApplicationModule internal constructor(context: Context) {
         private const val PAM_PREF = "app-pref"
     }
 
-    /* default */
-    init {
-        applicationContext = context.applicationContext
-        mainStorage = AppDatabase.Companion.getInstance(applicationContext)
-    }
 }

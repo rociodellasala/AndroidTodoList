@@ -10,15 +10,16 @@ import java.lang.ref.WeakReference
 class CreateListPresenter(private val provider: SchedulerProvider?,
                           private val categoriesRepository: CategoriesRepository?,
                           private val listsRepository: ListsRepository?, view: CreateListView?) {
-    private val view: WeakReference<CreateListView?>
+    private val view: WeakReference<CreateListView?> = WeakReference(view)
     private var fetchListsDisposable: Disposable? = null
     private var insertListDisposable: Disposable? = null
+
     fun onViewAttached() {
         if (view.get() != null) fetchCategories()
     }
 
     private fun fetchCategories() {
-        fetchListsDisposable = categoriesRepository.getCategories()
+        fetchListsDisposable = categoriesRepository!!.categories
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<CategoryInformation?>? -> onCategoriesReceived(model) }) { throwable: Throwable -> onCategoriesReceivedError(throwable) }
@@ -54,7 +55,4 @@ class CreateListPresenter(private val provider: SchedulerProvider?,
         if (insertListDisposable != null) insertListDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

@@ -7,18 +7,19 @@ import com.example.pam_project.database.categories.CategoryEntity
 import com.example.pam_project.di.ApplicationContainerLocator
 import com.example.pam_project.utils.constants.AppColor
 import io.reactivex.Completable
-import java.util.*
 
 class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val ftuStorage = container.ftuStorage
+        val schedulerProvider = container?.schedulerProvider
+        val ftuStorage = container?.ftuStorage
         if (ftuStorage!!.isActive) {
             val appContext = applicationContext
-            val db: AppDatabase = AppDatabase.Companion.getInstance(appContext)
-            Completable.fromAction { db.categoryDao().insertCategory(createDefaultCategory(appContext)) }.onErrorComplete()
+            val db: AppDatabase? = AppDatabase.getInstance(appContext)
+            Completable.fromAction {
+                db?.categoryDao()?.insertCategory(createDefaultCategory(appContext))
+            }.onErrorComplete()
                     .subscribeOn(schedulerProvider!!.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe()
@@ -27,7 +28,7 @@ class MainApplication : Application() {
 
     private fun createDefaultCategory(context: Context): CategoryEntity {
         val defaultCategory = context.resources.getString(R.string.default_category)
-        val colors = Arrays.asList(*AppColor.values())
+        val colors = listOf(*AppColor.values())
         return CategoryEntity(defaultCategory, colors[0].toString())
     }
 }

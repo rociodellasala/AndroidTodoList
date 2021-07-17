@@ -8,10 +8,11 @@ import java.lang.ref.WeakReference
 
 class EditTaskPresenter(private val taskId: Long, private val provider: SchedulerProvider?,
                         private val repository: TaskRepository?, view: EditTaskView?) {
-    private val view: WeakReference<EditTaskView?>
+    private val view: WeakReference<EditTaskView?> = WeakReference(view)
     private var fetchTaskDisposable: Disposable? = null
     private var updateTaskDisposable: Disposable? = null
     private var deleteTaskDisposable: Disposable? = null
+
     fun onViewAttached() {
         fetchTaskDisposable = repository!!.getTask(taskId)
                 .subscribeOn(provider!!.computation())
@@ -75,7 +76,4 @@ class EditTaskPresenter(private val taskId: Long, private val provider: Schedule
         if (fetchTaskDisposable != null) fetchTaskDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

@@ -9,8 +9,9 @@ import com.example.pam_project.features.categories.list.CategoryInformation
 import java.util.*
 
 class FilterDialogFragment : ListActivityDialogFragment() {
-    protected var filterItems: Array<CharSequence>?
+    private var filterItems: Array<CharSequence>? = null
     private var selectedItems: MutableList<Int>? = null
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
         val args = arguments!!
@@ -18,7 +19,7 @@ class FilterDialogFragment : ListActivityDialogFragment() {
         selectedItems = args.getIntegerArrayList(INITIAL_SELECTION_KEY)
         builder.setTitle(R.string.filter)
                 .setMultiChoiceItems(filterItems, listToBooleanArray(selectedItems)
-                ) { dialog: DialogInterface?, which: Int, isChecked: Boolean ->
+                ) { _: DialogInterface?, which: Int, isChecked: Boolean ->
                     if (isChecked) {
                         selectedItems!!.add(which)
                     } else {
@@ -26,12 +27,12 @@ class FilterDialogFragment : ListActivityDialogFragment() {
                     }
                 }
                 .setPositiveButton(R.string.ok
-                ) { dialog: DialogInterface, which: Int ->
+                ) { dialog: DialogInterface, _: Int ->
                     callback!!.onSelectedItems(this.javaClass, selectedItems)
                     dialog.dismiss()
                 }
                 .setNegativeButton(R.string.cancel
-                ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+                ) { dialog: DialogInterface, _: Int -> dialog.cancel() }
         return builder.create()
     }
 
@@ -44,22 +45,22 @@ class FilterDialogFragment : ListActivityDialogFragment() {
     companion object {
         private const val INITIAL_SELECTION_KEY = "selectedItems"
         private const val ITEMS_KEY = "items"
-        fun newInstance(items: List<CategoryInformation?>?,
-                        initialSelection: MutableList<Int?>?): FilterDialogFragment {
-            var initialSelection = initialSelection
+
+        fun newInstance(items: List<CategoryInformation>, initialSelection: MutableList<Int?>?): FilterDialogFragment {
+            var selection = initialSelection
             val frag = FilterDialogFragment()
             val args = Bundle()
-            val itemsCharSeq = arrayOfNulls<CharSequence>(items!!.size)
-            for (i in items.indices) itemsCharSeq[i] = items[i].getTitle()
+            val itemsCharSeq = arrayOfNulls<CharSequence>(items.size)
+            for (i in items.indices) itemsCharSeq[i] = items[i].title
             if (initialSelection == null) {
-                initialSelection = ArrayList(items.size)
+                selection = ArrayList(items.size)
                 // all items are selected initially
                 for (i in items.indices) {
-                    initialSelection.add(i)
+                    selection.add(i)
                 }
             }
             args.putCharSequenceArray(ITEMS_KEY, itemsCharSeq)
-            args.putIntegerArrayList(INITIAL_SELECTION_KEY, initialSelection as ArrayList<Int?>?)
+            args.putIntegerArrayList(INITIAL_SELECTION_KEY, selection as ArrayList<Int?>?)
             frag.arguments = args
             return frag
         }
