@@ -146,7 +146,6 @@ class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedList
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        print("ACAAAAAAAAAAAAA")
         val inflater = menuInflater
         inflater.inflate(R.menu.list_action_bar, menu)
         topMenu = menu
