@@ -11,6 +11,6 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
         val welcomeButton = findViewById<Button>(R.id.welcome_button)
-        welcomeButton.setOnClickListener { v: View? -> finish() }
+        welcomeButton.setOnClickListener { finish() }
     }
 }

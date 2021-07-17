@@ -9,7 +9,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class APIServiceImplementation : APIService {
-    private val retrofit: Retrofit
+    private val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
     override val authors: Single<Response<ListAuthorsResponse?>?>?
         get() {
             val service = retrofit.create(APIService::class.java)
@@ -25,11 +29,4 @@ class APIServiceImplementation : APIService {
         private const val BASE_URL = "https://private-ad7668-rememberit.apiary-mock.com/"
     }
 
-    init {
-        retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-    }
 }

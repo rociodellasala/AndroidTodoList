@@ -4,8 +4,9 @@ enum class TaskStatus {
     DONE, PENDING;
 
     companion object {
-        const val STRING_DONE = "done"
-        const val STRING_PENDING = "pending"
+        private const val STRING_DONE = "done"
+        private const val STRING_PENDING = "pending"
+
         fun getStatus(status: String?): TaskStatus? {
             return when (status) {
                 "done" -> DONE

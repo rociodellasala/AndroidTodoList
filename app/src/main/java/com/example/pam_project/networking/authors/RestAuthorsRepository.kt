@@ -6,5 +6,5 @@ import io.reactivex.Single
 
 class RestAuthorsRepository(private val service: APIService?, private val authorsMapper: AuthorsMapper?) : AuthorsRepository {
     override val authors: Single<List<AuthorsModel?>?>
-        get() = RetrofitUtils.performRequest(service.getAuthors()).map { response: ListAuthorsResponse? -> authorsMapper!!.map(response) }
+        get() = RetrofitUtils.performRequest(service?.authors).map { response: ListAuthorsResponse? -> authorsMapper!!.map(response) }
 }

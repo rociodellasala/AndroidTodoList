@@ -19,7 +19,7 @@ enum class AppColor(val hexValue: String) {
         fun fromName(colorName: String?): AppColor? {
             if (colorName == null) return null
             for (color in values()) {
-                if (color.toString() == colorName.toUpperCase()) {
+                if (color.toString() == colorName.uppercase()) {
                     return color
                 }
             }

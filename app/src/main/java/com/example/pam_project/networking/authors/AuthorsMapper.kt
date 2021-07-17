@@ -8,8 +8,7 @@ class AuthorsMapper {
         for (i in response!!.allAuthors.indices) {
             val currentAuthor = response.allAuthors[i]
             requireNotNull(currentAuthor!!.lastName) { "Lastname was expected" }
-            var author: AuthorsModel
-            author = if (currentAuthor.firstName == null) {
+            val author: AuthorsModel = if (currentAuthor.firstName == null) {
                 AuthorsModel(currentAuthor.lastName)
             } else {
                 AuthorsModel(currentAuthor.firstName, currentAuthor.lastName)

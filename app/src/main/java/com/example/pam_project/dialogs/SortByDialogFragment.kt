@@ -24,6 +24,7 @@ class SortByDialogFragment : ListActivityDialogFragment() {
 
     companion object {
         private const val INITIAL_VALUE_KEY = "initialValue"
+
         fun newInstance(initialValue: Int): SortByDialogFragment {
             val frag = SortByDialogFragment()
             val args = Bundle()
