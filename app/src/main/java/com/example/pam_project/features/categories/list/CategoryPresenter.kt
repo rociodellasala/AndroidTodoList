@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference
 
 class CategoryPresenter(private val provider: SchedulerProvider?,
                         private val repository: CategoriesRepository?, view: CategoryView?) {
-    private val view: WeakReference<CategoryView?>
+    private val view: WeakReference<CategoryView?> = WeakReference(view)
     private var fetchCategoriesDisposable: Disposable? = null
     fun onViewAttached() {
         if (view.get() != null) {
@@ -16,10 +16,11 @@ class CategoryPresenter(private val provider: SchedulerProvider?,
     }
 
     private fun fetchCategories() {
-        fetchCategoriesDisposable = repository.getCategories()
+        fetchCategoriesDisposable = repository!!.categories
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
-                .subscribe({ model: List<CategoryInformation?>? -> onCategoriesReceived(model) }) { throwable: Throwable -> onCategoriesReceivedError(throwable) }
+                .subscribe({ model: List<CategoryInformation?>? -> onCategoriesReceived(model) })
+                { throwable: Throwable -> onCategoriesReceivedError(throwable) }
     }
 
     private fun onCategoriesReceived(model: List<CategoryInformation?>?) {
@@ -54,7 +55,4 @@ class CategoryPresenter(private val provider: SchedulerProvider?,
         if (fetchCategoriesDisposable != null) fetchCategoriesDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

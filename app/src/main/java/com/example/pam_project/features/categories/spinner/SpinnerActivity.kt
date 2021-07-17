@@ -6,8 +6,7 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 
 class SpinnerActivity : Activity(), OnItemSelectedListener {
-    override fun onItemSelected(parent: AdapterView<*>?, view: View,
-                                pos: Int, id: Long) {
+    override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
         // Maybe put category color on spinner for user to check if category is ok
     }
 

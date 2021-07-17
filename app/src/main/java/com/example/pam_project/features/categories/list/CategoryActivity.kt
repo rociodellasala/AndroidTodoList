@@ -21,18 +21,19 @@ import java.util.*
 class CategoryActivity : AppCompatActivity(), CategoryView, OnListClickedListener {
     private var presenter: CategoryPresenter? = null
     private var adapter: CategoryAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
         createPresenter()
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_category)
+        supportActionBar?.setTitle(R.string.activity_title_category)
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val repository = container.categoriesRepository
+        val schedulerProvider = container?.schedulerProvider
+        val repository = container?.categoriesRepository
         presenter = CategoryPresenter(schedulerProvider, repository, this)
     }
 
@@ -55,7 +56,7 @@ class CategoryActivity : AppCompatActivity(), CategoryView, OnListClickedListene
 
     private fun setExtendedFloatingButtonAction() {
         val addTaskFAB = findViewById<ExtendedFloatingActionButton>(R.id.extended_fab_add_category)
-        addTaskFAB.setOnClickListener { view: View? -> presenter!!.onButtonAddClicked() }
+        addTaskFAB.setOnClickListener { presenter!!.onButtonAddClicked() }
     }
 
     override fun showAddCategory() {

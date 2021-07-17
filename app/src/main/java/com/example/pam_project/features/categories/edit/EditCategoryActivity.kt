@@ -15,31 +15,32 @@ import com.thebluealliance.spectrum.SpectrumPalette
 import java.util.*
 
 class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
-    private var selectedColor = DEFAULT_COLOR.argbValue
-    private var presenter: EditCategoryPresenter? = null
+    private var selectedColor = DEFAULT_COLOR.aRGBValue
+    private lateinit var presenter: EditCategoryPresenter
     private var categoryId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_category)
         val id = intent.data!!.getQueryParameter("id")
         categoryId = id!!.toLong()
         createPresenter()
-        Objects.requireNonNull(supportActionBar)!!.setTitle(R.string.activity_title_edit_category)
+        supportActionBar?.setTitle(R.string.activity_title_edit_category)
         setDeleteButton()
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val repository = container.categoriesRepository
+        val schedulerProvider = container?.schedulerProvider
+        val repository = container?.categoriesRepository
         presenter = EditCategoryPresenter(categoryId, schedulerProvider, repository, this)
     }
 
     private fun setDeleteButton() {
         val deleteButton = findViewById<Button>(R.id.delete_category_button)
         if (categoryId != UNCATEGORIZED.toLong()) {
-            deleteButton.setOnClickListener { v: View? -> presenter!!.onDeletePressed() }
+            deleteButton.setOnClickListener { presenter.onDeletePressed() }
         } else {
             deleteButton.visibility = View.GONE
         }
@@ -49,7 +50,7 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
         AlertDialog.Builder(this)
                 .setMessage(R.string.confirm_category_delete)
                 .setCancelable(false)
-                .setPositiveButton(R.string.confirm_dialog) { dialog: DialogInterface?, id: Int -> presenter!!.deleteCategory(categoryId) }
+                .setPositiveButton(R.string.confirm_dialog) { _: DialogInterface?, _: Int -> presenter.deleteCategory(categoryId) }
                 .setNegativeButton(R.string.cancel_dialog, null)
                 .show()
     }
@@ -58,7 +59,7 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
         val palette = findViewById<SpectrumPalette>(R.id.edit_category_palette_color)
         val colors = IntArray(AppColor.values().size)
         for (i in colors.indices) {
-            colors[i] = AppColor.values()[i].argbValue
+            colors[i] = AppColor.values()[i].aRGBValue
         }
         palette.setColors(colors)
         palette.setOnColorSelectedListener { color: Int -> selectedColor = color }
@@ -66,7 +67,7 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
 
     public override fun onStart() {
         super.onStart()
-        presenter!!.onViewAttached()
+        presenter.onViewAttached()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -79,14 +80,14 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
         val categoryNameInput = findViewById<EditText>(R.id.edit_category_name_input)
         if (itemId == R.id.check_add_button.toLong()) {
             val categoryName = categoryNameInput.text.toString()
-            val color: AppColor = AppColor.Companion.fromARGBValue(selectedColor)
+            val color: AppColor? = AppColor.fromARGBValue(selectedColor)
             val validForm = FormValidator.validate(applicationContext, createInputMap(categoryName, categoryNameInput))
             var colorName = DEFAULT_COLOR.name
             if (color != null) {
                 colorName = color.name
             }
             if (validForm) {
-                presenter!!.updateCategory(categoryName, colorName)
+                presenter.updateCategory(categoryName, colorName)
                 finish()
             }
         }
@@ -102,8 +103,8 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
     override fun bindCategory(model: CategoryInformation?) {
         val title = findViewById<EditText>(R.id.edit_category_name_input)
         val palette = findViewById<SpectrumPalette>(R.id.edit_category_palette_color)
-        title.setText(model.getTitle())
-        palette.setSelectedColor(model.getColor().argbValue)
+        title.setText(model?.title)
+        palette.setSelectedColor(model?.color?.aRGBValue!!)
     }
 
     override fun onCategoryDelete() {
@@ -124,7 +125,7 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
 
     public override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 
     companion object {

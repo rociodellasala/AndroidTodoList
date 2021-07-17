@@ -8,12 +8,13 @@ import com.example.pam_project.features.lists.list.OnListClickedListener
 
 class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var listener: OnListClickedListener? = null
+
     fun bind(category: CategoryInformation?) {
         val categoryTitle = itemView.findViewById<TextView>(R.id.category_title)
-        categoryTitle.text = category.getTitle()
-        itemView.setOnClickListener { v: View? ->
+        categoryTitle.text = category?.title
+        itemView.setOnClickListener {
             if (listener != null) {
-                listener!!.onClick(category.getId())
+                listener!!.onClick(category?.id!!)
             }
         }
     }
