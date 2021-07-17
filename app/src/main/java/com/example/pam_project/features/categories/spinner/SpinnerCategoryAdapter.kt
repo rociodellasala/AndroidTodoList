@@ -7,7 +7,7 @@ import java.util.*
 
 class SpinnerCategoryAdapter(context: Context?, layout: Int) {
     val categories: ArrayAdapter<String?>
-    private val categoriesMap: MutableMap<String?, Long?>
+    val categoriesMap: MutableMap<String?, Long?>
 
     fun update(model: List<CategoryInformation?>?) {
         for (categoryInformation in model!!) {

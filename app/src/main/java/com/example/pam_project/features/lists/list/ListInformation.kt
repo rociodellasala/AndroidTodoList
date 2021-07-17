@@ -9,12 +9,11 @@ import com.example.pam_project.features.tasks.list.TaskInformation
 import com.example.pam_project.utils.constants.AppColor
 import com.example.pam_project.utils.constants.TaskStatus
 import java.io.Serializable
-import java.util.*
 
 class ListInformation(val id: Long, val title: String?, val categoryId: Long) : Serializable, Comparable<ListInformation> {
-    var color: AppColor?
+    var color: AppColor? = null
         private set
-    var tasks: List<TaskInformation>?
+    var tasks: List<TaskInformation>? = null
         private set
     var category: CategoryInformation? = null
 
@@ -25,16 +24,13 @@ class ListInformation(val id: Long, val title: String?, val categoryId: Long) : 
     }
 
     constructor(id: Long, title: String?, categoryId: Long,
-                color: String?, tasks: List<TaskInformation>?) : this(id, title, categoryId, AppColor.Companion.fromName(color), tasks) {
-    }
+                color: String?, tasks: List<TaskInformation>?) : this(id, title, categoryId, AppColor.fromName(color), tasks)
 
     constructor(id: Long, title: String?, categoryId: Long,
-                color: String?) : this(id, title, categoryId, AppColor.Companion.fromName(color), null) {
-    }
+                color: String?) : this(id, title, categoryId, AppColor.fromName(color), null)
 
     constructor(id: Long, title: String?, categoryId: Long,
-                tasks: List<TaskInformation>?) : this(id, title, categoryId, null as AppColor?, tasks) {
-    }
+                tasks: List<TaskInformation>?) : this(id, title, categoryId, null as AppColor?, tasks)
 
     fun hasUrgentTask(): Boolean {
         for (task in tasks!!) {
@@ -62,8 +58,8 @@ class ListInformation(val id: Long, val title: String?, val categoryId: Long) : 
             return urgent
         }
 
-    override fun compareTo(o: ListInformation): Int {
-        return NATURAL_COMPARATOR.compare(this, o)
+    override fun compareTo(other: ListInformation): Int {
+        return NATURAL_COMPARATOR.compare(this, other)
     }
 
     companion object {
@@ -75,7 +71,7 @@ class ListInformation(val id: Long, val title: String?, val categoryId: Long) : 
                 ListDateAddedComparator()
         )
 
-        fun getComparator(index: Int): Comparator<ListInformation>? {
+        fun getComparator(index: Int): ListInformationComparator? {
             return if (index >= COMPARATORS.size || index < 0) null else COMPARATORS[index]
         }
     }

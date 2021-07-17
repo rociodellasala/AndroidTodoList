@@ -12,7 +12,7 @@ class EditListPresenter(private val provider: SchedulerProvider?,
                         private val categoriesRepository: CategoriesRepository?,
                         private val listsRepository: ListsRepository?,
                         view: EditListView?) {
-    private val view: WeakReference<EditListView?>
+    private val view: WeakReference<EditListView?> = WeakReference(view)
     private var fetchListDisposable: Disposable? = null
     private var fetchCategoriesDisposable: Disposable? = null
     private var updateListDisposable: Disposable? = null
@@ -24,7 +24,7 @@ class EditListPresenter(private val provider: SchedulerProvider?,
     }
 
     private fun fetchCategories(id: Long) {
-        fetchCategoriesDisposable = categoriesRepository.getCategories()
+        fetchCategoriesDisposable = categoriesRepository!!.categories
                 .subscribeOn(provider!!.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<CategoryInformation?>? ->
@@ -103,7 +103,4 @@ class EditListPresenter(private val provider: SchedulerProvider?,
         if (deleteListDisposable != null) deleteListDisposable!!.dispose()
     }
 
-    init {
-        this.view = WeakReference(view)
-    }
 }

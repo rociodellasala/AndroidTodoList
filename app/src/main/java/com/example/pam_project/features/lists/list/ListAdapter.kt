@@ -6,18 +6,18 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pam_project.R
 import com.example.pam_project.features.categories.list.CategoryInformation
-import com.example.pam_project.features.lists.list.ListInformation
 import java.util.*
 
 class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
     private val dataSet: MutableList<ListInformation?>
     private val hiddenItems: MutableList<ListInformation?>
     private val completeDataset: MutableList<ListInformation?>
-    private val previousSearchDataset: MutableList<ListInformation?>
+    val previousSearchDataset: MutableList<ListInformation?>
     private var searchItems: List<ListInformation?>
     private val categoriesWithIds: MutableMap<Long, CategoryInformation?>
     private var categories: List<CategoryInformation?>
     private var listener: OnListClickedListener? = null
+
     fun update(newDataSet: List<ListInformation?>?) {
         dataSet.clear()
         if (newDataSet != null) dataSet.addAll(newDataSet)
@@ -29,18 +29,18 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
         categoriesWithIds.clear()
         if (newCategories != null) {
             for (category in newCategories) {
-                categoriesWithIds[category.getId()] = category
+                categoriesWithIds[category!!.id] = category
             }
         }
         categories = ArrayList(categoriesWithIds.values)
         for (list in dataSet) {
-            list.setCategory(categoriesWithIds[list.getCategoryId()])
+            list?.category = categoriesWithIds[list?.categoryId]
         }
         if (Companion.filterSelections == null) return
 
         // reset category selections if one category has been deleted and was selected
         for (i in Companion.filterSelections!!.indices) {
-            if (!categoriesWithIds.containsKey(java.lang.Long.valueOf(Companion.filterSelections!![i]))) {
+            if (!categoriesWithIds.containsKey(filterSelections!![i].toLong())) {
                 Companion.filterSelections = null
                 return
             }
@@ -78,7 +78,7 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
     // hide items not in selected categories and remove them from dataSet
 
     // show items in selected categories and remove them from hidden items
-    var filterSelections: MutableList<Int>?
+    private var filterSelections: MutableList<Int>?
         get() = Companion.filterSelections
         set(newFilterSelections) {
             if (newFilterSelections == null) {
@@ -88,7 +88,7 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
             val selectedCategoriesIds: MutableList<Long> = ArrayList(
                     newFilterSelections.size)
             // get ids from selected categories
-            for (index in newFilterSelections) selectedCategoriesIds.add(categories[index].getId())
+            for (index in newFilterSelections) selectedCategoriesIds.add(categories[index]?.id!!)
 
             // hide items not in selected categories and remove them from dataSet
             moveToList(dataSet, hiddenItems) { id: Long -> !selectedCategoriesIds.contains(id) }
@@ -103,10 +103,6 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
             Companion.filterSelections = newFilterSelections
         }
 
-    fun getCategories(): List<CategoryInformation> {
-        return Collections.unmodifiableList(categories)
-    }
-
     fun setCompleteDataset(dataset: List<ListInformation?>?) {
         completeDataset.clear()
         completeDataset.addAll(dataset!!)
@@ -117,12 +113,8 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
         previousSearchDataset.addAll(dataSet)
     }
 
-    fun getPreviousSearchDataset(): List<ListInformation?> {
-        return ArrayList(previousSearchDataset)
-    }
-
     private fun sort() {
-        Collections.sort(dataSet, ListInformation.Companion.getComparator(Companion.sortIndex))
+        Collections.sort(dataSet, ListInformation.getComparator(Companion.sortIndex))
     }
 
     override fun getFilter(): Filter {
@@ -134,7 +126,7 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
                 } else {
                     val filteredList: MutableList<ListInformation?> = ArrayList()
                     for (listInformation in completeDataset) {
-                        if (listInformation.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                        if (listInformation?.title?.lowercase()?.contains(charString.lowercase())!!) {
                             filteredList.add(listInformation)
                         }
                     }
@@ -168,7 +160,7 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
                            function: ListCheck) {
         // show items in dataSet or hidden categories
         for (item in from) {
-            if (function.condition(item.getCategoryId())) {
+            if (function.condition(item?.categoryId!!)) {
                 to.add(item)
             }
         }
@@ -180,8 +172,8 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
         val listNoDuplicates: MutableList<ListInformation?> = ArrayList()
         val idSet: MutableSet<Long> = HashSet()
         for (listInformation in list) {
-            if (!idSet.contains(listInformation.getId())) {
-                idSet.add(listInformation.getId())
+            if (!idSet.contains(listInformation?.id)) {
+                idSet.add(listInformation?.id!!)
                 listNoDuplicates.add(listInformation)
             }
         }
