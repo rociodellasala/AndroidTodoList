@@ -11,15 +11,15 @@ class ListMapper {
         return ListInformation(entity!!.id, entity.name, entity.categoryId)
     }
 
-    fun toModelWithTasks(entity: ListEntity?, tasks: List<TaskInformation>?): ListInformation {
+    private fun toModelWithTasks(entity: ListEntity?, tasks: List<TaskInformation>?): ListInformation {
         return ListInformation(entity!!.id, entity.name, entity.categoryId, tasks)
     }
 
     fun toListWithTasksModel(entity: ListsWithTasks?): ListInformation {
         val listOfTasks: MutableList<TaskInformation> = ArrayList()
         for (taskEntity in entity!!.tasks!!) {
-            listOfTasks.add(TaskInformation(taskEntity!!.id, taskEntity.name, taskEntity.description,
-                    taskEntity.priority, TaskStatus.Companion.getStatus(taskEntity.status)))
+            listOfTasks.add(TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
+                    taskEntity.priority, TaskStatus.getStatus(taskEntity.status)))
         }
         return toModelWithTasks(entity.list, listOfTasks)
     }

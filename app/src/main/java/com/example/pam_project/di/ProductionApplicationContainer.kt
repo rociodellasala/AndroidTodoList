@@ -19,7 +19,8 @@ import com.example.pam_project.repositories.tasks.TaskRepository
 import com.example.pam_project.utils.schedulers.SchedulerProvider
 
 class ProductionApplicationContainer(context: Context) : ApplicationContainer {
-    private val applicationModule: ApplicationModule
+    private val applicationModule: ApplicationModule = ApplicationModule(context)
+
     override var ftuStorage: FtuStorage? = null
         get() {
             if (field == null) {
@@ -28,6 +29,7 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
             return field
         }
         private set
+
     override var schedulerProvider: SchedulerProvider? = null
         get() {
             if (field == null) {
@@ -36,6 +38,7 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
             return field
         }
         private set
+
     override var categoriesRepository: CategoriesRepository? = null
         get() {
             if (field == null) {
@@ -46,15 +49,17 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
             return field
         }
         private set
+
     private var categoryDao: CategoryDao? = null
-        private get() {
+         get() {
             if (field == null) {
                 field = applicationModule.provideCategoryDao()
             }
             return field
         }
+
     private var categoryMapper: CategoryMapper? = null
-        private get() {
+         get() {
             if (field == null) {
                 field = applicationModule.provideCategoryMapper()
             }
@@ -70,15 +75,17 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
             return field
         }
         private set
+
     private var listDao: ListDao? = null
-        private get() {
+         get() {
             if (field == null) {
                 field = applicationModule.provideListDao()
             }
             return field
         }
+
     private var listMapper: ListMapper? = null
-        private get() {
+         get() {
             if (field == null) {
                 field = applicationModule.provideListMapper()
             }
@@ -93,26 +100,28 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
         }
         private set
     private var taskDao: TaskDao? = null
-        private get() {
+         get() {
             if (field == null) {
                 field = applicationModule.provideTaskDao()
             }
             return field
         }
     private var taskMapper: TaskMapper? = null
-        private get() {
+         get() {
             if (field == null) {
                 field = applicationModule.provideTaskMapper()
             }
             return field
         }
+
     private var service: APIServiceImplementation? = null
-        private get() {
+        get() {
             if (field == null) {
                 field = applicationModule.provideAPIService()
             }
             return field
         }
+
     override var authorsRepository: AuthorsRepository? = null
         get() {
             if (field == null) {
@@ -121,13 +130,15 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
             return field
         }
         private set
+
     private var authorsMapper: AuthorsMapper? = null
-        private get() {
+        get() {
             if (field == null) {
                 field = applicationModule.provideAuthorsMapper()
             }
             return field
         }
+
     override var versionRepository: VersionRepository? = null
         get() {
             if (field == null) {
@@ -136,17 +147,15 @@ class ProductionApplicationContainer(context: Context) : ApplicationContainer {
             return field
         }
         private set
+
     private var versionMapper: VersionMapper? = null
-        private get() {
+        get() {
             if (field == null) {
                 field = applicationModule.provideVersionMapper()
             }
             return field
         }
-    override val applicationContext: Context?
-        get() = applicationModule.applicationContext
 
-    init {
-        applicationModule = ApplicationModule(context)
-    }
+    override val applicationContext: Context
+        get() = applicationModule.applicationContext
 }

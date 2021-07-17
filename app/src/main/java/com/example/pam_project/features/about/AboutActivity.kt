@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.pam_project.R
 import com.example.pam_project.di.ApplicationContainerLocator
 import com.example.pam_project.networking.version.VersionModel
-import java.util.*
 
 class AboutActivity : AppCompatActivity(), AboutView {
-    private var presenter: AboutPresenter? = null
-    private var authorsView: TextView? = null
-    private var versionView: TextView? = null
+    private lateinit var presenter: AboutPresenter
+    private lateinit var authorsView: TextView
+    private lateinit var versionView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
@@ -23,37 +23,37 @@ class AboutActivity : AppCompatActivity(), AboutView {
 
     override fun onStart() {
         super.onStart()
-        presenter!!.onViewAttached()
+        presenter.onViewAttached()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val repository = container.authorsRepository
-        val versionRepo = container.versionRepository
+        val schedulerProvider = container?.schedulerProvider
+        val repository = container?.authorsRepository
+        val versionRepo = container?.versionRepository
         presenter = AboutPresenter(repository, versionRepo, schedulerProvider, this)
     }
 
     private fun setUpViews() {
-        val appName = Objects.requireNonNull(supportActionBar)!!.title as String?
+        val appName = supportActionBar?.title as String?
         val about = applicationContext.resources.getString(R.string.about)
-        Objects.requireNonNull(supportActionBar)!!.title = "$about $appName"
+        supportActionBar?.title = "$about $appName"
         authorsView = findViewById(R.id.about_authors)
         versionView = findViewById(R.id.about_version)
     }
 
     override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 
     private fun hideLoader() {
         findViewById<View>(R.id.about_loader).visibility = View.GONE
     }
 
-    override fun bindAuthors(authors: String?) {
+    override fun bindAuthors(model: String?) {
         findViewById<View>(R.id.authors).visibility = View.VISIBLE
-        authorsView!!.text = authors
+        authorsView.text = model
         showData()
     }
 
@@ -70,7 +70,7 @@ class AboutActivity : AppCompatActivity(), AboutView {
 
     override fun bindVersion(model: VersionModel?) {
         findViewById<View>(R.id.version).visibility = View.VISIBLE
-        versionView.setText(model.getVersion())
+        versionView.text = model?.version
         showData()
     }
 }
