@@ -9,9 +9,9 @@ class TaskViewHolderPending(itemView: View) : TaskViewHolder(itemView) {
     override fun bind(task: TaskInformation?) {
         super.bind(task)
         val description = itemView.findViewById<TextView>(R.id.description)
-        description.text = task.getDescription()
+        description.text = task?.description
         val urgency = itemView.findViewById<ImageView>(R.id.urgency)
-        if (task.getUrgency()) {
+        if (task?.urgency == true) {
             urgency.visibility = View.VISIBLE
         } else {
             urgency.visibility = View.GONE

@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.pam_project.R
 import java.util.*
 
-class CustomItemDecorator(context: Context, @LayoutRes resId: Int, private val allHeaders: Array<String>) : ItemDecoration() {
-    private val mLayout: Array<View?>
-    private val textView: Array<TextView?>
-    private val context: Context
-    private val resId: Int
+class CustomItemDecorator(private val context: Context, @LayoutRes private val resId: Int,
+                          private val allHeaders: Array<String>) : ItemDecoration() {
+    private val mLayout: Array<View?> = arrayOfNulls(allHeaders.size)
+    private val textView: Array<TextView?> = arrayOfNulls(allHeaders.size)
+
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         var currentViewType = -1
         var i = 0
@@ -61,10 +61,10 @@ class CustomItemDecorator(context: Context, @LayoutRes resId: Int, private val a
     private fun updateLayout(parent: RecyclerView, headers: List<String>) {
         for (i in headers.indices) {
             mLayout[i] = LayoutInflater.from(context).inflate(resId, parent, false)
-            textView[i] = mLayout[i].findViewById(R.id.recycler_header)
-            textView[i].setText(headers[i])
-            textView[i].setVisibility(View.INVISIBLE)
-            mLayout[i].measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            textView[i] = mLayout[i]?.findViewById(R.id.recycler_header)
+            textView[i]?.text = headers[i]
+            textView[i]?.visibility = View.INVISIBLE
+            mLayout[i]?.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
         }
     }
@@ -93,10 +93,4 @@ class CustomItemDecorator(context: Context, @LayoutRes resId: Int, private val a
         private const val TASK_DONE = 1
     }
 
-    init {
-        mLayout = arrayOfNulls(allHeaders.size)
-        textView = arrayOfNulls(allHeaders.size)
-        this.context = context
-        this.resId = resId
-    }
 }

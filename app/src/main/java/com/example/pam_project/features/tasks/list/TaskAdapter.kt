@@ -12,6 +12,7 @@ import java.util.*
 class TaskAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var listener: OnListClickedListener? = null
     private val dataSet: MutableList<TaskInformation?>
+
     fun update(newDataSet: List<TaskInformation?>?) {
         dataSet.clear()
         if (newDataSet != null) {

@@ -20,13 +20,13 @@ import com.example.pam_project.features.tasks.create.CreateTaskActivity
 import com.example.pam_project.utils.constants.ActivityResultCode
 import com.example.pam_project.utils.constants.TaskStatus
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import java.util.*
 
 class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
-    private var recyclerView: RecyclerView? = null
-    private var adapter: TaskAdapter? = null
-    private var presenter: TaskPresenter? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: TaskAdapter
+    private lateinit var presenter: TaskPresenter
     private var listId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
@@ -38,9 +38,9 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container.schedulerProvider
-        val taskRepository = container.tasksRepository
-        val listsRepository = container.listsRepository
+        val schedulerProvider = container?.schedulerProvider
+        val taskRepository = container?.tasksRepository
+        val listsRepository = container?.listsRepository
         presenter = TaskPresenter(schedulerProvider, taskRepository, listsRepository,
                 this, listId)
     }
@@ -48,18 +48,18 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
     private fun setUpView() {
         recyclerView = findViewById(R.id.allTasks)
         recyclerView.setHasFixedSize(true)
-        recyclerView.setLayoutManager(LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false))
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val touchHelper = ItemTouchHelper(setSwippableItems())
         touchHelper.attachToRecyclerView(recyclerView)
         setExtendedFloatingButtonAction()
         adapter = TaskAdapter()
-        adapter!!.setOnClickedListener(this)
-        recyclerView.setAdapter(adapter)
+        adapter.setOnClickedListener(this)
+        recyclerView.adapter = adapter
     }
 
     override fun onStart() {
         super.onStart()
-        presenter!!.onViewAttached()
+        presenter.onViewAttached()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,7 +70,7 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
 
     private fun setExtendedFloatingButtonAction() {
         val addTaskFAB = findViewById<ExtendedFloatingActionButton>(R.id.extended_fab_add_task)
-        addTaskFAB.setOnClickListener { view: View? -> presenter!!.onButtonAddClicked() }
+        addTaskFAB.setOnClickListener { presenter.onButtonAddClicked() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -85,25 +85,25 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId.toLong()
         if (id == R.id.edit_list_button.toLong()) {
-            presenter!!.onEditList()
+            presenter.onEditList()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun bindTasks(model: List<TaskInformation?>?) {
-        adapter!!.update(model)
-        presenter!!.onEmptyTask()
+        adapter.update(model)
+        presenter.onEmptyTask()
     }
 
     override fun bindHeaders(headers: IntArray) {
         val titleHeaders = arrayOf(getString(headers[0]), getString(headers[1]))
-        recyclerView!!.addItemDecoration(CustomItemDecorator(this, R.layout.text_header, titleHeaders))
+        recyclerView.addItemDecoration(CustomItemDecorator(this, R.layout.text_header, titleHeaders))
     }
 
     override fun showEmptyMessage() {
         val text = findViewById<TextView>(R.id.empty_list_message)
         val emptyDataMessage = findViewById<View>(R.id.empty_task)
-        if (adapter!!.itemCount == 0) {
+        if (adapter.itemCount == 0) {
             text.setText(R.string.empty_task_message)
             emptyDataMessage.visibility = View.VISIBLE
         } else {
@@ -125,8 +125,8 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
         Toast.makeText(applicationContext, getString(R.string.error_task_update), Toast.LENGTH_LONG).show()
     }
 
-    override fun bindListName(listName: String?) {
-        Objects.requireNonNull(supportActionBar)!!.title = listName
+    override fun bindListName(name: String?) {
+        supportActionBar?.title = name
     }
 
     override fun showAddTask() {
@@ -142,8 +142,8 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
     }
 
     override fun onTaskStatusEdit(model: TaskInformation?, adapterPosition: Int) {
-        adapter!!.update(model, adapterPosition)
-        if (adapter!!.areAllComplete()) finish()
+        adapter.update(model, adapterPosition)
+        if (adapter.areAllComplete()) finish()
     }
 
     private fun setSwippableItems(): ItemTouchHelper.SimpleCallback {
@@ -155,8 +155,8 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
             }
 
             override fun onSwiped(swippedItem: RecyclerView.ViewHolder, direction: Int) {
-                val taskInformation = adapter!!.getItem(swippedItem.adapterPosition)
-                presenter!!.onTaskChange(taskInformation, swippedItem.adapterPosition)
+                val taskInformation = adapter.getItem(swippedItem.adapterPosition)
+                presenter.onTaskChange(taskInformation, swippedItem.adapterPosition)
             }
 
             override fun isItemViewSwipeEnabled(): Boolean {
@@ -168,19 +168,19 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
                 val dragFlags = 0
                 val leftSwipeFlag = ItemTouchHelper.LEFT
                 val rightSwipeFlag = ItemTouchHelper.RIGHT
-                val taskInformation = adapter!!.getItem(swippedItem.adapterPosition)
+                val taskInformation = adapter.getItem(swippedItem.adapterPosition)
                 return if (taskInformation!!.status == TaskStatus.DONE) makeMovementFlags(dragFlags, rightSwipeFlag) else makeMovementFlags(dragFlags, leftSwipeFlag)
             }
         }
     }
 
     override fun onClick(id: Long) {
-        presenter!!.onTaskClicked(id)
+        presenter.onTaskClicked(id)
     }
 
     override fun onStop() {
         super.onStop()
-        presenter!!.onViewDetached()
+        presenter.onViewDetached()
     }
 
     companion object {

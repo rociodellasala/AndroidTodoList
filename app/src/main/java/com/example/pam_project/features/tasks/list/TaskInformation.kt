@@ -6,7 +6,7 @@ class TaskInformation : Comparable<TaskInformation> {
     val title: String?
     val description: String?
     val urgency: Boolean
-    private val status: TaskStatus?
+    val status: TaskStatus?
     var id: Long = 0
         private set
 
@@ -25,18 +25,23 @@ class TaskInformation : Comparable<TaskInformation> {
         this.status = status
     }
 
-    fun getStatus(): TaskStatus {
-        return status!!
+    override fun equals(other: Any?): Boolean {
+        if (other == null) return false
+        if (other !is TaskInformation) return false
+        return id == other.id && title == other.title && description == other.description
+                && urgency == other.urgency && status == other.status
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (o == null) return false
-        if (o !is TaskInformation) return false
-        val other = o
-        return id == other.id && title == other.title && description == other.description && urgency == other.urgency && status == other.getStatus()
+    override fun compareTo(other: TaskInformation): Int {
+        return status!!.compareTo(other.status!!)
     }
 
-    override fun compareTo(o: TaskInformation): Int {
-        return getStatus().compareTo(o.getStatus())
+    override fun hashCode(): Int {
+        var result = title?.hashCode() ?: 0
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + urgency.hashCode()
+        result = 31 * result + (status?.hashCode() ?: 0)
+        result = 31 * result + id.hashCode()
+        return result
     }
 }
