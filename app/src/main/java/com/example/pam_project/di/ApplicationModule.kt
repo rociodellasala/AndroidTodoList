@@ -43,8 +43,7 @@ class ApplicationModule internal constructor(context: Context) {
     }
 
     /* default */
-    fun provideCategoriesRepository(dao: CategoryDao?,
-                                    mapper: CategoryMapper?): CategoriesRepository {
+    fun provideCategoriesRepository(dao: CategoryDao?, mapper: CategoryMapper?): CategoriesRepository {
         return RoomCategoriesRepository(dao, mapper)
     }
 

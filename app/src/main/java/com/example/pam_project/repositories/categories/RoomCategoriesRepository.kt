@@ -10,14 +10,16 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 class RoomCategoriesRepository(private val categoryDao: CategoryDao?, private val mapper: CategoryMapper?) : CategoriesRepository {
-    override fun getCategory(id: Long): Flowable<CategoryInformation?> {
-        return categoryDao!!.getCategoryById(id).map { entity: CategoryEntity? -> mapper!!.toModel(entity) }
+    override fun getCategory(id: Long): Flowable<CategoryInformation> {
+        return categoryDao!!.getCategoryById(id).map { entity: CategoryEntity -> mapper!!.toModel(entity) }
     }
 
-    override val categoriesWithLists: Flowable<Map<CategoryInformation?, List<ListInformation?>?>?>
-        get() = categoryDao.getAllCategoriesWithLists().map { entities: List<CategoriesWithLists?>? -> mapper!!.toListWithCategoriesModel(entities) }
-    override val categories: Flowable<List<CategoryInformation?>?>
-        get() = categoryDao.getAllCategories().map { categoryEntities: List<CategoryEntity?>? -> mapper!!.toCategoryModel(categoryEntities) }
+    override val categoriesWithLists: Flowable<Map<CategoryInformation, List<ListInformation>>>
+        get() = categoryDao!!.allCategoriesWithLists.map { entities: List<CategoriesWithLists?>?
+            -> mapper!!.toListWithCategoriesModel(entities) }
+
+    override val categories: Flowable<List<CategoryInformation>>
+        get() = categoryDao!!.allCategories.map { categoryEntities: List<CategoryEntity?>? -> mapper!!.toCategoryModel(categoryEntities) }
 
     override fun insertCategory(name: String, color: String): Completable {
         val entity = CategoryEntity(name, color)

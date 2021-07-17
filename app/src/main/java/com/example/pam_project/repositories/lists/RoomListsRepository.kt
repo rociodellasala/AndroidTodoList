@@ -9,11 +9,11 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 class RoomListsRepository(private val listDao: ListDao?, private val mapper: ListMapper?) : ListsRepository {
-    override fun getList(listId: Long): Flowable<ListInformation?> {
-        return listDao!!.getListById(listId).map { entity: ListEntity? -> mapper!!.toModel(entity) }
+    override fun getList(id: Long): Flowable<ListInformation> {
+        return listDao!!.getListById(id).map { entity: ListEntity? -> mapper!!.toModel(entity) }
     }
 
-    override fun getListWithTasks(listId: Long): Flowable<ListInformation?> {
+    override fun getListWithTasks(listId: Long): Flowable<ListInformation> {
         return listDao!!.getListsWithTasks(listId).map { entity: ListsWithTasks? -> mapper!!.toListWithTasksModel(entity) }
     }
 
