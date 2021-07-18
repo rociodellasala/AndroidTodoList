@@ -3,7 +3,7 @@ package com.example.pam_project.features.categories.list
 import com.example.pam_project.utils.constants.AppColor
 import java.io.Serializable
 
-class CategoryInformation(val title: String, val color: AppColor?) : Serializable, Comparable<CategoryInformation> {
+open class CategoryInformation(val title: String, val color: AppColor?) : Serializable, Comparable<CategoryInformation> {
     var id: Long = 0
         private set
 
