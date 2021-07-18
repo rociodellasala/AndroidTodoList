@@ -10,7 +10,7 @@ import com.example.pam_project.utils.constants.AppColor
 import com.example.pam_project.utils.constants.TaskStatus
 import java.io.Serializable
 
-class ListInformation(val id: Long, val title: String?, val categoryId: Long) : Serializable, Comparable<ListInformation> {
+open class ListInformation(val id: Long, val title: String?, val categoryId: Long) : Serializable, Comparable<ListInformation> {
     var color: AppColor? = null
         private set
     var tasks: List<TaskInformation>? = null

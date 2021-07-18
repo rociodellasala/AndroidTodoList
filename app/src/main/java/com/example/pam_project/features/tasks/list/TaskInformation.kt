@@ -2,7 +2,7 @@ package com.example.pam_project.features.tasks.list
 
 import com.example.pam_project.utils.constants.TaskStatus
 
-class TaskInformation : Comparable<TaskInformation> {
+open class TaskInformation : Comparable<TaskInformation> {
     val title: String?
     val description: String?
     val urgency: Boolean
