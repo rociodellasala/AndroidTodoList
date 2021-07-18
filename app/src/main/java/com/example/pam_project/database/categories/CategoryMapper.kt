@@ -24,7 +24,8 @@ class CategoryMapper {
                     task.add(TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
                             taskEntity.priority, TaskStatus.getStatus(taskEntity.status)))
                 }
-                list.add(ListInformation(listEntity!!.id, listEntity.name, listEntity.categoryId, categoryWithListEntity.category!!.color, task))
+                list.add(ListInformation(listEntity!!.id, listEntity.name, listEntity.categoryId,
+                    categoryWithListEntity.category!!.color, task))
             }
             map[toModel(categoryWithListEntity.category)] = list
         }
