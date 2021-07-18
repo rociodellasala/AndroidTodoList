@@ -32,18 +32,18 @@ class EditListActivity : AppCompatActivity(), EditListView {
         setContentView(R.layout.activity_edit_list)
         createPresenter()
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
-        supportActionBar?.setTitle(R.string.activity_title_edit_list)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(R.string.activity_title_edit_list)
         setDeleteButton()
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val categoriesRepository = container?.categoriesRepository
-        val listsRepository = container?.listsRepository
+        val schedulerProvider = container!!.schedulerProvider
+        val categoriesRepository = container.categoriesRepository
+        val listsRepository = container.listsRepository
         presenter = EditListPresenter(schedulerProvider, categoriesRepository,
                 listsRepository, this)
     }
@@ -119,15 +119,18 @@ class EditListActivity : AppCompatActivity(), EditListView {
         val itemId = item.itemId.toLong()
         val spinner = findViewById<Spinner>(R.id.edit_list_category_spinner)
         val listNameInput = findViewById<EditText>(R.id.edit_list_title_input)
+        val returnIntent = Intent()
         if (itemId == R.id.check_add_button.toLong()) {
             val listName = listNameInput.text.toString()
             val categoryId = adapter.categoriesMap[spinner.selectedItem.toString()]
             val validForm = FormValidator.validate(applicationContext, createInputMap(listName, listNameInput))
             if (validForm) {
                 presenter.updateList(listId, listName, categoryId)
-                finish()
+                setResult(ActivityResultCode.EDIT_LIST_CODE.ordinal, returnIntent)
+                onBackPressed()
             }
         } else if (itemId == android.R.id.home.toLong()) {
+            setResult(ActivityResultCode.EDIT_LIST_CODE.ordinal, returnIntent)
             onBackPressed()
         }
         return super.onOptionsItemSelected(item)
