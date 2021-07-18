@@ -32,7 +32,7 @@ class EditListActivity : AppCompatActivity(), EditListView {
         setContentView(R.layout.activity_edit_list)
         createPresenter()
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
-        supportActionBar?.setTitle(R.string.activity_title_edit_list)
+        supportActionBar?.title=R.string.activity_title_edit_list.toString()
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         setDeleteButton()
@@ -41,9 +41,9 @@ class EditListActivity : AppCompatActivity(), EditListView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val categoriesRepository = container?.categoriesRepository
-        val listsRepository = container?.listsRepository
+        val schedulerProvider = container.schedulerProvider
+        val categoriesRepository = container.categoriesRepository
+        val listsRepository = container.listsRepository
         presenter = EditListPresenter(schedulerProvider, categoriesRepository,
                 listsRepository, this)
     }

@@ -20,14 +20,14 @@ class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_category)
         createPresenter()
-        supportActionBar?.setTitle(R.string.activity_title_create_category)
+        supportActionBar?.title= R.string.activity_title_create_category.toString()
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val repository = container?.categoriesRepository
+        val schedulerProvider = container.schedulerProvider
+        val repository = container.categoriesRepository
         presenter = CreateCategoryPresenter(schedulerProvider, repository, this)
     }
 

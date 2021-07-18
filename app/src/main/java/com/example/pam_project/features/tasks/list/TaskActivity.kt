@@ -38,9 +38,9 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val taskRepository = container?.tasksRepository
-        val listsRepository = container?.listsRepository
+        val schedulerProvider = container.schedulerProvider
+        val taskRepository = container.tasksRepository
+        val listsRepository = container.listsRepository
         presenter = TaskPresenter(schedulerProvider, taskRepository, listsRepository,
                 this, listId)
     }
@@ -104,7 +104,7 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
         val text = findViewById<TextView>(R.id.empty_list_message)
         val emptyDataMessage = findViewById<View>(R.id.empty_task)
         if (adapter.itemCount == 0) {
-            text.setText(R.string.empty_task_message)
+            text.text = R.string.empty_task_message.toString()
             emptyDataMessage.visibility = View.VISIBLE
         } else {
             emptyDataMessage.visibility = View.GONE

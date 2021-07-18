@@ -28,9 +28,9 @@ class AboutActivity : AppCompatActivity(), AboutView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val repository = container?.authorsRepository
-        val versionRepo = container?.versionRepository
+        val schedulerProvider = container.schedulerProvider
+        val repository = container.authorsRepository
+        val versionRepo = container.versionRepository
         presenter = AboutPresenter(repository, versionRepo, schedulerProvider, this)
     }
 

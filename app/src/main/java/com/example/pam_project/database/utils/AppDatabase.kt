@@ -13,8 +13,8 @@ import com.example.pam_project.database.tasks.TaskEntity
 
 @Database(entities = [ListEntity::class, CategoryEntity::class, TaskEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun listDao(): ListDao?
-    abstract fun taskDao(): TaskDao?
+    abstract fun listDao(): ListDao
+    abstract fun taskDao(): TaskDao
     abstract fun categoryDao(): CategoryDao
 
     companion object {

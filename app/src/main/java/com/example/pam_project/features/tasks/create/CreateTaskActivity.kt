@@ -23,13 +23,13 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(R.string.activity_title_create_task)
+        supportActionBar?.title=R.string.activity_title_create_task.toString()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val taskRepository = container?.tasksRepository
+        val schedulerProvider = container.schedulerProvider
+        val taskRepository = container.tasksRepository
         presenter = CreateTaskPresenter(schedulerProvider, taskRepository, this)
     }
 

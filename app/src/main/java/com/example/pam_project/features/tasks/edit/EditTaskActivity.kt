@@ -29,14 +29,14 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
         createPresenter()
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(R.string.activity_title_edit_task)
+        supportActionBar?.title=R.string.activity_title_edit_task.toString()
         setDeleteButton()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val taskRepository = container?.tasksRepository
+        val schedulerProvider = container.schedulerProvider
+        val taskRepository = container.tasksRepository
         presenter = EditTaskPresenter(taskId, schedulerProvider, taskRepository, this)
     }
 
@@ -113,10 +113,6 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.check_action_bar, menu)
         return true
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 
     override fun onStop() {

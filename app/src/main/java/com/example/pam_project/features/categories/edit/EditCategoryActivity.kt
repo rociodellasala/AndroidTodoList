@@ -25,15 +25,15 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
         val id = intent.data!!.getQueryParameter("id")
         categoryId = id!!.toLong()
         createPresenter()
-        supportActionBar?.setTitle(R.string.activity_title_edit_category)
+        supportActionBar?.title=R.string.activity_title_edit_category.toString()
         setDeleteButton()
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val repository = container?.categoriesRepository
+        val schedulerProvider = container.schedulerProvider
+        val repository = container.categoriesRepository
         presenter = EditCategoryPresenter(categoryId, schedulerProvider, repository, this)
     }
 

@@ -23,15 +23,15 @@ class CreateListActivity : AppCompatActivity(), CreateListView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_list)
         createPresenter()
-        supportActionBar?.setTitle(R.string.activity_title_create_list)
+        supportActionBar?.title=R.string.activity_title_create_list.toString()
         setUpView()
     }
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val categoriesRepository = container?.categoriesRepository
-        val listsRepository = container?.listsRepository
+        val schedulerProvider = container.schedulerProvider
+        val categoriesRepository = container.categoriesRepository
+        val listsRepository = container.listsRepository
         presenter = CreateListPresenter(schedulerProvider, categoriesRepository,
                 listsRepository, this)
     }
