@@ -26,8 +26,8 @@ class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val repository = container?.categoriesRepository
+        val schedulerProvider = container.schedulerProvider
+        val repository = container.categoriesRepository
         presenter = CreateCategoryPresenter(schedulerProvider, repository, this)
     }
 

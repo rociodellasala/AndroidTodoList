@@ -3,8 +3,12 @@ package com.example.pam_project.features.lists.list
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
-import android.widget.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.SearchView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -12,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pam_project.R
 import com.example.pam_project.di.ApplicationContainerLocator
-import com.example.pam_project.dialogs.FilterDialogFragment
 import com.example.pam_project.dialogs.SelectedDialogItems
 import com.example.pam_project.dialogs.SortByDialogFragment
 import com.example.pam_project.features.about.AboutActivity
@@ -21,7 +24,6 @@ import com.example.pam_project.features.categories.list.CategoryInformation
 import com.example.pam_project.features.lists.create.CreateListActivity
 import com.example.pam_project.landing.WelcomeActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import java.util.*
 
 class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedListener, ListView {
     private var topMenu: Menu? = null
@@ -38,9 +40,9 @@ class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedList
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val storage = container?.ftuStorage
-        val schedulerProvider = container?.schedulerProvider
-        val categoriesRepository = container?.categoriesRepository
+        val storage = container.ftuStorage
+        val schedulerProvider = container.schedulerProvider
+        val categoriesRepository = container.categoriesRepository
         presenter = ListPresenter(storage, schedulerProvider, categoriesRepository, this)
     }
 
@@ -194,17 +196,22 @@ class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val itemId = item.itemId
-        if (itemId == R.id.list_action_bar_filter) {
-            presenter.onFilterDialog()
-        } else if (itemId == R.id.list_action_bar_sort_by) {
-            presenter.onSortByDialog()
-        } else if (itemId == R.id.list_action_bar_manage_categories) {
-            presenter.onManageCategories()
-        } else if (itemId == R.id.list_action_bar_about) {
-            presenter.onAboutSection()
-        } else {
-            return super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.list_action_bar_filter -> {
+                presenter.onFilterDialog()
+            }
+            R.id.list_action_bar_sort_by -> {
+                presenter.onSortByDialog()
+            }
+            R.id.list_action_bar_manage_categories -> {
+                presenter.onManageCategories()
+            }
+            R.id.list_action_bar_about -> {
+                presenter.onAboutSection()
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
         return true
     }

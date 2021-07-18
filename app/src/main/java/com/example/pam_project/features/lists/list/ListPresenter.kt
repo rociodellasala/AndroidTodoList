@@ -8,14 +8,14 @@ import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 import java.util.*
 
-class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: SchedulerProvider?,
-                    private val categoriesRepository: CategoriesRepository?, view: ListView?) {
+class ListPresenter(private val ftuStorage: FtuStorage, private val provider: SchedulerProvider,
+                    private val categoriesRepository: CategoriesRepository, view: ListView?) {
     private val view: WeakReference<ListView?> = WeakReference(view)
     private var fetchListsDisposable: Disposable? = null
     private var fetchCategoriesDisposable: Disposable? = null
 
     fun onViewAttached() {
-        if (ftuStorage!!.isActive) {
+        if (ftuStorage.isActive) {
             ftuStorage.deactivate()
             if (view.get() != null) view.get()!!.launchFtu()
         } else {
@@ -28,8 +28,8 @@ class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: S
     }
 
     private fun fetchCategories() {
-        fetchCategoriesDisposable = categoriesRepository!!.categories
-                .subscribeOn(provider!!.computation())
+        fetchCategoriesDisposable = categoriesRepository.categories
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<CategoryInformation?>? -> onCategoriesReceived(model) }) { e: Throwable -> onCategoriesReceivedError(e) }
     }
@@ -49,8 +49,8 @@ class ListPresenter(private val ftuStorage: FtuStorage?, private val provider: S
     }
 
     private fun fetchLists() {
-        fetchListsDisposable = categoriesRepository!!.categoriesWithLists
-                .subscribeOn(provider!!.computation())
+        fetchListsDisposable = categoriesRepository.categoriesWithLists
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: Map<CategoryInformation, List<ListInformation>> -> onListsReceived(model) })
                 { e: Throwable -> onListsReceivedError(e) }

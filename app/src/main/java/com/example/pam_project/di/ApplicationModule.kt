@@ -28,13 +28,11 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 
 class ApplicationModule internal constructor(context: Context) {
     /* default */  val applicationContext: Context = context.applicationContext
-    private val mainStorage: AppDatabase? = AppDatabase.getInstance(applicationContext)
+    private val mainStorage: AppDatabase = AppDatabase.getInstance(applicationContext)!!
 
     /* default */
     fun provideFtuStorage(): FtuStorage {
-        return SharedPreferencesFtuStorage(
-                applicationContext.getSharedPreferences(PAM_PREF, Context.MODE_PRIVATE)
-        )
+        return SharedPreferencesFtuStorage(applicationContext.getSharedPreferences(PAM_PREF, Context.MODE_PRIVATE))
     }
 
     /* default */
@@ -43,13 +41,13 @@ class ApplicationModule internal constructor(context: Context) {
     }
 
     /* default */
-    fun provideCategoriesRepository(dao: CategoryDao?, mapper: CategoryMapper?): CategoriesRepository {
+    fun provideCategoriesRepository(dao: CategoryDao, mapper: CategoryMapper): CategoriesRepository {
         return RoomCategoriesRepository(dao, mapper)
     }
 
     /* default */
-    fun provideCategoryDao(): CategoryDao? {
-        return mainStorage!!.categoryDao()
+    fun provideCategoryDao(): CategoryDao {
+        return mainStorage.categoryDao()
     }
 
     /* default */
@@ -58,14 +56,13 @@ class ApplicationModule internal constructor(context: Context) {
     }
 
     /* default */
-    fun provideListsRepository(listDao: ListDao?,
-                               mapper: ListMapper?): ListsRepository {
+    fun provideListsRepository(listDao: ListDao, mapper: ListMapper): ListsRepository {
         return RoomListsRepository(listDao, mapper)
     }
 
     /* default */
-    fun provideListDao(): ListDao? {
-        return mainStorage!!.listDao()
+    fun provideListDao(): ListDao {
+        return mainStorage.listDao()
     }
 
     /* default */
@@ -74,13 +71,13 @@ class ApplicationModule internal constructor(context: Context) {
     }
 
     /* default */
-    fun provideTasksRepository(dao: TaskDao?, mapper: TaskMapper?): TaskRepository {
+    fun provideTasksRepository(dao: TaskDao, mapper: TaskMapper): TaskRepository {
         return RoomTaskRepository(dao, mapper)
     }
 
     /* default */
-    fun provideTaskDao(): TaskDao? {
-        return mainStorage!!.taskDao()
+    fun provideTaskDao(): TaskDao {
+        return mainStorage.taskDao()
     }
 
     /* default */

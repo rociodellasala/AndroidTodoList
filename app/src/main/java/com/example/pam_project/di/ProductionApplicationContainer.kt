@@ -21,140 +21,41 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 class ProductionApplicationContainer(context: Context) : ApplicationContainer {
     private val applicationModule: ApplicationModule = ApplicationModule(context)
 
-    override var ftuStorage: FtuStorage? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideFtuStorage()
-            }
-            return field
-        }
-        private set
+    override var ftuStorage: FtuStorage = applicationModule.provideFtuStorage()
 
-    override var schedulerProvider: SchedulerProvider? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideSchedulerProvider()
-            }
-            return field
-        }
-        private set
+    override var schedulerProvider: SchedulerProvider = applicationModule.provideSchedulerProvider()
 
-    override var categoriesRepository: CategoriesRepository? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideCategoriesRepository(
-                        categoryDao, categoryMapper
-                )
-            }
-            return field
-        }
-        private set
+    private var categoryMapper: CategoryMapper = applicationModule.provideCategoryMapper()
 
-    private var categoryDao: CategoryDao? = null
-         get() {
-            if (field == null) {
-                field = applicationModule.provideCategoryDao()
-            }
-            return field
-        }
+    private var categoryDao: CategoryDao = applicationModule.provideCategoryDao()
 
-    private var categoryMapper: CategoryMapper? = null
-         get() {
-            if (field == null) {
-                field = applicationModule.provideCategoryMapper()
-            }
-            return field
-        }
-    override var listsRepository: ListsRepository? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideListsRepository(
-                        listDao, listMapper
-                )
-            }
-            return field
-        }
-        private set
+    override var categoriesRepository: CategoriesRepository = applicationModule.provideCategoriesRepository(
+        categoryDao, categoryMapper
+    )
 
-    private var listDao: ListDao? = null
-         get() {
-            if (field == null) {
-                field = applicationModule.provideListDao()
-            }
-            return field
-        }
+    private var listDao: ListDao = applicationModule.provideListDao()
 
-    private var listMapper: ListMapper? = null
-         get() {
-            if (field == null) {
-                field = applicationModule.provideListMapper()
-            }
-            return field
-        }
-    override var tasksRepository: TaskRepository? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideTasksRepository(taskDao, taskMapper)
-            }
-            return field
-        }
-        private set
-    private var taskDao: TaskDao? = null
-         get() {
-            if (field == null) {
-                field = applicationModule.provideTaskDao()
-            }
-            return field
-        }
-    private var taskMapper: TaskMapper? = null
-         get() {
-            if (field == null) {
-                field = applicationModule.provideTaskMapper()
-            }
-            return field
-        }
+    private var listMapper: ListMapper  = applicationModule.provideListMapper()
 
-    private var service: APIServiceImplementation? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideAPIService()
-            }
-            return field
-        }
+    override var listsRepository: ListsRepository = applicationModule.provideListsRepository(
+        listDao, listMapper
+    )
 
-    override var authorsRepository: AuthorsRepository? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideAuthorsRepository(service, authorsMapper)
-            }
-            return field
-        }
-        private set
+    private var taskDao: TaskDao = applicationModule.provideTaskDao()
 
-    private var authorsMapper: AuthorsMapper? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideAuthorsMapper()
-            }
-            return field
-        }
+    private var taskMapper: TaskMapper = applicationModule.provideTaskMapper()
 
-    override var versionRepository: VersionRepository? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideVersionRepository(service, versionMapper)
-            }
-            return field
-        }
-        private set
+    override var tasksRepository: TaskRepository = applicationModule.provideTasksRepository(taskDao, taskMapper)
 
-    private var versionMapper: VersionMapper? = null
-        get() {
-            if (field == null) {
-                field = applicationModule.provideVersionMapper()
-            }
-            return field
-        }
+    private var service: APIServiceImplementation = applicationModule.provideAPIService()
+
+    private var authorsMapper: AuthorsMapper = applicationModule.provideAuthorsMapper()
+
+    override var authorsRepository: AuthorsRepository = applicationModule.provideAuthorsRepository(service, authorsMapper)
+
+    private var versionMapper: VersionMapper = applicationModule.provideVersionMapper()
+
+    override var versionRepository: VersionRepository = applicationModule.provideVersionRepository(service, versionMapper)
 
     override val applicationContext: Context
         get() = applicationModule.applicationContext

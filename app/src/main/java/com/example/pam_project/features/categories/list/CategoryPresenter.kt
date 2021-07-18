@@ -5,8 +5,8 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class CategoryPresenter(private val provider: SchedulerProvider?,
-                        private val repository: CategoriesRepository?, view: CategoryView?) {
+class CategoryPresenter(private val provider: SchedulerProvider,
+                        private val repository: CategoriesRepository, view: CategoryView) {
     private val view: WeakReference<CategoryView?> = WeakReference(view)
     private var fetchCategoriesDisposable: Disposable? = null
     fun onViewAttached() {
@@ -16,8 +16,8 @@ class CategoryPresenter(private val provider: SchedulerProvider?,
     }
 
     private fun fetchCategories() {
-        fetchCategoriesDisposable = repository!!.categories
-                .subscribeOn(provider!!.computation())
+        fetchCategoriesDisposable = repository.categories
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<CategoryInformation?>? -> onCategoriesReceived(model) })
                 { throwable: Throwable -> onCategoriesReceivedError(throwable) }
