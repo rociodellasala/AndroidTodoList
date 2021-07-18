@@ -46,12 +46,12 @@ class FilterDialogFragment : ListActivityDialogFragment() {
         private const val INITIAL_SELECTION_KEY = "selectedItems"
         private const val ITEMS_KEY = "items"
 
-        fun newInstance(items: List<CategoryInformation>, initialSelection: MutableList<Int?>?): FilterDialogFragment {
+        fun newInstance(items: List<CategoryInformation?>, initialSelection: MutableList<Int>?): FilterDialogFragment {
             var selection = initialSelection
             val frag = FilterDialogFragment()
             val args = Bundle()
             val itemsCharSeq = arrayOfNulls<CharSequence>(items.size)
-            for (i in items.indices) itemsCharSeq[i] = items[i].title
+            for (i in items.indices) itemsCharSeq[i] = items[i]?.title
             if (initialSelection == null) {
                 selection = ArrayList(items.size)
                 // all items are selected initially
@@ -60,7 +60,7 @@ class FilterDialogFragment : ListActivityDialogFragment() {
                 }
             }
             args.putCharSequenceArray(ITEMS_KEY, itemsCharSeq)
-            args.putIntegerArrayList(INITIAL_SELECTION_KEY, selection as ArrayList<Int?>?)
+            args.putIntegerArrayList(INITIAL_SELECTION_KEY, selection as ArrayList<Int>?)
             frag.arguments = args
             return frag
         }

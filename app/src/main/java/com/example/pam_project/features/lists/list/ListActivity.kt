@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pam_project.R
 import com.example.pam_project.di.ApplicationContainerLocator
+import com.example.pam_project.dialogs.FilterDialogFragment
 import com.example.pam_project.dialogs.SelectedDialogItems
 import com.example.pam_project.dialogs.SortByDialogFragment
 import com.example.pam_project.features.about.AboutActivity
@@ -120,10 +121,9 @@ class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedList
     }
 
     override fun showFilterDialog() {
-        // TODO DESCOMENTAR Y ARREGLAR
-        /* val fm = supportFragmentManager
-        val filterDialog: FilterDialogFragment = FilterDialogFragment.Companion.newInstance(adapter!!.categories, adapter.filterSelection)
-        showDialog(fm, filterDialog) */
+        val fm = supportFragmentManager
+        val filterDialog: FilterDialogFragment = FilterDialogFragment.newInstance(adapter.categories, adapter.filterSelections)
+        showDialog(fm, filterDialog)
     }
 
     override fun showSortByDialog() {
@@ -217,8 +217,7 @@ class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedList
     }
 
     override fun onSelectedItems(klass: Class<*>?, items: MutableList<Int>?) {
-        // TODO DESCOMENTAR Y ARREGLAR
-        // if (klass == SortByDialogFragment::class.java) adapter.sortIndex = items!![0] else adapter.setFilterSelections(items)
+        if (klass == SortByDialogFragment::class.java) adapter.sortIndex = items!![0] else adapter.filterSelections = items
     }
 
     override fun onClick(id: Long) {
