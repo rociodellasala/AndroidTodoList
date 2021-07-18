@@ -24,12 +24,10 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
-        val id = intent.data!!.getQueryParameter(TASK_ID_PARAMETER)
-        taskId = id!!.toLong()
+        taskId = intent.data?.getQueryParameter(TASK_ID_PARAMETER)!!.toLong()
         createPresenter()
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title=R.string.activity_title_edit_task.toString()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(R.string.activity_title_edit_task)
         setDeleteButton()
     }
 

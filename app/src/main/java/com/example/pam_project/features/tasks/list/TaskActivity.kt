@@ -30,8 +30,7 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
-        val id = intent.data!!.getQueryParameter("id")
-        listId = id!!.toLong()
+        listId = intent.data?.getQueryParameter("id")!!.toLong()
         setUpView()
         createPresenter()
     }

@@ -23,7 +23,7 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title=R.string.activity_title_create_task.toString()
+        supportActionBar?.setTitle(R.string.activity_title_create_task)
     }
 
     private fun createPresenter() {

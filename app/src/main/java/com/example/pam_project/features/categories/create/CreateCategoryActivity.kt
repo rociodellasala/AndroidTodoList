@@ -20,7 +20,7 @@ class CreateCategoryActivity : AppCompatActivity(), CreateCategoryView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_category)
         createPresenter()
-        supportActionBar?.title= R.string.activity_title_create_category.toString()
+        supportActionBar?.setTitle(R.string.activity_title_create_category)
         setUpView()
     }
 

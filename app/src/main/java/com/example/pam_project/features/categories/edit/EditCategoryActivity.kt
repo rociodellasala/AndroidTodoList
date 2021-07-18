@@ -22,10 +22,9 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_category)
-        val id = intent.data!!.getQueryParameter("id")
-        categoryId = id!!.toLong()
+        categoryId = intent.data?.getQueryParameter("id")!!.toLong()
         createPresenter()
-        supportActionBar?.title=R.string.activity_title_edit_category.toString()
+        supportActionBar?.title = R.string.activity_title_edit_category.toString()
         setDeleteButton()
         setUpView()
     }

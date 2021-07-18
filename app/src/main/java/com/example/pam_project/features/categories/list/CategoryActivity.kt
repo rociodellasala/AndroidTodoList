@@ -25,7 +25,7 @@ class CategoryActivity : AppCompatActivity(), CategoryView, OnListClickedListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
         createPresenter()
-        supportActionBar?.title=R.string.activity_title_category.toString()
+        supportActionBar?.setTitle(R.string.activity_title_category)
         setUpView()
     }
 

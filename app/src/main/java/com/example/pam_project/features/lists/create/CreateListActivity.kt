@@ -23,7 +23,7 @@ class CreateListActivity : AppCompatActivity(), CreateListView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_list)
         createPresenter()
-        supportActionBar?.title=R.string.activity_title_create_list.toString()
+        supportActionBar?.setTitle(R.string.activity_title_create_list)
         setUpView()
     }
 
