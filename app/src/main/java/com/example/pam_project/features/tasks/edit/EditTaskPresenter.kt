@@ -6,16 +6,16 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class EditTaskPresenter(private val taskId: Long, private val provider: SchedulerProvider?,
-                        private val repository: TaskRepository?, view: EditTaskView?) {
+class EditTaskPresenter(private val taskId: Long, private val provider: SchedulerProvider,
+                        private val repository: TaskRepository, view: EditTaskView) {
     private val view: WeakReference<EditTaskView?> = WeakReference(view)
     private var fetchTaskDisposable: Disposable? = null
     private var updateTaskDisposable: Disposable? = null
     private var deleteTaskDisposable: Disposable? = null
 
     fun onViewAttached() {
-        fetchTaskDisposable = repository!!.getTask(taskId)
-                .subscribeOn(provider!!.computation())
+        fetchTaskDisposable = repository.getTask(taskId)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: TaskInformation? -> onTaskRetrieved(model) }) { throwable: Throwable -> onTaskRetrievedError(throwable) }
     }
@@ -33,8 +33,8 @@ class EditTaskPresenter(private val taskId: Long, private val provider: Schedule
     }
 
     fun updateTask(name: String?, description: String?, priority: Boolean) {
-        updateTaskDisposable = repository!!.updateTask(taskId, name, description, priority)
-                .subscribeOn(provider!!.computation())
+        updateTaskDisposable = repository.updateTask(taskId, name, description, priority)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({}) { throwable: Throwable -> onTaskUpdatedError(throwable) }
     }
@@ -46,8 +46,8 @@ class EditTaskPresenter(private val taskId: Long, private val provider: Schedule
     }
 
     fun deleteTask(taskId: Long) {
-        deleteTaskDisposable = repository!!.deleteTask(taskId)
-                .subscribeOn(provider!!.computation())
+        deleteTaskDisposable = repository.deleteTask(taskId)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ onTaskDeleted() }) { throwable: Throwable -> onTaskDeletedError(throwable) }
     }

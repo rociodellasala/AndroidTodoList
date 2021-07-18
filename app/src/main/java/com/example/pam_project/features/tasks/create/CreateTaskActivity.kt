@@ -28,8 +28,8 @@ class CreateTaskActivity : AppCompatActivity(), CreateTaskView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val taskRepository = container?.tasksRepository
+        val schedulerProvider = container.schedulerProvider
+        val taskRepository = container.tasksRepository
         presenter = CreateTaskPresenter(schedulerProvider, taskRepository, this)
     }
 

@@ -29,9 +29,9 @@ class CreateListActivity : AppCompatActivity(), CreateListView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val categoriesRepository = container?.categoriesRepository
-        val listsRepository = container?.listsRepository
+        val schedulerProvider = container.schedulerProvider
+        val categoriesRepository = container.categoriesRepository
+        val listsRepository = container.listsRepository
         presenter = CreateListPresenter(schedulerProvider, categoriesRepository,
                 listsRepository, this)
     }

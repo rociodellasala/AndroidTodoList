@@ -13,12 +13,12 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
  * Entidad encargada de contener las dependencias
  */
 interface ApplicationContainer {
-    val applicationContext: Context?
-    val ftuStorage: FtuStorage?
-    val schedulerProvider: SchedulerProvider?
-    val categoriesRepository: CategoriesRepository?
-    val listsRepository: ListsRepository?
-    val tasksRepository: TaskRepository?
-    val authorsRepository: AuthorsRepository?
-    val versionRepository: VersionRepository?
+    val applicationContext: Context
+    val ftuStorage: FtuStorage
+    val schedulerProvider: SchedulerProvider
+    val categoriesRepository: CategoriesRepository
+    val listsRepository: ListsRepository
+    val tasksRepository: TaskRepository
+    val authorsRepository: AuthorsRepository
+    val versionRepository: VersionRepository
 }

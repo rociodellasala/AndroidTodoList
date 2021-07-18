@@ -8,10 +8,9 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class AboutPresenter(private val authorsRepository: AuthorsRepository?, private val versionRepository: VersionRepository?,
-                     private val provider: SchedulerProvider?,
-                     view: AboutView?) {
-    private val view: WeakReference<AboutView?> = WeakReference(view)
+class AboutPresenter(private val authorsRepository: AuthorsRepository, private val versionRepository: VersionRepository,
+                     private val provider: SchedulerProvider, view: AboutView) {
+    private val view: WeakReference<AboutView> = WeakReference(view)
     private var fetchAuthorDisposable: Disposable? = null
     private var fetchVersionDisposable: Disposable? = null
 
@@ -23,8 +22,8 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository?, private 
     }
 
     private fun fetchAuthors() {
-        fetchAuthorDisposable = authorsRepository!!.authors
-                .subscribeOn(provider!!.computation())
+        fetchAuthorDisposable = authorsRepository.authors
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<AuthorsModel?>? -> onAuthorsReceived(model) }) { throwable: Throwable
                     -> onAuthorsReceivedError(throwable) }
@@ -52,7 +51,7 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository?, private 
 
     private fun fetchVersion() {
         fetchVersionDisposable = versionRepository!!.version
-                .subscribeOn(provider!!.computation())
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: VersionModel? -> onVersionReceived(model) }) { throwable: Throwable -> onVersionReceivedError(throwable) }
     }

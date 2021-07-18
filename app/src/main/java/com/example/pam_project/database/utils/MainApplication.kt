@@ -12,15 +12,15 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container?.schedulerProvider
-        val ftuStorage = container?.ftuStorage
-        if (ftuStorage!!.isActive) {
+        val schedulerProvider = container.schedulerProvider
+        val ftuStorage = container.ftuStorage
+        if (ftuStorage.isActive) {
             val appContext = applicationContext
             val db: AppDatabase? = AppDatabase.getInstance(appContext)
             Completable.fromAction {
                 db?.categoryDao()?.insertCategory(createDefaultCategory(appContext))
             }.onErrorComplete()
-                    .subscribeOn(schedulerProvider!!.io())
+                    .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe()
         }

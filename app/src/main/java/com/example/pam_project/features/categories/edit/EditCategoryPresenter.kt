@@ -6,16 +6,16 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class EditCategoryPresenter(private val categoryId: Long, private val provider: SchedulerProvider?,
-                            private val repository: CategoriesRepository?, view: EditCategoryView?) {
-    private val view: WeakReference<EditCategoryView?> = WeakReference(view)
+class EditCategoryPresenter(private val categoryId: Long, private val provider: SchedulerProvider,
+                            private val repository: CategoriesRepository, view: EditCategoryView) {
+    private val view: WeakReference<EditCategoryView> = WeakReference(view)
     private var fetchCategoryDisposable: Disposable? = null
     private var updateCategoryDisposable: Disposable? = null
     private var deleteCategoryDisposable: Disposable? = null
 
     fun onViewAttached() {
-        fetchCategoryDisposable = repository!!.getCategory(categoryId)
-                .subscribeOn(provider!!.computation())
+        fetchCategoryDisposable = repository.getCategory(categoryId)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: CategoryInformation? -> onCategoryRetrieved(model) }) { throwable: Throwable
                     -> onCategoryRetrievedError(throwable) }
@@ -34,8 +34,8 @@ class EditCategoryPresenter(private val categoryId: Long, private val provider: 
     }
 
     fun updateCategory(name: String, color: String) {
-        updateCategoryDisposable = repository!!.updateCategory(categoryId, name, color)
-                .subscribeOn(provider!!.computation())
+        updateCategoryDisposable = repository.updateCategory(categoryId, name, color)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({}) { throwable: Throwable -> onCategoryUpdateError(throwable) }
     }
@@ -47,8 +47,8 @@ class EditCategoryPresenter(private val categoryId: Long, private val provider: 
     }
 
     fun deleteCategory(id: Long) {
-        deleteCategoryDisposable = repository!!.deleteCategory(id)
-                .subscribeOn(provider!!.computation())
+        deleteCategoryDisposable = repository.deleteCategory(id)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ onCategoryDeleted() }) { throwable: Throwable -> onCategoryDeletedError(throwable) }
     }
