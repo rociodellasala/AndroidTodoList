@@ -10,10 +10,10 @@ import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 import java.util.*
 
-class TaskPresenter(private val provider: SchedulerProvider?, private val taskRepository: TaskRepository?,
-                    private val listsRepository: ListsRepository?, view: TaskView?,
+class TaskPresenter(private val provider: SchedulerProvider, private val taskRepository: TaskRepository,
+                    private val listsRepository: ListsRepository, view: TaskView,
                     private val listId: Long) {
-    private val view: WeakReference<TaskView?> = WeakReference(view)
+    private val view: WeakReference<TaskView> = WeakReference(view)
     private var fetchTasksDisposable: Disposable? = null
     private var updateTaskDisposable: Disposable? = null
 
@@ -24,8 +24,8 @@ class TaskPresenter(private val provider: SchedulerProvider?, private val taskRe
     }
 
     private fun fetchTasks() {
-        fetchTasksDisposable = listsRepository!!.getListWithTasks(listId)
-                .subscribeOn(provider!!.computation())
+        fetchTasksDisposable = listsRepository.getListWithTasks(listId)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: ListInformation? -> onTasksReceived(model) }) { throwable: Throwable -> onTasksReceivedError(throwable) }
     }
@@ -59,8 +59,8 @@ class TaskPresenter(private val provider: SchedulerProvider?, private val taskRe
     private fun updateTask(position: Int, id: Long, name: String?,
                            description: String?, priority: Boolean,
                            status: TaskStatus, listId: Long) {
-        updateTaskDisposable = taskRepository!!.updateTask(id, name, description, priority, status, listId)
-                .subscribeOn(provider!!.computation())
+        updateTaskDisposable = taskRepository.updateTask(id, name, description, priority, status, listId)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({
                     if (view.get() != null) {

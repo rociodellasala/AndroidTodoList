@@ -8,10 +8,10 @@ import com.example.pam_project.utils.schedulers.SchedulerProvider
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 
-class EditListPresenter(private val provider: SchedulerProvider?,
-                        private val categoriesRepository: CategoriesRepository?,
-                        private val listsRepository: ListsRepository?,
-                        view: EditListView?) {
+class EditListPresenter(private val provider: SchedulerProvider,
+                        private val categoriesRepository: CategoriesRepository,
+                        private val listsRepository: ListsRepository,
+                        view: EditListView) {
     private val view: WeakReference<EditListView?> = WeakReference(view)
     private var fetchListDisposable: Disposable? = null
     private var fetchCategoriesDisposable: Disposable? = null
@@ -24,8 +24,8 @@ class EditListPresenter(private val provider: SchedulerProvider?,
     }
 
     private fun fetchCategories(id: Long) {
-        fetchCategoriesDisposable = categoriesRepository!!.categories
-                .subscribeOn(provider!!.computation())
+        fetchCategoriesDisposable = categoriesRepository.categories
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: List<CategoryInformation?>? ->
                     if (view.get() != null) {
@@ -36,8 +36,8 @@ class EditListPresenter(private val provider: SchedulerProvider?,
     }
 
     private fun fetchList(id: Long) {
-        fetchListDisposable = listsRepository!!.getList(id)
-                .subscribeOn(provider!!.computation())
+        fetchListDisposable = listsRepository.getList(id)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: ListInformation? -> onListReceived(model) }) { throwable: Throwable -> onListReceivedError(throwable) }
     }
@@ -59,8 +59,8 @@ class EditListPresenter(private val provider: SchedulerProvider?,
     }
 
     fun updateList(id: Long, name: String, categoryId: Long?) {
-        updateListDisposable = listsRepository!!.updateList(id, name, categoryId!!)
-                .subscribeOn(provider!!.computation())
+        updateListDisposable = listsRepository.updateList(id, name, categoryId!!)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({}) { throwable: Throwable -> onListUpdatedError(throwable) }
     }
@@ -72,8 +72,8 @@ class EditListPresenter(private val provider: SchedulerProvider?,
     }
 
     fun deleteList(id: Long) {
-        deleteListDisposable = listsRepository!!.deleteList(id)
-                .subscribeOn(provider!!.computation())
+        deleteListDisposable = listsRepository.deleteList(id)
+                .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ onListDeleted() }) { throwable: Throwable -> onListDeletedError(throwable) }
     }
