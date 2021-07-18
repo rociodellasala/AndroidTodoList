@@ -24,7 +24,7 @@ class EditCategoryActivity : AppCompatActivity(), EditCategoryView {
         setContentView(R.layout.activity_edit_category)
         categoryId = intent.data?.getQueryParameter("id")!!.toLong()
         createPresenter()
-        supportActionBar?.title = R.string.activity_title_edit_category.toString()
+        supportActionBar?.setTitle(R.string.activity_title_edit_category)
         setDeleteButton()
         setUpView()
     }

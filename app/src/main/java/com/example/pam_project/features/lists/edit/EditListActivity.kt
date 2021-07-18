@@ -32,8 +32,7 @@ class EditListActivity : AppCompatActivity(), EditListView {
         setContentView(R.layout.activity_edit_list)
         createPresenter()
         listId = intent.getLongExtra(LIST_ID_PARAMETER, -1)
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(R.string.activity_title_edit_list)
         setDeleteButton()
         setUpView()
