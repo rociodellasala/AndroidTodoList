@@ -15,7 +15,7 @@ open class ListInformation(val id: Long, val title: String?, val categoryId: Lon
         private set
     var tasks: List<TaskInformation>? = null
         private set
-    var category: CategoryInformation? = null
+    var category: CategoryInformation? = null // TODO: Ver si hay que hacerla privada
 
     constructor(id: Long, title: String?, categoryId: Long,
                 color: AppColor?, tasks: List<TaskInformation>?) : this(id, title, categoryId) {

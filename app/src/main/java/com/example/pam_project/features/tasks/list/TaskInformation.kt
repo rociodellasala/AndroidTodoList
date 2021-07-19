@@ -2,6 +2,7 @@ package com.example.pam_project.features.tasks.list
 
 import com.example.pam_project.utils.constants.TaskStatus
 
+// TODO: Lo mismo, ver que onda porque para mi deberia ser privado
 open class TaskInformation : Comparable<TaskInformation> {
     val title: String?
     val description: String?

@@ -12,8 +12,8 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
     private val dataSet: MutableList<ListInformation?>
     private val hiddenItems: MutableList<ListInformation?>
     private val completeDataset: MutableList<ListInformation?>
-    val previousSearchDataset: MutableList<ListInformation?>
-    private var searchItems: List<ListInformation?>
+    private val previousSearchDataset: MutableList<ListInformation?>
+    private var searchItems: MutableList<ListInformation?>
     private val categoriesWithIds: MutableMap<Long, CategoryInformation?>
     private var listener: OnListClickedListener? = null
     var categories: List<CategoryInformation?>
@@ -72,6 +72,10 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
 
     override fun getItemCount(): Int {
         return dataSet.size
+    }
+
+    fun getPreviousSearchDataset(): MutableList<ListInformation?>{
+        return previousSearchDataset
     }
 
     // get ids from selected categories

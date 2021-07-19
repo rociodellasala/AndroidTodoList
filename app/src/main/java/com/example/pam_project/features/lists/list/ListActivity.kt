@@ -117,7 +117,7 @@ class ListActivity : AppCompatActivity(), SelectedDialogItems, OnListClickedList
     }
 
     override fun unbindSearchedLists() {
-        adapter.update(adapter.previousSearchDataset)
+        adapter.update(adapter.getPreviousSearchDataset())
     }
 
     override fun showFilterDialog() {
