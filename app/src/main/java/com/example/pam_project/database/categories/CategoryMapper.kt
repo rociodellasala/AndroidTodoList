@@ -21,8 +21,14 @@ class CategoryMapper {
                 val tasksEntity = listWithTaskEntity.tasks
                 val task: MutableList<TaskInformation> = ArrayList()
                 for (taskEntity in tasksEntity!!) {
-                    task.add(TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
-                            taskEntity.priority, TaskStatus.getStatus(taskEntity.status)))
+                    task.add(
+                        TaskInformation(
+                            id = taskEntity.id,
+                            title = taskEntity.name,
+                            description = taskEntity.description,
+                            isUrgent = taskEntity.priority,
+                            status = TaskStatus.getStatus(taskEntity.status)
+                        ))
                 }
                 list.add(ListInformation(listEntity!!.id, listEntity.name, listEntity.categoryId,
                     categoryWithListEntity.category!!.color, task))

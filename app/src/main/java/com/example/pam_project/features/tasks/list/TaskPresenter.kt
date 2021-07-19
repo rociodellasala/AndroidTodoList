@@ -56,15 +56,20 @@ class TaskPresenter(private val provider: SchedulerProvider, private val taskRep
         }
     }
 
-    private fun updateTask(position: Int, id: Long, name: String?,
-                           description: String?, priority: Boolean,
+    private fun updateTask(position: Int, id: Long, name: String?, description: String?, priority: Boolean,
                            status: TaskStatus, listId: Long) {
         updateTaskDisposable = taskRepository.updateTask(id, name, description, priority, status, listId)
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({
                     if (view.get() != null) {
-                        val taskInformation = TaskInformation(id, name, description, priority, status)
+                        val taskInformation = TaskInformation(
+                            id = id,
+                            title = name,
+                            description = description,
+                            isUrgent = priority,
+                            status = TaskStatus.getStatus(status.name)
+                        )
                         view.get()!!.onTaskStatusEdit(taskInformation, position)
                     }
                 }) { throwable: Throwable -> onTaskUpdatedError(throwable) }

@@ -18,8 +18,13 @@ class ListMapper {
     fun toListWithTasksModel(entity: ListsWithTasks?): ListInformation {
         val listOfTasks: MutableList<TaskInformation> = ArrayList()
         for (taskEntity in entity!!.tasks!!) {
-            listOfTasks.add(TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
-                    taskEntity.priority, TaskStatus.getStatus(taskEntity.status)))
+            listOfTasks.add(TaskInformation(
+                id = taskEntity.id,
+                title = taskEntity.name,
+                description = taskEntity.description,
+                isUrgent = taskEntity.priority,
+                status = TaskStatus.getStatus(taskEntity.status)
+            ))
         }
         return toModelWithTasks(entity.list, listOfTasks)
     }
