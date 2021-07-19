@@ -15,8 +15,16 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
     private val previousSearchDataset: MutableList<ListInformation?>
     private var searchItems: MutableList<ListInformation?>
     private val categoriesWithIds: MutableMap<Long, CategoryInformation?>
-    private var categories: List<CategoryInformation?>
     private var listener: OnListClickedListener? = null
+    var categories: List<CategoryInformation?>
+
+    var sortIndex: Int
+        get() = Companion.sortIndex
+        set(sortIndex) {
+            Companion.sortIndex = sortIndex
+            sort()
+            notifyDataSetChanged()
+        }
 
     fun update(newDataSet: List<ListInformation?>?) {
         dataSet.clear()
@@ -70,19 +78,12 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
         return previousSearchDataset
     }
 
-    var sortIndex: Int
-        get() = Companion.sortIndex
-        set(sortIndex) {
-            Companion.sortIndex = sortIndex
-            sort()
-            notifyDataSetChanged()
-        }
     // get ids from selected categories
 
     // hide items not in selected categories and remove them from dataSet
 
     // show items in selected categories and remove them from hidden items
-    private var filterSelections: MutableList<Int>?
+    var filterSelections: MutableList<Int>?
         get() = Companion.filterSelections
         set(newFilterSelections) {
             if (newFilterSelections == null) {

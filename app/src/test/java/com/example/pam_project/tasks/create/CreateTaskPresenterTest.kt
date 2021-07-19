@@ -12,15 +12,15 @@ import org.junit.Test
 import org.mockito.Mockito
 
 class CreateTaskPresenterTest {
-    private var taskRepository: TaskRepository? = null
-    private var view: CreateTaskView? = null
-    private var presenter: CreateTaskPresenter? = null
+    private lateinit var taskRepository: TaskRepository
+    private lateinit var view: CreateTaskView
+    private lateinit var presenter: CreateTaskPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         taskRepository = Mockito.mock(TaskRepository::class.java)
         view = Mockito.mock(CreateTaskView::class.java)
-        presenter = CreateTaskPresenter(provider, taskRepository!!, view!!)
+        presenter = CreateTaskPresenter(provider, taskRepository, view)
     }
 
     @Test
@@ -30,10 +30,10 @@ class CreateTaskPresenterTest {
         val priority = false
         val status = TaskStatus.PENDING
         val listId: Long = 2
-        Mockito.`when`(taskRepository!!.insertTask(title, description, priority, status, listId))
+        Mockito.`when`(taskRepository.insertTask(title, description, priority, status, listId))
                 .thenReturn(Completable.complete())
-        presenter!!.insertTask(title, description, priority, listId)
-        Mockito.verify(view, Mockito.never())!!.onTaskInsertedError()
+        presenter.insertTask(title, description, priority, listId)
+        Mockito.verify(view, Mockito.never()).onTaskInsertedError()
     }
 
     @Test
@@ -43,9 +43,9 @@ class CreateTaskPresenterTest {
         val priority = false
         val status = TaskStatus.PENDING
         val listId: Long = 2
-        Mockito.`when`(taskRepository!!.insertTask(title, description, priority, status, listId))
+        Mockito.`when`(taskRepository.insertTask(title, description, priority, status, listId))
                 .thenReturn(Completable.fromAction { throw Exception("BOOM!") })
-        presenter!!.insertTask(title, description, priority, listId)
-        Mockito.verify(view)!!.onTaskInsertedError()
+        presenter.insertTask(title, description, priority, listId)
+        Mockito.verify(view).onTaskInsertedError()
     }
 }

@@ -18,11 +18,11 @@ import org.mockito.Mockito
 import java.util.*
 
 class TaskPresenterTest {
-    private var taskRepository: TaskRepository? = null
-    private var listsRepository: ListsRepository? = null
-    private var view: TaskView? = null
+    private lateinit var taskRepository: TaskRepository
+    private lateinit var listsRepository: ListsRepository
+    private lateinit var view: TaskView
     private var listId: Long = 0
-    private var presenter: TaskPresenter? = null
+    private lateinit var presenter: TaskPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
@@ -30,7 +30,7 @@ class TaskPresenterTest {
         listsRepository = Mockito.mock(ListsRepository::class.java)
         view = Mockito.mock(TaskView::class.java)
         listId = 3
-        presenter = TaskPresenter(provider, taskRepository!!, listsRepository!!, view!!, listId)
+        presenter = TaskPresenter(provider, taskRepository, listsRepository, view, listId)
     }
 
     @Test
@@ -40,18 +40,18 @@ class TaskPresenterTest {
         val tasks: List<TaskInformation> = ArrayList()
         val li = ListInformation(listId, listTitle, categoryId, tasks)
         val listInformationObservable = Flowable.just(li)
-        Mockito.doReturn(listInformationObservable).`when`(listsRepository)!!.getListWithTasks(listId)
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindListName(listTitle)
-        Mockito.verify(view)!!.bindTasks(tasks)
+        Mockito.doReturn(listInformationObservable).`when`(listsRepository).getListWithTasks(listId)
+        presenter.onViewAttached()
+        Mockito.verify(view).bindListName(listTitle)
+        Mockito.verify(view).bindTasks(tasks)
     }
 
     @Test
     fun givenAViewWasAttachedWhenItFailsThenHandleError() {
         val listInformationObservable = Flowable.fromCallable<ListInformation> { throw Exception("BOOM!") }
-        Mockito.doReturn(listInformationObservable).`when`(listsRepository)!!.getListWithTasks(listId)
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.onTasksReceivedError()
+        Mockito.doReturn(listInformationObservable).`when`(listsRepository).getListWithTasks(listId)
+        presenter.onViewAttached()
+        Mockito.verify(view).onTasksReceivedError()
     }
 
     @Test
@@ -71,13 +71,13 @@ class TaskPresenterTest {
         val isUrgent = false
         val ti = TaskInformation(taskId, title, description, isUrgent, status)
         val position = 2
-        Mockito.`when`(taskRepository!!.updateTask(
+        Mockito.`when`(taskRepository.updateTask(
                 taskId, title, description, isUrgent, oppositeStatus, listId
         )).thenReturn(Completable.complete())
-        presenter!!.onTaskChange(ti, position)
+        presenter.onTaskChange(ti, position)
         val otherTi = TaskInformation(taskId, title, description, isUrgent,
                 oppositeStatus)
-        Mockito.verify(view)!!.onTaskStatusEdit(otherTi, position)
+        Mockito.verify(view).onTaskStatusEdit(otherTi, position)
     }
 
     @Test
@@ -90,41 +90,41 @@ class TaskPresenterTest {
         val oppositeStatus = TaskStatus.DONE
         val ti = TaskInformation(taskId, title, description, isUrgent, status)
         val position = 2
-        Mockito.`when`(taskRepository!!.updateTask(
+        Mockito.`when`(taskRepository.updateTask(
                 taskId, title, description, isUrgent, oppositeStatus, listId
         )).thenReturn(Completable.fromAction { throw Exception("BOOM!") })
-        presenter!!.onTaskChange(ti, position)
-        Mockito.verify(view)!!.onTaskUpdatedError()
+        presenter.onTaskChange(ti, position)
+        Mockito.verify(view).onTaskUpdatedError()
     }
 
     @Test
     fun givenATaskWasClickedThenLaunchTheDetailScreen() {
         val id: Long = 2
-        presenter!!.onTaskClicked(id)
-        Mockito.verify(view)!!.showTaskContent(id)
+        presenter.onTaskClicked(id)
+        Mockito.verify(view).showTaskContent(id)
     }
 
     @Test
     fun givenAddButtonWasClickedThenLaunchTheAddTaskScreen() {
-        presenter!!.onButtonAddClicked()
-        Mockito.verify(view)!!.showAddTask()
+        presenter.onButtonAddClicked()
+        Mockito.verify(view).showAddTask()
     }
 
     @Test
     fun givenTaskEditOptionWasClickedThenLaunchTheEditTaskScreen() {
-        presenter!!.onEditList()
-        Mockito.verify(view)!!.showEditList()
+        presenter.onEditList()
+        Mockito.verify(view).showEditList()
     }
 
     @Test
     fun givenNoTasksWereAvailableThenShowNoItemsScreen() {
-        presenter!!.onEmptyTask()
-        Mockito.verify(view)!!.showEmptyMessage()
+        presenter.onEmptyTask()
+        Mockito.verify(view).showEmptyMessage()
     }
 
     @Test
     fun givenThePresenterIsInstancedThenBindHeaders() {
         val headers = intArrayOf(R.string.pending_tasks, R.string.done_tasks)
-        Mockito.verify(view)!!.bindHeaders(headers)
+        Mockito.verify(view).bindHeaders(headers)
     }
 }
