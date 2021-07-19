@@ -13,58 +13,58 @@ import org.mockito.Mockito
 import java.util.*
 
 class CategoryPresenterTest {
-    private var repository: CategoriesRepository? = null
-    private var view: CategoryView? = null
-    private var presenter: CategoryPresenter? = null
+    private lateinit var repository: CategoriesRepository
+    private lateinit var view: CategoryView
+    private lateinit var presenter: CategoryPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         repository = Mockito.mock(CategoriesRepository::class.java)
         view = Mockito.mock(CategoryView::class.java)
-        presenter = CategoryPresenter(provider, repository!!, view!!)
+        presenter = CategoryPresenter(provider, repository, view)
     }
 
     @Test
     fun givenAViewWasAttachedWhenEverythingIsOkThenFetchTheCategories() {
         val categories: List<CategoryInformation?> = ArrayList()
         val categoryInformationObservable = Flowable.just(categories)
-        Mockito.doReturn(categoryInformationObservable).`when`(repository)!!.categories
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindCategories(categories)
+        Mockito.doReturn(categoryInformationObservable).`when`(repository).categories
+        presenter.onViewAttached()
+        Mockito.verify(view).bindCategories(categories)
     }
 
     @Test
     fun givenAViewWasAttachedWhenAnErrorOccursThenHandleError() {
         val categoryInformationObservable = Flowable.fromCallable<CategoryInformation> { throw Exception("BOOM!") }
-        Mockito.doReturn(categoryInformationObservable).`when`(repository)!!.categories
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.onCategoriesReceivedError()
+        Mockito.doReturn(categoryInformationObservable).`when`(repository).categories
+        presenter.onViewAttached()
+        Mockito.verify(view).onCategoriesReceivedError()
     }
 
     @Test
     fun givenACategoryWasClickedThenLaunchTheDetailScreen() {
         val id: Long = 2
-        presenter!!.onCategoryClicked(id)
-        Mockito.verify(view)!!.showCategoryForm(id)
+        presenter.onCategoryClicked(id)
+        Mockito.verify(view).showCategoryForm(id)
     }
 
     @Test
     fun givenNoCategoriesWereAvailableThenShowNoItemsScreen() {
-        presenter!!.onEmptyCategory()
-        Mockito.verify(view)!!.showEmptyMessage()
+        presenter.onEmptyCategory()
+        Mockito.verify(view).showEmptyMessage()
     }
 
     @Test
     fun givenAddButtonWasClickedThenLaunchTheAddCategoryScreen() {
-        presenter!!.onButtonAddClicked()
-        Mockito.verify(view)!!.showAddCategory()
+        presenter.onButtonAddClicked()
+        Mockito.verify(view).showAddCategory()
     }
 
     @Test
     fun givenTwoCategoriesThenMoveSwapThem() {
         val draggedPosition = 0
         val targetPosition = 1
-        presenter!!.swapCategories(draggedPosition, targetPosition)
-        Mockito.verify(view)!!.onCategoriesSwap(draggedPosition, targetPosition)
+        presenter.swapCategories(draggedPosition, targetPosition)
+        Mockito.verify(view).onCategoriesSwap(draggedPosition, targetPosition)
     }
 }

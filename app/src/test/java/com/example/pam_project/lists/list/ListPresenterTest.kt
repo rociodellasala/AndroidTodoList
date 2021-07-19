@@ -17,34 +17,34 @@ import org.mockito.Mockito
 import java.util.*
 
 class ListPresenterTest {
-    private var view: ListView? = null
-    private var storage: FtuStorage? = null
-    private var categoriesRepository: CategoriesRepository? = null
-    private var presenter: ListPresenter? = null
+    private lateinit var view: ListView
+    private lateinit var storage: FtuStorage
+    private lateinit var categoriesRepository: CategoriesRepository
+    private lateinit var presenter: ListPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         storage = Mockito.mock(FtuStorage::class.java)
         categoriesRepository = Mockito.mock(CategoriesRepository::class.java)
         view = Mockito.mock(ListView::class.java)
-        presenter = ListPresenter(storage!!, provider, categoriesRepository!!, view)
+        presenter = ListPresenter(storage, provider, categoriesRepository, view)
     }
 
     @Test
     fun givenTheViewWasAttachedWhenTheFtuIsActiveThenLaunchTheFtu() {
-        Mockito.`when`(storage!!.isActive).thenReturn(true)
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.launchFtu()
+        Mockito.`when`(storage.isActive).thenReturn(true)
+        presenter.onViewAttached()
+        Mockito.verify(view).launchFtu()
     }
 
     @Test
     fun givenTheViewWasAttachedWhenTheFtuIsNotActiveThenFetchLists() {
-        Mockito.`when`(storage!!.isActive).thenReturn(false)
+        Mockito.`when`(storage.isActive).thenReturn(false)
         val categoriesArray = arrayOf(Mockito.mock(CategoryInformation::class.java),
                 Mockito.mock(CategoryInformation::class.java))
         val categories = listOf(*categoriesArray)
         val categoriesFlowable = Flowable.just(categories)
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val listsArray = arrayOf(
                 ListInformation(1, "name1", 2, AppColor.BLUE, ArrayList()),
                 ListInformation(2, "name2", 2, AppColor.GREEN, ArrayList())
@@ -57,77 +57,77 @@ class ListPresenterTest {
         lists[categoriesArray[0]] = l1
         lists[categoriesArray[1]] = l2
         val listFlowable = Flowable.just<Map<CategoryInformation, List<ListInformation>>>(lists)
-        Mockito.doReturn(listFlowable).`when`(categoriesRepository)!!.categoriesWithLists
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindCategories(categories)
-        Mockito.verify(view)!!.bindLists(ArgumentMatchers.any())
+        Mockito.doReturn(listFlowable).`when`(categoriesRepository).categoriesWithLists
+        presenter.onViewAttached()
+        Mockito.verify(view).bindCategories(categories)
+        Mockito.verify(view).bindLists(ArgumentMatchers.any())
     }
 
     @Test
     fun givenTheViewWasAttachedWhenErrorFetchingItemsThenHandleError() {
-        Mockito.`when`(storage!!.isActive).thenReturn(false)
+        Mockito.`when`(storage.isActive).thenReturn(false)
         val categoriesFlowable = Flowable.fromCallable<List<CategoryInformation>> { throw Exception("BOOM!") }
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val listsFlowable = Flowable.fromCallable<Map<CategoryInformation, List<CategoryInformation>>> { throw Exception("BOOM 2!") }
-        Mockito.doReturn(listsFlowable).`when`(categoriesRepository)!!.categoriesWithLists
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.onCategoriesReceivedError()
-        Mockito.verify(view)!!.onListsReceivedError()
+        Mockito.doReturn(listsFlowable).`when`(categoriesRepository).categoriesWithLists
+        presenter.onViewAttached()
+        Mockito.verify(view).onCategoriesReceivedError()
+        Mockito.verify(view).onListsReceivedError()
     }
 
     @Test
     fun givenASearchIsPerformedThenPerformTheSearch() {
         val searchQuery = "Hello world!"
-        presenter!!.performSearch(searchQuery)
-        Mockito.verify(view)!!.bindSearchedLists(searchQuery)
+        presenter.performSearch(searchQuery)
+        Mockito.verify(view).bindSearchedLists(searchQuery)
     }
 
     @Test
     fun givenTheSearchIsDetachedThenDetachTheSearch() {
-        presenter!!.onSearchDetached()
-        Mockito.verify(view)!!.unbindSearchedLists()
+        presenter.onSearchDetached()
+        Mockito.verify(view).unbindSearchedLists()
     }
 
     @Test
     fun givenTheListIsClickedThenShowTheListContent() {
         val id: Long = 1
-        presenter!!.onListClicked(id)
-        Mockito.verify(view)!!.showListContent(id)
+        presenter.onListClicked(id)
+        Mockito.verify(view).showListContent(id)
     }
 
     @Test
     fun givenTheButtonIsClickedThenShowListAdd() {
-        presenter!!.onButtonClicked()
-        Mockito.verify(view)!!.showAddList()
+        presenter.onButtonClicked()
+        Mockito.verify(view).showAddList()
     }
 
     @Test
     fun givenTheFilterButtonIsClickedThenOpenFilterDialog() {
-        presenter!!.onFilterDialog()
-        Mockito.verify(view)!!.showFilterDialog()
+        presenter.onFilterDialog()
+        Mockito.verify(view).showFilterDialog()
     }
 
     @Test
     fun givenTheSortButtonIsClickedThenOpenSortDialog() {
-        presenter!!.onSortByDialog()
-        Mockito.verify(view)!!.showSortByDialog()
+        presenter.onSortByDialog()
+        Mockito.verify(view).showSortByDialog()
     }
 
     @Test
     fun givenTheListIsEmptyThenShowEmptyMessage() {
-        presenter!!.onEmptyList()
-        Mockito.verify(view)!!.showEmptyMessage()
+        presenter.onEmptyList()
+        Mockito.verify(view).showEmptyMessage()
     }
 
     @Test
     fun givenTheCategoriesAreManagedThenShowManager() {
-        presenter!!.onManageCategories()
-        Mockito.verify(view)!!.showManageCategories()
+        presenter.onManageCategories()
+        Mockito.verify(view).showManageCategories()
     }
 
     @Test
     fun givenOnAboutButtonWasClickedThenOnAboutActivity() {
-        presenter!!.onAboutSection()
-        Mockito.verify(view)!!.showAboutSection()
+        presenter.onAboutSection()
+        Mockito.verify(view).showAboutSection()
     }
 }

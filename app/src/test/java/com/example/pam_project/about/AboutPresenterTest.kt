@@ -15,17 +15,17 @@ import org.mockito.Mockito
 import java.util.*
 
 class AboutPresenterTest {
-    private var view: AboutView? = null
-    private var presenter: AboutPresenter? = null
-    private var authorsRepository: AuthorsRepository? = null
-    private var versionRepository: VersionRepository? = null
+    private lateinit var view: AboutView
+    private lateinit var presenter: AboutPresenter
+    private lateinit var authorsRepository: AuthorsRepository
+    private lateinit var versionRepository: VersionRepository
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         view = Mockito.mock(AboutView::class.java)
         authorsRepository = Mockito.mock(AuthorsRepository::class.java)
         versionRepository = Mockito.mock(VersionRepository::class.java)
-        presenter = AboutPresenter(authorsRepository!!, versionRepository!!, provider, view!!)
+        presenter = AboutPresenter(authorsRepository, versionRepository, provider, view)
     }
 
     @Test
@@ -33,51 +33,51 @@ class AboutPresenterTest {
         val authors: List<AuthorsModel?> = ArrayList()
         val concatAuthors = ""
         val versionModel = VersionModel("version")
-        Mockito.`when`(authorsRepository!!.authors)
+        Mockito.`when`(authorsRepository.authors)
                 .thenReturn(Single.just(authors))
-        Mockito.`when`(versionRepository!!.version)
+        Mockito.`when`(versionRepository.version)
                 .thenReturn(Single.just(versionModel))
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindAuthors(concatAuthors)
-        Mockito.verify(view)!!.bindVersion(versionModel)
+        presenter.onViewAttached()
+        Mockito.verify(view).bindAuthors(concatAuthors)
+        Mockito.verify(view).bindVersion(versionModel)
     }
 
     @Test
     fun givenAViewWasAttachedWhenVersionFetchFailsThenHandleTheError() {
         val authors: List<AuthorsModel?> = ArrayList()
         val concatAuthors = ""
-        Mockito.`when`(authorsRepository!!.authors)
+        Mockito.`when`(authorsRepository.authors)
                 .thenReturn(Single.just(authors))
-        Mockito.`when`(versionRepository!!.version)
+        Mockito.`when`(versionRepository.version)
                 .thenReturn(Single.fromCallable { throw Exception("BOOM!") })
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindAuthors(concatAuthors)
-        Mockito.verify(view)!!.onGeneralError()
+        presenter.onViewAttached()
+        Mockito.verify(view).bindAuthors(concatAuthors)
+        Mockito.verify(view).onGeneralError()
     }
 
     @Test
     fun givenAViewWasAttachedWhenAuthorsFetchFailsThenHandleTheError() {
         val versionModel = VersionModel("version")
-        Mockito.`when`(authorsRepository!!.authors)
+        Mockito.`when`(authorsRepository.authors)
                 .thenReturn(Single.fromCallable { throw Exception("BOOM!") })
-        Mockito.`when`(versionRepository!!.version)
+        Mockito.`when`(versionRepository.version)
                 .thenReturn(Single.just(versionModel))
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindVersion(versionModel)
-        Mockito.verify(view)!!.onGeneralError()
+        presenter.onViewAttached()
+        Mockito.verify(view).bindVersion(versionModel)
+        Mockito.verify(view).onGeneralError()
     }
 
     @Test
     fun givenAViewWasAttachedWhenAuthorsFetchAndVersionFailsThenHandleTheError() {
         val concatAuthors = ""
         val versionModel = VersionModel("version")
-        Mockito.`when`(authorsRepository!!.authors)
+        Mockito.`when`(authorsRepository.authors)
                 .thenReturn(Single.fromCallable { throw Exception("BOOM!") })
-        Mockito.`when`(versionRepository!!.version)
+        Mockito.`when`(versionRepository.version)
                 .thenReturn(Single.fromCallable { throw Exception("BOOM!") })
-        presenter!!.onViewAttached()
-        Mockito.verify(view, Mockito.times(2))!!.onGeneralError()
-        Mockito.verify(view, Mockito.never())!!.bindVersion(versionModel)
-        Mockito.verify(view, Mockito.never())!!.bindAuthors(concatAuthors)
+        presenter.onViewAttached()
+        Mockito.verify(view, Mockito.times(2)).onGeneralError()
+        Mockito.verify(view, Mockito.never()).bindVersion(versionModel)
+        Mockito.verify(view, Mockito.never()).bindAuthors(concatAuthors)
     }
 }
