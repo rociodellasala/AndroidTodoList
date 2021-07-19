@@ -9,7 +9,10 @@ import java.util.*
 
 class CategoryMapper {
     fun toModel(entity: CategoryEntity?): CategoryInformation {
-        return CategoryInformation(entity!!.name, entity.color)
+        return CategoryInformation(
+            title = entity!!.name,
+            color = entity.color
+        )
     }
 
     fun toListWithCategoriesModel(entities: List<CategoriesWithLists?>?): Map<CategoryInformation, List<ListInformation>> {
@@ -41,7 +44,11 @@ class CategoryMapper {
     fun toCategoryModel(categoryEntities: List<CategoryEntity?>?): List<CategoryInformation> {
         val list: MutableList<CategoryInformation> = ArrayList()
         for (entity in categoryEntities!!) {
-            list.add(CategoryInformation(entity!!.id, entity.name, entity.color))
+            list.add(CategoryInformation(
+                id = entity!!.id,
+                title = entity.name,
+                color = entity.color
+            ))
         }
         return list
     }
