@@ -12,7 +12,7 @@ import org.robolectric.android.controller.ActivityController
 
 @RunWith(RobolectricTestRunner::class)
 class WelcomeActivityTest {
-    private var activity: ActivityController<WelcomeActivity>? = null
+    private lateinit var activity: ActivityController<WelcomeActivity>
     @Before
     fun setup() {
         activity = Robolectric.buildActivity(WelcomeActivity::class.java)
@@ -20,8 +20,8 @@ class WelcomeActivityTest {
 
     @Test
     fun givenWelcomeWasConfirmedThenVerifyTheActivityIsFinished() {
-        activity!!.create().resume()
-        activity!!.get().findViewById<View>(R.id.welcome_button).performClick()
-        Assert.assertTrue(activity!!.get().isFinishing)
+        activity.create().resume()
+        activity.get().findViewById<View>(R.id.welcome_button).performClick()
+        Assert.assertTrue(activity.get().isFinishing)
     }
 }

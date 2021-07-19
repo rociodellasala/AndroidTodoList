@@ -15,17 +15,17 @@ import org.mockito.Mockito
 import java.util.*
 
 class CreateListPresenterTest {
-    private var categoriesRepository: CategoriesRepository? = null
-    private var listsRepository: ListsRepository? = null
-    private var view: CreateListView? = null
-    private var presenter: CreateListPresenter? = null
+    private lateinit var categoriesRepository: CategoriesRepository
+    private lateinit var listsRepository: ListsRepository
+    private lateinit var view: CreateListView
+    private lateinit var presenter: CreateListPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         categoriesRepository = Mockito.mock(CategoriesRepository::class.java)
         listsRepository = Mockito.mock(ListsRepository::class.java)
         view = Mockito.mock(CreateListView::class.java)
-        presenter = CreateListPresenter(provider, categoriesRepository!!, listsRepository!!, view!!)
+        presenter = CreateListPresenter(provider, categoriesRepository, listsRepository, view)
     }
 
     @Test
@@ -34,35 +34,35 @@ class CreateListPresenterTest {
                 Mockito.mock(CategoryInformation::class.java))
         val categories = listOf(*categoriesArray)
         val categoriesFlowable = Flowable.just(categories)
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.bindCategories(categories)
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
+        presenter.onViewAttached()
+        Mockito.verify(view).bindCategories(categories)
     }
 
     @Test
     fun givenAViewIsAttachedWhenErrorThenHandleTheErrors() {
         val categoriesFlowable = Flowable.fromCallable<List<CategoryInformation>> { throw Exception("BOOM!") }
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
-        presenter!!.onViewAttached()
-        Mockito.verify(view)!!.onCategoriesReceivedError()
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
+        presenter.onViewAttached()
+        Mockito.verify(view).onCategoriesReceivedError()
     }
 
     @Test
     fun givenAListIsInsertedWhenEverythingOkThenInsertTheList() {
         val name = "Name"
         val categoryId: Long = 2
-        Mockito.`when`(listsRepository!!.insertList(name, categoryId)).thenReturn(Completable.complete())
-        presenter!!.insertList(name, categoryId)
-        Mockito.verify(view, Mockito.never())!!.onListInsertedError()
+        Mockito.`when`(listsRepository.insertList(name, categoryId)).thenReturn(Completable.complete())
+        presenter.insertList(name, categoryId)
+        Mockito.verify(view, Mockito.never()).onListInsertedError()
     }
 
     @Test
     fun givenAListIsInsertedWhenThereIsAnErrorThenHandleTheError() {
         val name = "Name"
         val categoryId: Long = 2
-        Mockito.`when`(listsRepository!!.insertList(name, categoryId)).thenReturn(
+        Mockito.`when`(listsRepository.insertList(name, categoryId)).thenReturn(
                 Completable.fromAction { throw Exception("BOOM!") })
-        presenter!!.insertList(name, categoryId)
-        Mockito.verify(view)!!.onListInsertedError()
+        presenter.insertList(name, categoryId)
+        Mockito.verify(view).onListInsertedError()
     }
 }

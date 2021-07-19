@@ -16,17 +16,17 @@ import org.mockito.Mockito
 import java.util.*
 
 class EditListPresenterTest {
-    private var categoriesRepository: CategoriesRepository? = null
-    private var listsRepository: ListsRepository? = null
-    private var view: EditListView? = null
-    private var presenter: EditListPresenter? = null
+    private lateinit var categoriesRepository: CategoriesRepository
+    private lateinit var listsRepository: ListsRepository
+    private lateinit var view: EditListView
+    private lateinit var presenter: EditListPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         categoriesRepository = Mockito.mock(CategoriesRepository::class.java)
         listsRepository = Mockito.mock(ListsRepository::class.java)
         view = Mockito.mock(EditListView::class.java)
-        presenter = EditListPresenter(provider, categoriesRepository!!, listsRepository!!, view!!)
+        presenter = EditListPresenter(provider, categoriesRepository, listsRepository, view)
     }
 
     @Test
@@ -36,12 +36,12 @@ class EditListPresenterTest {
                 Mockito.mock(CategoryInformation::class.java))
         val categories = listOf(*categoriesArray)
         val categoriesFlowable = Flowable.just(categories)
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val li = Mockito.mock(ListInformation::class.java)
         val flowable = Flowable.just(li)
-        Mockito.`when`(listsRepository!!.getList(id)).thenReturn(flowable)
-        presenter!!.onViewAttached(id)
-        Mockito.verify(view)!!.bindCategories(categories)
+        Mockito.`when`(listsRepository.getList(id)).thenReturn(flowable)
+        presenter.onViewAttached(id)
+        Mockito.verify(view).bindCategories(categories)
     }
 
     @Test
@@ -51,13 +51,13 @@ class EditListPresenterTest {
                 Mockito.mock(CategoryInformation::class.java))
         val categories = Arrays.asList(*categoriesArray)
         val categoriesFlowable = Flowable.just(categories)
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val li = Mockito.mock(ListInformation::class.java)
         val flowable = Flowable.just(li)
-        Mockito.`when`(listsRepository!!.getList(id)).thenReturn(flowable)
-        presenter!!.onViewAttached(id)
-        Mockito.verify(view)!!.bindCategories(categories)
-        Mockito.verify(view)!!.bindList(li)
+        Mockito.`when`(listsRepository.getList(id)).thenReturn(flowable)
+        presenter.onViewAttached(id)
+        Mockito.verify(view).bindCategories(categories)
+        Mockito.verify(view).bindList(li)
     }
 
     @Test
@@ -65,9 +65,9 @@ class EditListPresenterTest {
         val id: Long = 3
         Mockito.doReturn(
                 Flowable.fromCallable<Any> { throw Exception("BOOM!") }
-        ).`when`(categoriesRepository)!!.categories
-        presenter!!.onViewAttached(id)
-        Mockito.verify(view)!!.onCategoriesReceivedError()
+        ).`when`(categoriesRepository).categories
+        presenter.onViewAttached(id)
+        Mockito.verify(view).onCategoriesReceivedError()
     }
 
     @Test
@@ -77,13 +77,13 @@ class EditListPresenterTest {
                 Mockito.mock(CategoryInformation::class.java))
         val categories = listOf(*categoriesArray)
         val categoriesFlowable = Flowable.just(categories)
-        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository)!!.categories
+        Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val listFlowable = Flowable
                 .fromCallable<List<ListInformation>> { throw Exception("BOOM!") }
-        Mockito.doReturn(listFlowable).`when`(listsRepository)!!.getList(id)
-        presenter!!.onViewAttached(id)
-        Mockito.verify(view)!!.bindCategories(categories)
-        Mockito.verify(view)!!.onListReceivedError()
+        Mockito.doReturn(listFlowable).`when`(listsRepository).getList(id)
+        presenter.onViewAttached(id)
+        Mockito.verify(view).bindCategories(categories)
+        Mockito.verify(view).onListReceivedError()
     }
 
     @Test
@@ -91,9 +91,9 @@ class EditListPresenterTest {
         val id: Long = 3
         val categoryId: Long = 2
         val name = "Name"
-        Mockito.`when`(listsRepository!!.updateList(id, name, categoryId)).thenReturn(Completable.complete())
-        presenter!!.updateList(id, name, categoryId)
-        Mockito.verify(view, Mockito.never())!!.onListUpdatedError()
+        Mockito.`when`(listsRepository.updateList(id, name, categoryId)).thenReturn(Completable.complete())
+        presenter.updateList(id, name, categoryId)
+        Mockito.verify(view, Mockito.never()).onListUpdatedError()
     }
 
     @Test
@@ -101,34 +101,34 @@ class EditListPresenterTest {
         val id: Long = 3
         val categoryId: Long = 2
         val name = "Name"
-        Mockito.`when`(listsRepository!!.updateList(id, name, categoryId)).thenReturn(
+        Mockito.`when`(listsRepository.updateList(id, name, categoryId)).thenReturn(
                 Completable.fromAction { throw Exception("BOOM!") }
         )
-        presenter!!.updateList(id, name, categoryId)
-        Mockito.verify(view)!!.onListUpdatedError()
+        presenter.updateList(id, name, categoryId)
+        Mockito.verify(view).onListUpdatedError()
     }
 
     @Test
     fun givenAListWasDeletedWhenEverythingOkThenDeleteTheList() {
         val id: Long = 4
-        Mockito.`when`(listsRepository!!.deleteList(id)).thenReturn(Completable.complete())
-        presenter!!.deleteList(id)
-        Mockito.verify(view)!!.onListDelete()
+        Mockito.`when`(listsRepository.deleteList(id)).thenReturn(Completable.complete())
+        presenter.deleteList(id)
+        Mockito.verify(view).onListDelete()
     }
 
     @Test
     fun givenAListWasDeletedWhenThereIsAnErrorThenHandleTheError() {
         val id: Long = 4
-        Mockito.`when`(listsRepository!!.deleteList(id)).thenReturn(
+        Mockito.`when`(listsRepository.deleteList(id)).thenReturn(
                 Completable.fromAction { throw Exception("BOOM!") }
         )
-        presenter!!.deleteList(id)
-        Mockito.verify(view)!!.onListDeletedError()
+        presenter.deleteList(id)
+        Mockito.verify(view).onListDeletedError()
     }
 
     @Test
     fun givenDeleteButtonWasClickedThenShowDeleteDialog() {
-        presenter!!.onDeletePressed()
-        Mockito.verify(view)!!.showDeleteDialog()
+        presenter.onDeletePressed()
+        Mockito.verify(view).showDeleteDialog()
     }
 }

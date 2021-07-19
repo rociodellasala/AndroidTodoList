@@ -12,34 +12,34 @@ import org.junit.Test
 import org.mockito.Mockito
 
 class CreateCategoryPresenterTest {
-    private var repository: CategoriesRepository? = null
-    private var view: CreateCategoryView? = null
-    private var presenter: CreateCategoryPresenter? = null
+    private lateinit var repository: CategoriesRepository
+    private lateinit var view: CreateCategoryView
+    private lateinit var presenter: CreateCategoryPresenter
     @Before
     fun setup() {
         val provider: SchedulerProvider = TestSchedulerProvider()
         repository = Mockito.mock(CategoriesRepository::class.java)
         view = Mockito.mock(CreateCategoryView::class.java)
-        presenter = CreateCategoryPresenter(provider, repository!!, view!!)
+        presenter = CreateCategoryPresenter(provider, repository, view)
     }
 
     @Test
     fun givenACategoryIsCreatedWhenEverythingIsOkThenCreateTheCategory() {
         val title = "categoryTitle"
         val stringColor = AppColor.BLUE.hexValue
-        Mockito.`when`(repository!!.insertCategory(title, stringColor))
+        Mockito.`when`(repository.insertCategory(title, stringColor))
                 .thenReturn(Completable.complete())
-        presenter!!.insertCategory(title, stringColor)
-        Mockito.verify(view, Mockito.never())!!.onCategoryInsertedError()
+        presenter.insertCategory(title, stringColor)
+        Mockito.verify(view, Mockito.never()).onCategoryInsertedError()
     }
 
     @Test
     fun givenACategoryIsCreatedWhenAnErrorOccursThenHandleTheError() {
         val title = "categoryTitle"
         val stringColor = AppColor.BLUE.hexValue
-        Mockito.`when`(repository!!.insertCategory(title, stringColor))
+        Mockito.`when`(repository.insertCategory(title, stringColor))
                 .thenReturn(Completable.fromAction { throw Exception("BOOM!") })
-        presenter!!.insertCategory(title, stringColor)
-        Mockito.verify(view)!!.onCategoryInsertedError()
+        presenter.insertCategory(title, stringColor)
+        Mockito.verify(view).onCategoryInsertedError()
     }
 }
