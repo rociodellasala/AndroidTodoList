@@ -5,12 +5,6 @@ import androidx.room.Relation
 import com.example.pam_project.database.categories.CategoryEntity
 import com.example.pam_project.database.lists.ListEntity
 
-class CategoriesWithLists {
-    @kotlin.jvm.JvmField
-    @Embedded
-    var category: CategoryEntity? = null
-
-    @kotlin.jvm.JvmField
-    @Relation(parentColumn = "id", entityColumn = "categoryId", entity = ListEntity::class)
-    var lists: List<ListsWithTasks>? = null
-}
+data class CategoriesWithLists(@Embedded var category: CategoryEntity,
+                               @Relation(parentColumn = "id", entityColumn = "categoryId", entity = ListEntity::class)
+                               var lists: List<ListsWithTasks>)

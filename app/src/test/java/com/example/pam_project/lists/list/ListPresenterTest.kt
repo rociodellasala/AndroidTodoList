@@ -46,8 +46,8 @@ class ListPresenterTest {
         val categoriesFlowable = Flowable.just(categories)
         Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val listsArray = arrayOf(
-                ListInformation(1, "name1", 2, AppColor.BLUE, ArrayList()),
-                ListInformation(2, "name2", 2, AppColor.GREEN, ArrayList())
+                ListInformation(id = 1, title = "name1", categoryId = 2, color = AppColor.BLUE, tasks = ArrayList()),
+                ListInformation(id = 2, title = "name2", categoryId = 2, color = AppColor.GREEN, tasks = ArrayList())
         )
         val lists: MutableMap<CategoryInformation, List<ListInformation>> = HashMap()
         val l1: MutableList<ListInformation> = ArrayList()

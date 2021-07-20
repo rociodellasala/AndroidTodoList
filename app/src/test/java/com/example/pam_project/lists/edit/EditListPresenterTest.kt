@@ -49,7 +49,7 @@ class EditListPresenterTest {
         val id: Long = 3
         val categoriesArray = arrayOf(Mockito.mock(CategoryInformation::class.java),
                 Mockito.mock(CategoryInformation::class.java))
-        val categories = Arrays.asList(*categoriesArray)
+        val categories = listOf(*categoriesArray)
         val categoriesFlowable = Flowable.just(categories)
         Mockito.doReturn(categoriesFlowable).`when`(categoriesRepository).categories
         val li = Mockito.mock(ListInformation::class.java)

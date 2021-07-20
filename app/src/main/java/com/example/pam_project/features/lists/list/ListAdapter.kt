@@ -42,7 +42,7 @@ class ListAdapter : RecyclerView.Adapter<ListViewHolder>(), Filterable {
         }
         categories = ArrayList(categoriesWithIds.values)
         for (list in dataSet) {
-            list?.category = categoriesWithIds[list?.categoryId]
+            list?.updateCategory(categoriesWithIds[list.categoryId])
         }
         if (Companion.filterSelections == null) return
 

@@ -12,7 +12,6 @@ import io.reactivex.Flowable
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
-import java.util.*
 
 class CreateListPresenterTest {
     private lateinit var categoriesRepository: CategoriesRepository

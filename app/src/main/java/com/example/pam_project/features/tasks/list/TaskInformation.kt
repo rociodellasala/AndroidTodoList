@@ -2,29 +2,19 @@ package com.example.pam_project.features.tasks.list
 
 import com.example.pam_project.utils.constants.TaskStatus
 
-// TODO: Lo mismo, ver que onda porque para mi deberia ser privado
-open class TaskInformation : Comparable<TaskInformation> {
-    val title: String?
-    val description: String?
-    val urgency: Boolean
-    val status: TaskStatus?
-    var id: Long = 0
+open class TaskInformation(id: Long, title: String?, description: String?, isUrgent: Boolean,
+                      status: TaskStatus?) : Comparable<TaskInformation> {
+
+    var title: String? = title
         private set
-
-    constructor(id: Long, title: String?, description: String?, isUrgent: Boolean, status: TaskStatus?) {
-        this.id = id
-        this.title = title
-        this.description = description
-        urgency = isUrgent
-        this.status = status
-    }
-
-    constructor(title: String?, description: String?, isUrgent: Boolean, status: TaskStatus?) {
-        this.title = title
-        this.description = description
-        urgency = isUrgent
-        this.status = status
-    }
+    var description: String? = description
+        private set
+    var urgency: Boolean = isUrgent
+        private set
+    var status: TaskStatus? = status
+        private set
+    var id: Long = id
+        private set
 
     override fun equals(other: Any?): Boolean {
         if (other == null) return false

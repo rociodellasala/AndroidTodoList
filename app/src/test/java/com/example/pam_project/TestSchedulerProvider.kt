@@ -13,7 +13,7 @@ class TestSchedulerProvider : SchedulerProvider {
         return Schedulers.trampoline()
     }
 
-    override fun ui(): Scheduler? {
+    override fun ui(): Scheduler {
         return Schedulers.trampoline()
     }
 }

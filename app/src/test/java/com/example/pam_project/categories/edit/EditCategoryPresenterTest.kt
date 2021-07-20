@@ -31,8 +31,11 @@ class EditCategoryPresenterTest {
     fun givenAViewWasAttachedWhenEverythingIsOkThenFetchTheCategory() {
         val title = "categoryTitle"
         val stringColor = AppColor.BLUE.hexValue
-        val categoryInformation = CategoryInformation(categoryId,
-                title, stringColor)
+        val categoryInformation = CategoryInformation(
+            id = categoryId,
+            title = title,
+            color = stringColor
+        )
         val flowable = Flowable.just(categoryInformation)
         Mockito.`when`(repository.getCategory(categoryId)).thenReturn(flowable)
         presenter.onViewAttached()

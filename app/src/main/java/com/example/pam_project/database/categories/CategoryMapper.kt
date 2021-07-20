@@ -9,23 +9,33 @@ import java.util.*
 
 class CategoryMapper {
     fun toModel(entity: CategoryEntity?): CategoryInformation {
-        return CategoryInformation(entity!!.name, entity.color)
+        return CategoryInformation(
+            title = entity!!.name,
+            color = entity.color
+        )
     }
 
     fun toListWithCategoriesModel(entities: List<CategoriesWithLists?>?): Map<CategoryInformation, List<ListInformation>> {
         val map: MutableMap<CategoryInformation, List<ListInformation>> = HashMap()
         for (categoryWithListEntity in entities!!) {
             val list: MutableList<ListInformation> = ArrayList()
-            for (listWithTaskEntity in categoryWithListEntity!!.lists!!) {
+            for (listWithTaskEntity in categoryWithListEntity!!.lists) {
                 val listEntity = listWithTaskEntity.list
                 val tasksEntity = listWithTaskEntity.tasks
                 val task: MutableList<TaskInformation> = ArrayList()
-                for (taskEntity in tasksEntity!!) {
-                    task.add(TaskInformation(taskEntity.id, taskEntity.name, taskEntity.description,
-                            taskEntity.priority, TaskStatus.getStatus(taskEntity.status)))
+                for (taskEntity in tasksEntity) {
+                    task.add(
+                        TaskInformation(
+                            id = taskEntity.id,
+                            title = taskEntity.name,
+                            description = taskEntity.description,
+                            isUrgent = taskEntity.priority,
+                            status = TaskStatus.getStatus(taskEntity.status)
+                        ))
                 }
-                list.add(ListInformation(listEntity!!.id, listEntity.name, listEntity.categoryId,
-                    categoryWithListEntity.category!!.color, task))
+                list.add(ListInformation(
+                    id = listEntity.id, title = listEntity.name, categoryId = listEntity.categoryId,
+                    color = categoryWithListEntity.category.color, tasks = task))
             }
             map[toModel(categoryWithListEntity.category)] = list
         }
@@ -35,7 +45,11 @@ class CategoryMapper {
     fun toCategoryModel(categoryEntities: List<CategoryEntity?>?): List<CategoryInformation> {
         val list: MutableList<CategoryInformation> = ArrayList()
         for (entity in categoryEntities!!) {
-            list.add(CategoryInformation(entity!!.id, entity.name, entity.color))
+            list.add(CategoryInformation(
+                id = entity!!.id,
+                title = entity.name,
+                color = entity.color
+            ))
         }
         return list
     }

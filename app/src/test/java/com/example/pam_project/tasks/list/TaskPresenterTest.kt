@@ -38,7 +38,7 @@ class TaskPresenterTest {
         val categoryId: Long = 1
         val listTitle = "listTitle"
         val tasks: List<TaskInformation> = ArrayList()
-        val li = ListInformation(listId, listTitle, categoryId, tasks)
+        val li = ListInformation(id = listId, title = listTitle, categoryId = categoryId, tasks = tasks)
         val listInformationObservable = Flowable.just(li)
         Mockito.doReturn(listInformationObservable).`when`(listsRepository).getListWithTasks(listId)
         presenter.onViewAttached()
@@ -69,14 +69,13 @@ class TaskPresenterTest {
         val title = "taskTitle"
         val description = "description"
         val isUrgent = false
-        val ti = TaskInformation(taskId, title, description, isUrgent, status)
+        val ti = TaskInformation(id = taskId, title = title, description = description, isUrgent = isUrgent, status = status)
         val position = 2
         Mockito.`when`(taskRepository.updateTask(
                 taskId, title, description, isUrgent, oppositeStatus, listId
         )).thenReturn(Completable.complete())
         presenter.onTaskChange(ti, position)
-        val otherTi = TaskInformation(taskId, title, description, isUrgent,
-                oppositeStatus)
+        val otherTi = TaskInformation(id = taskId, title = title, description = description, isUrgent = isUrgent, status = oppositeStatus)
         Mockito.verify(view).onTaskStatusEdit(otherTi, position)
     }
 
@@ -88,7 +87,7 @@ class TaskPresenterTest {
         val isUrgent = false
         val status = TaskStatus.PENDING
         val oppositeStatus = TaskStatus.DONE
-        val ti = TaskInformation(taskId, title, description, isUrgent, status)
+        val ti = TaskInformation(id = taskId, title = title, description = description, isUrgent = isUrgent, status = status)
         val position = 2
         Mockito.`when`(taskRepository.updateTask(
                 taskId, title, description, isUrgent, oppositeStatus, listId

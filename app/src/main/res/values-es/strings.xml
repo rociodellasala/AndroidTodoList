@@ -7,14 +7,11 @@
     <string name="start">Empezar</string>
     <string name="add_list">Nueva Lista</string>
     <string name="add_task">Nueva Tarea</string>
-    <string name="list_task_quantity">Cantidad de tareas</string>
-    <string name="list_task_completed">Completadas</string>
     <string name="list_task_pending">Pendientes</string>
     <string name="list_task_urgent">Urgentes</string>
     <string name="empty_list_message">Todavía no tienes listas creadas.\n\nHaz click en el botón debajo para crear tu primera lista.</string>
     <!---Create list activity-->
     <string name="activity_title_create_list">Crear lista</string>
-    <string name="create_list_name_label">Nombre</string>
     <string name="create_list_category_label">Categoría</string>
     <string name="default_category">Sin categoría</string>
     <!-- Generic buttons text -->
@@ -37,8 +34,6 @@
     <string name="delete">Eliminar</string>
     <!--Sort by options-->
     <string name="sort_by_date_added">Fecha de creación</string>
-    <string name="sort_by_category_alphabetically">Categorías alfabéticamente</string>
-    <string name="sort_by_category_priority">Categorías por prioridad</string>
     <string name="sort_by_list_alphabetically">Listas alfabéticamente</string>
     <string name="sort_by_task_number">Cantidad de tareas</string>
     <string name="empty_task_message">Todavía no tienes tareas creadas.\n\nHaz click en el botón debajo para crear tu primera tarea.</string>

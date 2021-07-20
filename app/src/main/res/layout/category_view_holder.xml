@@ -31,7 +31,6 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center_vertical"
-        android:id="@+id/image_id"
         app:srcCompat="@drawable/ic_sort_arrows"
         android:contentDescription="@string/category_color_label"
         android:layout_marginStart="-50dp" />
