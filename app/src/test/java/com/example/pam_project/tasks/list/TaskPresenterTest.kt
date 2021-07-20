@@ -38,7 +38,7 @@ class TaskPresenterTest {
         val categoryId: Long = 1
         val listTitle = "listTitle"
         val tasks: List<TaskInformation> = ArrayList()
-        val li = ListInformation(listId, listTitle, categoryId, tasks)
+        val li = ListInformation(id = listId, title = listTitle, categoryId = categoryId, tasks = tasks)
         val listInformationObservable = Flowable.just(li)
         Mockito.doReturn(listInformationObservable).`when`(listsRepository).getListWithTasks(listId)
         presenter.onViewAttached()

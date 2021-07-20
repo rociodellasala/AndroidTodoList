@@ -40,7 +40,7 @@ class EditListActivity : AppCompatActivity(), EditListView {
 
     private fun createPresenter() {
         val container = ApplicationContainerLocator.locateComponent(this)
-        val schedulerProvider = container!!.schedulerProvider
+        val schedulerProvider = container.schedulerProvider
         val categoriesRepository = container.categoriesRepository
         val listsRepository = container.listsRepository
         presenter = EditListPresenter(schedulerProvider, categoriesRepository,

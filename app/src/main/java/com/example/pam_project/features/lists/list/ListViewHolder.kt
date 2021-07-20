@@ -29,7 +29,7 @@ class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } else {
             urgency.visibility = View.GONE
         }
-        itemView.setOnClickListener { v: View? ->
+        itemView.setOnClickListener {
             if (listener != null) {
                 listener!!.onClick(list.id)
             }

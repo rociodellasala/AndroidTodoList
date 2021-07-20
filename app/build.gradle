@@ -80,7 +80,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
     androidTestImplementation "androidx.test.ext:junit:$junitTestVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

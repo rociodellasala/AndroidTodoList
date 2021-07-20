@@ -50,7 +50,7 @@ class AboutPresenter(private val authorsRepository: AuthorsRepository, private v
     }
 
     private fun fetchVersion() {
-        fetchVersionDisposable = versionRepository!!.version
+        fetchVersionDisposable = versionRepository.version
                 .subscribeOn(provider.computation())
                 .observeOn(provider.ui())
                 .subscribe({ model: VersionModel? -> onVersionReceived(model) }) { throwable: Throwable -> onVersionReceivedError(throwable) }

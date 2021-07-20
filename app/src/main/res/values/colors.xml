@@ -13,23 +13,11 @@
         <item>@color/light_orange</item>
         <item>@color/orange</item>
     </array>
-    <array name="theme_colors">
-        <item>@color/theme_red</item>
-        <item>@color/theme_blue</item>
-        <item>@color/theme_black</item>
-        <item>@color/theme_grey</item>
-        <item>@color/theme_white</item>
-        <item>@color/theme_light_blue</item>
-        <item>@color/theme_dark_blue</item>
-    </array>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_blue">#3B4859</color>
     <color name="light_gray">#e8e8e8</color>
     <!-- demo colors -->
     <color name="board">#A83432</color>

@@ -19,11 +19,11 @@ class CategoryMapper {
         val map: MutableMap<CategoryInformation, List<ListInformation>> = HashMap()
         for (categoryWithListEntity in entities!!) {
             val list: MutableList<ListInformation> = ArrayList()
-            for (listWithTaskEntity in categoryWithListEntity!!.lists!!) {
+            for (listWithTaskEntity in categoryWithListEntity!!.lists) {
                 val listEntity = listWithTaskEntity.list
                 val tasksEntity = listWithTaskEntity.tasks
                 val task: MutableList<TaskInformation> = ArrayList()
-                for (taskEntity in tasksEntity!!) {
+                for (taskEntity in tasksEntity) {
                     task.add(
                         TaskInformation(
                             id = taskEntity.id,
@@ -33,8 +33,9 @@ class CategoryMapper {
                             status = TaskStatus.getStatus(taskEntity.status)
                         ))
                 }
-                list.add(ListInformation(listEntity!!.id, listEntity.name, listEntity.categoryId,
-                    categoryWithListEntity.category!!.color, task))
+                list.add(ListInformation(
+                    id = listEntity.id, title = listEntity.name, categoryId = listEntity.categoryId,
+                    color = categoryWithListEntity.category.color, tasks = task))
             }
             map[toModel(categoryWithListEntity.category)] = list
         }

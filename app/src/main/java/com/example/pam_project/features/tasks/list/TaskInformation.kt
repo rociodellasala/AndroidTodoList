@@ -2,7 +2,7 @@ package com.example.pam_project.features.tasks.list
 
 import com.example.pam_project.utils.constants.TaskStatus
 
-class TaskInformation(id: Long, title: String?, description: String?, isUrgent: Boolean,
+open class TaskInformation(id: Long, title: String?, description: String?, isUrgent: Boolean,
                       status: TaskStatus?) : Comparable<TaskInformation> {
 
     var title: String? = title

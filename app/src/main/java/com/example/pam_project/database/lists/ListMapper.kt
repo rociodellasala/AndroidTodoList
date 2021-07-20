@@ -8,16 +8,16 @@ import java.util.*
 
 class ListMapper {
     fun toModel(entity: ListEntity?): ListInformation {
-        return ListInformation(entity!!.id, entity.name, entity.categoryId)
+        return ListInformation(id = entity!!.id, title = entity.name, categoryId = entity.categoryId)
     }
 
     private fun toModelWithTasks(entity: ListEntity?, tasks: List<TaskInformation>?): ListInformation {
-        return ListInformation(entity!!.id, entity.name, entity.categoryId, tasks)
+        return ListInformation(id = entity!!.id, title = entity.name, categoryId = entity.categoryId, tasks = tasks)
     }
 
     fun toListWithTasksModel(entity: ListsWithTasks?): ListInformation {
         val listOfTasks: MutableList<TaskInformation> = ArrayList()
-        for (taskEntity in entity!!.tasks!!) {
+        for (taskEntity in entity!!.tasks) {
             listOfTasks.add(TaskInformation(
                 id = taskEntity.id,
                 title = taskEntity.name,

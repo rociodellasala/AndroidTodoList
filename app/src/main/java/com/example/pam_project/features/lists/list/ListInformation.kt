@@ -10,27 +10,34 @@ import com.example.pam_project.utils.constants.AppColor
 import com.example.pam_project.utils.constants.TaskStatus
 import java.io.Serializable
 
-open class ListInformation(val id: Long, val title: String?, val categoryId: Long) : Serializable, Comparable<ListInformation> {
+open class ListInformation(id: Long, title: String?, categoryId: Long) : Serializable, Comparable<ListInformation> {
+    var id: Long = id
+        private set
+    var title: String? = title
+        private set
+    var categoryId: Long = categoryId
+        private set
     var color: AppColor? = null
         private set
     var tasks: List<TaskInformation>? = null
         private set
-    var category: CategoryInformation? = null // TODO: Ver si hay que hacerla privada
+    var category: CategoryInformation? = null
+        private set
 
-    constructor(id: Long, title: String?, categoryId: Long,
-                color: AppColor?, tasks: List<TaskInformation>?) : this(id, title, categoryId) {
+    constructor(id: Long, title: String?, categoryId: Long, color: AppColor?, tasks: List<TaskInformation>?)
+            : this(id, title, categoryId) {
         this.color = color
         this.tasks = tasks
     }
 
-    constructor(id: Long, title: String?, categoryId: Long,
-                color: String?, tasks: List<TaskInformation>?) : this(id, title, categoryId, AppColor.fromName(color), tasks)
+    constructor(id: Long, title: String?, categoryId: Long, color: String?, tasks: List<TaskInformation>?)
+            : this(id, title, categoryId, AppColor.fromName(color), tasks)
 
-    constructor(id: Long, title: String?, categoryId: Long,
-                color: String?) : this(id, title, categoryId, AppColor.fromName(color), null)
+    constructor(id: Long, title: String?, categoryId: Long, color: String?)
+            : this(id, title, categoryId, AppColor.fromName(color), null)
 
-    constructor(id: Long, title: String?, categoryId: Long,
-                tasks: List<TaskInformation>?) : this(id, title, categoryId, null as AppColor?, tasks)
+    constructor(id: Long, title: String?, categoryId: Long, tasks: List<TaskInformation>?)
+            : this(id, title, categoryId, null as AppColor?, tasks)
 
     fun hasUrgentTask(): Boolean {
         for (task in tasks!!) {
@@ -60,6 +67,10 @@ open class ListInformation(val id: Long, val title: String?, val categoryId: Lon
 
     override fun compareTo(other: ListInformation): Int {
         return NATURAL_COMPARATOR.compare(this, other)
+    }
+
+    fun updateCategory(category: CategoryInformation?) {
+        this.category = category
     }
 
     companion object {

@@ -80,14 +80,14 @@ class EditTaskActivity : AppCompatActivity(), EditTaskView {
 
     private fun setDeleteButton() {
         val deleteButton = findViewById<Button>(R.id.delete_task_button)
-        deleteButton.setOnClickListener { v: View? -> presenter.onDeletePressed() }
+        deleteButton.setOnClickListener { presenter.onDeletePressed() }
     }
 
     override fun showDeleteDialog() {
         AlertDialog.Builder(this)
                 .setMessage(R.string.confirm_task_delete)
                 .setCancelable(false)
-                .setPositiveButton(R.string.confirm_dialog) { dialog: DialogInterface?, id: Int -> presenter.deleteTask(taskId) }
+                .setPositiveButton(R.string.confirm_dialog) { _: DialogInterface?, _: Int -> presenter.deleteTask(taskId) }
                 .setNegativeButton(R.string.cancel_dialog, null)
                 .show()
     }
