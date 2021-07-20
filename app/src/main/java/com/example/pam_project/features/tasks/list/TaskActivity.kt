@@ -103,7 +103,7 @@ class TaskActivity : AppCompatActivity(), TaskView, OnListClickedListener {
         val text = findViewById<TextView>(R.id.empty_list_message)
         val emptyDataMessage = findViewById<View>(R.id.empty_task)
         if (adapter.itemCount == 0) {
-            text.text = R.string.empty_task_message.toString()
+            text.setText(R.string.empty_task_message)
             emptyDataMessage.visibility = View.VISIBLE
         } else {
             emptyDataMessage.visibility = View.GONE
