@@ -68,7 +68,7 @@ class TaskPresenter(private val provider: SchedulerProvider, private val taskRep
                             title = name,
                             description = description,
                             isUrgent = priority,
-                            status = TaskStatus.getStatus(status.name)
+                            status = status
                         )
                         view.get()!!.onTaskStatusEdit(taskInformation, position)
                     }
