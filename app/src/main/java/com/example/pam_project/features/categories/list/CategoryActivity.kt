@@ -100,10 +100,7 @@ class CategoryActivity : AppCompatActivity(), CategoryView, OnListClickedListene
     private fun setDraggableItems(): ItemTouchHelper.SimpleCallback {
         return object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onMove(recyclerView1: RecyclerView, dragged: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                val draggedPosition = dragged.adapterPosition
-                val targetPosition = target.adapterPosition
-                presenter!!.swapCategories(draggedPosition, targetPosition)
-                return true
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -116,7 +113,7 @@ class CategoryActivity : AppCompatActivity(), CategoryView, OnListClickedListene
 
             override fun getMovementFlags(recyclerView: RecyclerView,
                                           viewHolder: RecyclerView.ViewHolder): Int {
-                val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                val dragFlags = 0
                 val swipeFlags = 0
                 return makeMovementFlags(dragFlags, swipeFlags)
             }
